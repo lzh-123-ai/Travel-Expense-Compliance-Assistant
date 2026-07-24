@@ -17,7 +17,7 @@ class KnowledgeBaseCreate(BaseModel):
 
 
 class KnowledgeBaseResponse(BaseModel):
-    """创建成功后，API 返回给客户端的完整知识库数据。"""
+    """API 返回给客户端的完整知识库数据。"""
 
     model_config = ConfigDict(from_attributes=True)  # 允许从 ORM 对象读取
 

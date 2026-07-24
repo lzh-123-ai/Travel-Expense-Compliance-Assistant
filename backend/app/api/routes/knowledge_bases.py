@@ -1,6 +1,8 @@
 from typing import Annotated
+from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -10,6 +12,36 @@ from app.schemas.knowledge_base import KnowledgeBaseCreate, KnowledgeBaseRespons
 
 router = APIRouter(prefix="/knowledge-bases")
 DatabaseSession = Annotated[AsyncSession, Depends(get_db_session)]
+
+
+@router.get(
+    "",
+    response_model=list[KnowledgeBaseResponse],
+    summary="List knowledge bases",
+)
+async def list_knowledge_bases(session: DatabaseSession) -> list[KnowledgeBase]:
+    statement = select(KnowledgeBase).order_by(KnowledgeBase.created_at.desc())
+    result = await session.execute(statement)
+    return list(result.scalars().all())
+
+
+@router.get(
+    "/{knowledge_base_id}",
+    response_model=KnowledgeBaseResponse,
+    summary="Get a knowledge base",
+)
+async def get_knowledge_base(
+    knowledge_base_id: UUID,
+    session: DatabaseSession,
+) -> KnowledgeBase:
+    knowledge_base = await session.get(KnowledgeBase, knowledge_base_id)
+    if knowledge_base is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Knowledge base not found",
+        )
+
+    return knowledge_base
 
 
 @router.post(
