@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     app_debug: bool = False  # 调试模式，默认False
     api_v1_prefix: str = "/api/v1"  # API前缀,默认"/api/v1"
     database_url: str = "postgresql+asyncpg://rag_user:rag_password@localhost:5432/enterprise_rag"
+    upload_dir: Path = PROJECT_ROOT / "uploads"
+    max_document_size_bytes: int = 10 * 1024 * 1024
 
     model_config = SettingsConfigDict(
         env_file=PROJECT_ROOT / ".env",
