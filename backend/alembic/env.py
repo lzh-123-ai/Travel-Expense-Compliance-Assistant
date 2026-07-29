@@ -18,6 +18,18 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 
+def include_database_object(
+    object_: object,
+    name: str | None,
+    type_: str,
+    reflected: bool,
+    compare_to: object | None,
+) -> bool:
+    """保留 Stage 2 创建、但不由业务 ORM 管理的数据库连通性练习表。"""
+    del object_, reflected, compare_to
+    return not (type_ == "table" and name == "learning_check")
+
+
 def run_migrations_offline() -> None:
     context.configure(
         url=get_settings().database_url,
@@ -25,13 +37,19 @@ def run_migrations_offline() -> None:
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
         compare_type=True,
+        include_object=include_database_object,
     )
     with context.begin_transaction():
         context.run_migrations()
 
 
 def do_run_migrations(connection: Connection) -> None:
-    context.configure(connection=connection, target_metadata=target_metadata, compare_type=True)
+    context.configure(
+        connection=connection,
+        target_metadata=target_metadata,
+        compare_type=True,
+        include_object=include_database_object,
+    )
     with context.begin_transaction():
         context.run_migrations()
 

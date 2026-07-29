@@ -12,14 +12,26 @@ def test_document_model_has_expected_table_and_columns() -> None:
         "original_filename",
         "content_type",
         "file_size",
-        "storage_path",
+        "storage_key",
+        "sha256",
         "status",
         "error_message",
         "created_at",
         "updated_at",
     }
     assert Document.__table__.c.id.type.python_type is UUID
-    assert Document.__table__.c.storage_path.unique is True
+    assert Document.__table__.c.storage_key.unique is True
+
+    duplicate_index = next(
+        index
+        for index in Document.__table__.indexes
+        if index.name == "uq_documents_knowledge_base_sha256"
+    )
+    assert duplicate_index.unique is True
+    assert [column.name for column in duplicate_index.columns] == [
+        "knowledge_base_id",
+        "sha256",
+    ]
 
 
 def test_document_belongs_to_a_knowledge_base() -> None:

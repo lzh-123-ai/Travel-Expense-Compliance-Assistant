@@ -2,7 +2,17 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
-from sqlalchemy import BigInteger, CheckConstraint, DateTime, ForeignKey, String, Text, func
+from sqlalchemy import (
+    BigInteger,
+    CheckConstraint,
+    DateTime,
+    ForeignKey,
+    Index,
+    String,
+    Text,
+    func,
+    text,
+)
 from sqlalchemy.dialects.postgresql import UUID as PostgreSQLUUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -21,6 +31,13 @@ class Document(Base):
             "status IN ('pending', 'processing', 'ready', 'failed')",
             name="ck_documents_status",
         ),
+        Index(
+            "uq_documents_knowledge_base_sha256",
+            "knowledge_base_id",
+            "sha256",
+            unique=True,
+            postgresql_where=text("sha256 IS NOT NULL"),
+        ),
     )
 
     id: Mapped[UUID] = mapped_column(PostgreSQLUUID(as_uuid=True), primary_key=True, default=uuid4)
@@ -33,7 +50,8 @@ class Document(Base):
     original_filename: Mapped[str] = mapped_column(String(255), nullable=False)
     content_type: Mapped[str] = mapped_column(String(100), nullable=False)
     file_size: Mapped[int] = mapped_column(BigInteger, nullable=False)
-    storage_path: Mapped[str] = mapped_column(String(500), nullable=False, unique=True)
+    storage_key: Mapped[str] = mapped_column(String(500), nullable=False, unique=True)
+    sha256: Mapped[str | None] = mapped_column(String(64), nullable=True)
     status: Mapped[str] = mapped_column(
         String(20),
         nullable=False,

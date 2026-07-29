@@ -1,8 +1,9 @@
-from pathlib import Path
 from typing import Annotated
 from uuid import UUID, uuid4
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, File, HTTPException, Response, UploadFile, status
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
@@ -10,73 +11,224 @@ from app.db.session import get_db_session
 from app.models.document import Document
 from app.models.knowledge_base import KnowledgeBase
 from app.schemas.document import DocumentResponse
+from app.services.document_validation import (
+    DocumentValidationError,
+    InvalidFilenameError,
+    UnsupportedDocumentTypeError,
+    validate_stored_content,
+    validate_upload_metadata,
+)
+from app.services.storage import (
+    DocumentTooLargeError,
+    StorageService,
+    get_storage_service,
+    purge_after_commit,
+)
 
 router = APIRouter(prefix="/knowledge-bases/{knowledge_base_id}/documents")
 DatabaseSession = Annotated[AsyncSession, Depends(get_db_session)]
+DocumentStorage = Annotated[StorageService, Depends(get_storage_service)]
 
 
-async def _write_upload(upload: UploadFile, destination: Path, max_size: int) -> int:
-    size = 0
-    try:
-        with destination.open("wb") as output:
-            while chunk := await upload.read(1024 * 1024):
-                size += len(chunk)
-                if size > max_size:
-                    raise HTTPException(
-                        status_code=status.HTTP_413_CONTENT_TOO_LARGE,
-                        detail=f"Document exceeds the {max_size} byte size limit",
-                    )
-                output.write(chunk)
-    except Exception:
-        destination.unlink(missing_ok=True)
-        raise
-    finally:
-        await upload.close()
-    return size
-
-
-@router.post("", response_model=DocumentResponse, status_code=status.HTTP_201_CREATED)
-async def upload_document(
-    knowledge_base_id: UUID,
-    file: Annotated[UploadFile, File(description="Document to upload")],
-    session: DatabaseSession,
-) -> Document:
-    knowledge_base = await session.get(KnowledgeBase, knowledge_base_id)
-    if knowledge_base is None:
+async def _require_knowledge_base(session: AsyncSession, knowledge_base_id: UUID) -> None:
+    if await session.get(KnowledgeBase, knowledge_base_id) is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Knowledge base not found",
         )
 
-    original_filename = file.filename or "uploaded-document"
-    if len(original_filename) > 255:
+
+async def _get_document(
+    session: AsyncSession,
+    knowledge_base_id: UUID,
+    document_id: UUID,
+) -> Document:
+    statement = select(Document).where(
+        Document.id == document_id,
+        Document.knowledge_base_id == knowledge_base_id,
+    )
+    result = await session.execute(statement)
+    document = result.scalar_one_or_none()
+    if document is None:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Filename must be at most 255 characters",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Document not found",
         )
+    return document
 
-    settings = get_settings()
-    settings.upload_dir.mkdir(parents=True, exist_ok=True)
-    document_id = uuid4()
-    suffix = Path(original_filename).suffix[:20]
-    destination = settings.upload_dir / f"{document_id}{suffix}"
 
+async def _find_duplicate_id(
+    session: AsyncSession,
+    knowledge_base_id: UUID,
+    sha256: str,
+) -> UUID | None:
+    result = await session.execute(
+        select(Document.id).where(
+            Document.knowledge_base_id == knowledge_base_id,
+            Document.sha256 == sha256,
+        )
+    )
+    return result.scalar_one_or_none()
+
+
+def _duplicate_document_error(document_id: UUID) -> HTTPException:
+    return HTTPException(
+        status_code=status.HTTP_409_CONFLICT,
+        detail={
+            "message": "Document content already exists",
+            "existing_document_id": str(document_id),
+        },
+    )
+
+
+@router.get("", response_model=list[DocumentResponse], summary="List documents")
+async def list_documents(
+    knowledge_base_id: UUID,
+    session: DatabaseSession,
+) -> list[Document]:
+    await _require_knowledge_base(session, knowledge_base_id)
+    statement = (
+        select(Document)
+        .where(Document.knowledge_base_id == knowledge_base_id)
+        .order_by(Document.created_at.desc())
+    )
+    result = await session.execute(statement)
+    return list(result.scalars().all())
+
+
+@router.get("/{document_id}", response_model=DocumentResponse, summary="Get a document")
+async def get_document(
+    knowledge_base_id: UUID,
+    document_id: UUID,
+    session: DatabaseSession,
+) -> Document:
+    return await _get_document(session, knowledge_base_id, document_id)
+
+
+@router.post(
+    "",
+    response_model=DocumentResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Upload a document",
+)
+async def upload_document(
+    knowledge_base_id: UUID,
+    file: Annotated[UploadFile, File(description="PDF, DOCX, Markdown, or UTF-8 text")],
+    session: DatabaseSession,
+    storage: DocumentStorage,
+) -> Document:
+    storage_key: str | None = None
     try:
-        file_size = await _write_upload(file, destination, settings.max_document_size_bytes)
+        await _require_knowledge_base(session, knowledge_base_id)
+        try:
+            metadata = validate_upload_metadata(file.filename, file.content_type)
+        except InvalidFilenameError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                detail=str(exc),
+            ) from exc
+        except UnsupportedDocumentTypeError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+                detail=str(exc),
+            ) from exc
+
+        settings = get_settings()
+        document_id = uuid4()
+        storage_key = f"documents/{document_id}{metadata.extension}"
+        try:
+            stored = await storage.save(
+                file,
+                storage_key,
+                settings.max_document_size_bytes,
+            )
+            validate_stored_content(
+                storage,
+                storage_key,
+                metadata.document_format,
+                settings.max_docx_uncompressed_size_bytes,
+            )
+        except DocumentTooLargeError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_413_CONTENT_TOO_LARGE,
+                detail=str(exc),
+            ) from exc
+        except DocumentValidationError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                detail=str(exc),
+            ) from exc
+
+        existing_id = await _find_duplicate_id(session, knowledge_base_id, stored.sha256)
+        if existing_id is not None:
+            raise _duplicate_document_error(existing_id)
+
         document = Document(
             id=document_id,
             knowledge_base_id=knowledge_base_id,
-            original_filename=original_filename,
-            content_type=file.content_type or "application/octet-stream",
-            file_size=file_size,
-            storage_path=str(destination),
+            original_filename=metadata.filename,
+            content_type=metadata.content_type,
+            file_size=stored.size,
+            storage_key=stored.key,
+            sha256=stored.sha256,
         )
         session.add(document)
-        await session.commit()
+        try:
+            await session.commit()
+        except IntegrityError as exc:
+            await session.rollback()
+            storage.delete(storage_key)
+            storage_key = None
+            existing_id = await _find_duplicate_id(session, knowledge_base_id, stored.sha256)
+            if existing_id is None:
+                raise
+            raise _duplicate_document_error(existing_id) from exc
+
         await session.refresh(document)
+        return document
+    except Exception:
+        if storage_key is not None:
+            storage.delete(storage_key)
+        if session.in_transaction():
+            await session.rollback()
+        raise
+    finally:
+        await file.close()
+
+
+@router.delete(
+    "/{document_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Delete a document",
+)
+async def delete_document(
+    knowledge_base_id: UUID,
+    document_id: UUID,
+    session: DatabaseSession,
+    storage: DocumentStorage,
+) -> Response:
+    document = await _get_document(session, knowledge_base_id, document_id)
+    try:
+        quarantined = storage.quarantine(document.storage_key)
+    except OSError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Document storage is temporarily unavailable",
+        ) from exc
+
+    try:
+        await session.delete(document)
+        await session.commit()
     except Exception:
         await session.rollback()
-        destination.unlink(missing_ok=True)
+        try:
+            storage.restore(quarantined)
+        except OSError as restore_exc:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Document deletion failed and storage recovery requires attention",
+            ) from restore_exc
         raise
 
-    return document
+    purge_after_commit(storage, quarantined)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

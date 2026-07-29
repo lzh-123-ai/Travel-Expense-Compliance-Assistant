@@ -15,6 +15,7 @@ class DocumentResponse(BaseModel):
     original_filename: str
     content_type: str
     file_size: int
+    sha256: str | None
     status: str
     error_message: str | None
     created_at: datetime
