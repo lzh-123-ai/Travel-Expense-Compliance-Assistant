@@ -6,7 +6,7 @@
 
 ## 当前进度
 
-当前处于 **Stage 7：生产化文档摄取**。
+当前已完成 **Stage 8：结构化解析与可追溯切片（工程验收与学习验收均完成，等待独立提交）**。
 
 已经具备：
 
@@ -19,13 +19,18 @@
 - 原子文件落盘、相对 storage key、流式 SHA-256。
 - 知识库内内容去重，并由数据库唯一索引兜住并发重复。
 - 文档列表、详情和删除；删除提交失败时恢复已隔离文件。
-- Ruff 通过，45 项自动化测试通过。
+- Parser Registry，以及 PDF、DOCX、Markdown、TXT 原生文本解析器。
+- PDF 真实页码、DOCX 标题/表格顺序、图片计数、扫描页与提取完整性警告。
+- 确定性结构切片和 `document_chunks` 追溯元数据；重处理幂等且同文档并发处理串行化。
+- 制度版本、生效期、访问范围和替代关系元数据。
+- 6 篇垂直制度样本、版本化 manifest，以及 20 题经项目负责人逐题人工复核的评测基线 v0。
+- Ruff、83 项自动化测试、真实 Alembic upgrade/check 和 API 闭环冒烟通过。
 
-下一阶段是 Stage 8：解析器注册表、PDF/DOCX 结构化解析、制度版本元数据和可追溯切片。embedding、模型问答和前端尚未实现。
+Stage 8 下一步是由用户检查工作树并创建独立提交；提交后进入 Stage 9 embedding 与 dense 检索。20 题目前只冻结了人工复核答案，尚未运行真实检索或问答准确率；模型问答和前端也尚未实现。
 
 ## 学习入口
 
-第一次阅读 Stage 7 不要从目录逐个文件硬看。请从[Stage 7 学习说明的推荐阅读顺序](docs/learning/stage-07-document-ingestion.md#从哪里开始推荐阅读顺序)开始：先运行一条成功上传测试，再按“测试 → 路由 → 校验服务 → 存储服务 → 模型/迁移”的顺序追踪主链路，之后才看失败清理和删除补偿。
+[Stage 8 学习说明](docs/learning/stage-08-parsing-and-chunking.md)现作为已验收的代码阅读和面试复盘入口；Stage 7 的摄取复习入口仍保留在[Stage 7 学习说明](docs/learning/stage-07-document-ingestion.md)。当前实施入口以最新交接文档的 Stage 9 启动顺序为准。
 
 ## 本地启动
 
@@ -51,12 +56,15 @@ cd backend
 POST   /api/v1/knowledge-bases/{knowledge_base_id}/documents
 GET    /api/v1/knowledge-bases/{knowledge_base_id}/documents
 GET    /api/v1/knowledge-bases/{knowledge_base_id}/documents/{document_id}
+PATCH  /api/v1/knowledge-bases/{knowledge_base_id}/documents/{document_id}/metadata
+POST   /api/v1/knowledge-bases/{knowledge_base_id}/documents/{document_id}/process
+GET    /api/v1/knowledge-bases/{knowledge_base_id}/documents/{document_id}/chunks
 DELETE /api/v1/knowledge-bases/{knowledge_base_id}/documents/{document_id}
 ```
 
 重复内容按“同一知识库内 SHA-256 相同”判断，返回 `409` 和已有文档 ID。Markdown/TXT 必须使用 UTF-8。PDF 必须包含有效文件头和结束标记；DOCX 必须是包含必要 Word 条目的未加密 ZIP，且受到解压总大小限制。
 
-当前存储使用本地 `uploads/`。数据库只保存相对 `storage_key`，API 不向客户端暴露服务器路径。项目尚未声称支持 OCR、MinIO/S3 或生产级对象存储。
+当前存储使用本地 `uploads/`。数据库只保存相对 `storage_key`，API 不向客户端暴露服务器路径。系统会检测并报告疑似扫描页或未索引图片，但尚未声称支持 OCR、图片理解、MinIO/S3 或生产级对象存储。
 
 ## 质量检查
 
@@ -77,11 +85,13 @@ agent_project/
 │  │  ├─ api/                 # HTTP 路由与请求编排
 │  │  ├─ core/                # 配置
 │  │  ├─ db/                  # SQLAlchemy 会话与元数据
-│  │  ├─ models/              # ORM 模型
+│  │  ├─ evaluation/          # 版本化评测数据契约
+│  │  ├─ models/              # 文档与可追溯分块 ORM 模型
 │  │  ├─ schemas/             # API 数据契约
-│  │  └─ services/            # 存储、校验等可替换业务服务
+│  │  └─ services/            # 存储、校验、解析、切片和处理编排
 │  ├─ alembic/                # 数据库迁移
 │  └─ tests/                  # 自动化测试和结构化样本生成器
+├─ data/                      # 垂直制度样本、manifest 和评测集
 ├─ docs/                      # 环境、学习与项目交接文档
 ├─ infra/postgres/init/       # pgvector 与教学表初始化
 ├─ uploads/                   # 本地运行数据，不进入 Git

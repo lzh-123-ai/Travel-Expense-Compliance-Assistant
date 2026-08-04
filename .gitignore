@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+pytest-of-*/
 .mypy_cache/
 .ruff_cache/
 .coverage
@@ -13,6 +14,14 @@ htmlcov/
 data/
 uploads/
 
+# Stage 8 keeps only curated policy fixtures and evaluation annotations in Git.
+!data/
+data/*
+!data/policies/
+!data/policies/**
+!data/evaluation/
+!data/evaluation/**
+
 # Frontend (added in a later stage)
 node_modules/
 dist/
@@ -22,4 +31,3 @@ dist/
 .vscode/
 .DS_Store
 Thumbs.db
-

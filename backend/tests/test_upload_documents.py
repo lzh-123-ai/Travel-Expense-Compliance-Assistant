@@ -55,6 +55,12 @@ def configure_app(session: AsyncSession, storage: LocalStorage) -> None:
 
 def populate_database_fields(document: Document) -> None:
     document.status = "pending"
+    document.access_scope = "all_employees"
+    document.embedded_image_count = 0
+    document.image_only_page_count = 0
+    document.text_extraction_status = "not_attempted"
+    document.needs_ocr = False
+    document.parse_warnings = []
     document.created_at = SAMPLE_TIME
     document.updated_at = SAMPLE_TIME
 
@@ -85,6 +91,18 @@ def test_upload_document_persists_file_hash_and_safe_metadata(tmp_path: Path) ->
         "sha256": SAMPLE_SHA256,
         "status": "pending",
         "error_message": None,
+        "policy_type": None,
+        "version_label": None,
+        "effective_from": None,
+        "effective_to": None,
+        "access_scope": "all_employees",
+        "supersedes_document_id": None,
+        "embedded_image_count": 0,
+        "image_only_page_count": 0,
+        "text_extraction_status": "not_attempted",
+        "needs_ocr": False,
+        "parse_warnings": [],
+        "parsed_at": None,
         "created_at": "2026-07-25T08:30:00Z",
         "updated_at": "2026-07-25T08:30:00Z",
     }

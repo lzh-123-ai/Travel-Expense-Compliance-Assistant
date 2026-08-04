@@ -23,8 +23,7 @@ def upgrade() -> None:
     # 所有新上传都由应用层写入哈希，并受下面的部分唯一索引保护。
     op.execute(
         sa.text(
-            "UPDATE documents "
-            "SET storage_path = regexp_replace(storage_path, '^.*[\\\\/]', '')"
+            "UPDATE documents SET storage_path = regexp_replace(storage_path, '^.*[\\\\/]', '')"
         )
     )
     op.alter_column("documents", "storage_path", new_column_name="storage_key")

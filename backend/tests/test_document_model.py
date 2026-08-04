@@ -16,6 +16,18 @@ def test_document_model_has_expected_table_and_columns() -> None:
         "sha256",
         "status",
         "error_message",
+        "policy_type",
+        "version_label",
+        "effective_from",
+        "effective_to",
+        "access_scope",
+        "supersedes_document_id",
+        "embedded_image_count",
+        "image_only_page_count",
+        "text_extraction_status",
+        "needs_ocr",
+        "parse_warnings",
+        "parsed_at",
         "created_at",
         "updated_at",
     }
@@ -51,3 +63,9 @@ def test_document_status_has_application_and_database_defaults() -> None:
     assert status_column.default.arg == "pending"
     assert status_column.server_default is not None
     assert status_column.server_default.arg == "pending"
+
+    extraction_column = Document.__table__.c.text_extraction_status
+    assert extraction_column.default is not None
+    assert extraction_column.default.arg == "not_attempted"
+    assert extraction_column.server_default is not None
+    assert extraction_column.server_default.arg == "not_attempted"

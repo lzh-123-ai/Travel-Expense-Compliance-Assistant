@@ -41,6 +41,18 @@ def make_document() -> Document:
     )
     document.status = "pending"
     document.error_message = None
+    document.policy_type = None
+    document.version_label = None
+    document.effective_from = None
+    document.effective_to = None
+    document.access_scope = "all_employees"
+    document.supersedes_document_id = None
+    document.embedded_image_count = 0
+    document.image_only_page_count = 0
+    document.text_extraction_status = "not_attempted"
+    document.needs_ocr = False
+    document.parse_warnings = []
+    document.parsed_at = None
     document.created_at = SAMPLE_TIME
     document.updated_at = SAMPLE_TIME
     return document
@@ -61,6 +73,18 @@ def response_payload() -> dict[str, object]:
         "sha256": "a" * 64,
         "status": "pending",
         "error_message": None,
+        "policy_type": None,
+        "version_label": None,
+        "effective_from": None,
+        "effective_to": None,
+        "access_scope": "all_employees",
+        "supersedes_document_id": None,
+        "embedded_image_count": 0,
+        "image_only_page_count": 0,
+        "text_extraction_status": "not_attempted",
+        "needs_ocr": False,
+        "parse_warnings": [],
+        "parsed_at": None,
         "created_at": "2026-07-25T08:30:00Z",
         "updated_at": "2026-07-25T08:30:00Z",
     }

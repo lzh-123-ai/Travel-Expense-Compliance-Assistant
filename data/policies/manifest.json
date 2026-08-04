@@ -1,0 +1,65 @@
+{
+  "dataset": "xinghe-travel-policy-demo-v1",
+  "documents": [
+    {
+      "document_key": "domestic_travel_policy_v1",
+      "relative_path": "01_travel_policy/domestic_travel_policy_v1.md",
+      "policy_type": "travel_policy",
+      "version_label": "TRAVEL-2025.1",
+      "effective_from": "2025-01-01",
+      "effective_to": "2025-12-31",
+      "access_scope": "all_employees",
+      "supersedes_document_key": null
+    },
+    {
+      "document_key": "domestic_travel_policy_v2",
+      "relative_path": "01_travel_policy/domestic_travel_policy_v2.md",
+      "policy_type": "travel_policy",
+      "version_label": "TRAVEL-2026.1",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "access_scope": "all_employees",
+      "supersedes_document_key": "domestic_travel_policy_v1"
+    },
+    {
+      "document_key": "travel_reimbursement_policy_v1",
+      "relative_path": "02_reimbursement_policy/travel_reimbursement_policy_v1.md",
+      "policy_type": "reimbursement_policy",
+      "version_label": "REIMB-2026.1",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "access_scope": "all_employees",
+      "supersedes_document_key": null
+    },
+    {
+      "document_key": "shanghai_exhibition_hotel_notice_2026",
+      "relative_path": "03_transport_hotel_meal/shanghai_exhibition_hotel_notice_2026.md",
+      "policy_type": "supplemental_notice",
+      "version_label": "HOTEL-SUP-2026.1",
+      "effective_from": "2026-04-01",
+      "effective_to": "2026-12-31",
+      "access_scope": "all_employees",
+      "supersedes_document_key": null
+    },
+    {
+      "document_key": "invoice_attachment_standard_v1",
+      "relative_path": "04_invoice_attachment/invoice_attachment_standard_v1.md",
+      "policy_type": "attachment_standard",
+      "version_label": "INVOICE-2026.1",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "access_scope": "all_employees",
+      "supersedes_document_key": null
+    },
+    {
+      "document_key": "finance_audit_sop_v1",
+      "relative_path": "05_internal_audit/finance_audit_sop_v1.md",
+      "policy_type": "audit_sop",
+      "version_label": "AUDIT-2026.1",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "access_scope": "finance_only",
+      "supersedes_document_key": null
+    }
+  ]
+}

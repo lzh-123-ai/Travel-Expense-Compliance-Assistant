@@ -49,9 +49,7 @@ FORMAT_RULES = {
     ".pdf": FormatRule(DocumentFormat.PDF, frozenset({"application/pdf"})),
     ".docx": FormatRule(
         DocumentFormat.DOCX,
-        frozenset(
-            {"application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
-        ),
+        frozenset({"application/vnd.openxmlformats-officedocument.wordprocessingml.document"}),
     ),
     ".md": FormatRule(
         DocumentFormat.MARKDOWN,
@@ -133,7 +131,7 @@ def _validate_docx(storage: StorageService, key: str, max_uncompressed_size: int
             if not required.issubset(names):
                 raise InvalidDocumentContentError("File is a ZIP archive but not a DOCX document")
             if archive.testzip() is not None:
-                raise InvalidDocumentContentError("DOCX archive contaiSH a corrupt entry")
+                raise InvalidDocumentContentError("DOCX archive contains a corrupt entry")
     except BadZipFile as exc:
         raise InvalidDocumentContentError("File content is not a valid DOCX document") from exc
 

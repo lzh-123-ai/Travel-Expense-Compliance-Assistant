@@ -9,8 +9,17 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import get_settings
 from app.db.session import get_db_session
 from app.models.document import Document
+from app.models.document_chunk import DocumentChunk
 from app.models.knowledge_base import KnowledgeBase
-from app.schemas.document import DocumentResponse
+from app.schemas.document import (
+    DocumentChunkResponse,
+    DocumentMetadataUpdate,
+    DocumentResponse,
+)
+from app.services.document_processing import (
+    DocumentProcessingService,
+    get_document_processing_service,
+)
 from app.services.document_validation import (
     DocumentValidationError,
     InvalidFilenameError,
@@ -28,6 +37,7 @@ from app.services.storage import (
 router = APIRouter(prefix="/knowledge-bases/{knowledge_base_id}/documents")
 DatabaseSession = Annotated[AsyncSession, Depends(get_db_session)]
 DocumentStorage = Annotated[StorageService, Depends(get_storage_service)]
+DocumentProcessor = Annotated[DocumentProcessingService, Depends(get_document_processing_service)]
 
 
 async def _require_knowledge_base(session: AsyncSession, knowledge_base_id: UUID) -> None:
@@ -46,6 +56,30 @@ async def _get_document(
     statement = select(Document).where(
         Document.id == document_id,
         Document.knowledge_base_id == knowledge_base_id,
+    )
+    result = await session.execute(statement)
+    document = result.scalar_one_or_none()
+    if document is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Document not found",
+        )
+    return document
+
+
+async def _get_document_for_processing(
+    session: AsyncSession,
+    knowledge_base_id: UUID,
+    document_id: UUID,
+) -> Document:
+    """锁定同一文档的处理事务，避免并发重建相同 ordinal 的分块。"""
+    statement = (
+        select(Document)
+        .where(
+            Document.id == document_id,
+            Document.knowledge_base_id == knowledge_base_id,
+        )
+        .with_for_update()
     )
     result = await session.execute(statement)
     document = result.scalar_one_or_none()
@@ -103,6 +137,81 @@ async def get_document(
     session: DatabaseSession,
 ) -> Document:
     return await _get_document(session, knowledge_base_id, document_id)
+
+
+@router.get(
+    "/{document_id}/chunks",
+    response_model=list[DocumentChunkResponse],
+    summary="List traceable document chunks",
+)
+async def list_document_chunks(
+    knowledge_base_id: UUID,
+    document_id: UUID,
+    session: DatabaseSession,
+) -> list[DocumentChunk]:
+    await _get_document(session, knowledge_base_id, document_id)
+    result = await session.execute(
+        select(DocumentChunk)
+        .where(DocumentChunk.document_id == document_id)
+        .order_by(DocumentChunk.ordinal)
+    )
+    return list(result.scalars().all())
+
+
+@router.patch(
+    "/{document_id}/metadata",
+    response_model=DocumentResponse,
+    summary="Update document policy metadata",
+)
+async def update_document_metadata(
+    knowledge_base_id: UUID,
+    document_id: UUID,
+    payload: DocumentMetadataUpdate,
+    session: DatabaseSession,
+) -> Document:
+    document = await _get_document(session, knowledge_base_id, document_id)
+    update_fields = payload.model_dump(exclude_unset=True)
+    effective_from = update_fields.get("effective_from", document.effective_from)
+    effective_to = update_fields.get("effective_to", document.effective_to)
+    if effective_from is not None and effective_to is not None and effective_to < effective_from:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            detail="effective_to must not be earlier than effective_from",
+        )
+    if payload.supersedes_document_id == document.id:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            detail="A document cannot supersede itself",
+        )
+    if payload.supersedes_document_id is not None:
+        superseded = await _get_document(session, knowledge_base_id, payload.supersedes_document_id)
+        if superseded.id == document.id:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                detail="A document cannot supersede itself",
+            )
+
+    for field, value in update_fields.items():
+        setattr(document, field, value)
+    await session.commit()
+    await session.refresh(document)
+    return document
+
+
+@router.post(
+    "/{document_id}/process",
+    response_model=DocumentResponse,
+    summary="Parse and deterministically chunk a document",
+)
+async def process_document(
+    knowledge_base_id: UUID,
+    document_id: UUID,
+    session: DatabaseSession,
+    storage: DocumentStorage,
+    processor: DocumentProcessor,
+) -> Document:
+    document = await _get_document_for_processing(session, knowledge_base_id, document_id)
+    return await processor.process(document, session, storage)
 
 
 @router.post(

@@ -1,6 +1,9 @@
 from io import BytesIO
 from zipfile import ZIP_DEFLATED, ZipFile
 
+from pypdf import PdfWriter
+from pypdf.generic import DecodedStreamObject, DictionaryObject, NameObject, NumberObject
+
 
 def make_minimal_pdf() -> bytes:
     """生成可被标准 PDF 阅读器解析的一页 ASCII PDF。"""
@@ -28,11 +31,55 @@ def make_minimal_pdf() -> bytes:
     output.extend(b"0000000000 65535 f \n")
     for offset in offsets[1:]:
         output.extend(f"{offset:010d} 00000 n \n".encode())
-    output.extend(
-        f"trailer\n<< /Size {len(objects) + 1} /Root 1 0 R >>\n".encode()
-    )
+    output.extend(f"trailer\n<< /Size {len(objects) + 1} /Root 1 0 R >>\n".encode())
     output.extend(f"startxref\n{xref_offset}\n%%EOF\n".encode())
     return bytes(output)
+
+
+def make_image_backed_pdf(page_texts: tuple[str | None, ...]) -> bytes:
+    """生成每页都含真实 Image XObject、并可选原生文字层的 PDF。"""
+    output = BytesIO()
+    writer = PdfWriter()
+
+    for page_text in page_texts:
+        page = writer.add_blank_page(width=612, height=792)
+        resources = DictionaryObject()
+        commands = [b"q 100 0 0 100 72 600 cm /Im0 Do Q"]
+
+        image_stream = DecodedStreamObject()
+        image_stream.set_data(b"\xff\xff\xff")
+        image_stream.update(
+            {
+                NameObject("/Type"): NameObject("/XObject"),
+                NameObject("/Subtype"): NameObject("/Image"),
+                NameObject("/Width"): NumberObject(1),
+                NameObject("/Height"): NumberObject(1),
+                NameObject("/ColorSpace"): NameObject("/DeviceRGB"),
+                NameObject("/BitsPerComponent"): NumberObject(8),
+            }
+        )
+        image_ref = writer._add_object(image_stream)
+        resources[NameObject("/XObject")] = DictionaryObject({NameObject("/Im0"): image_ref})
+
+        if page_text is not None:
+            font = DictionaryObject(
+                {
+                    NameObject("/Type"): NameObject("/Font"),
+                    NameObject("/Subtype"): NameObject("/Type1"),
+                    NameObject("/BaseFont"): NameObject("/Helvetica"),
+                }
+            )
+            font_ref = writer._add_object(font)
+            resources[NameObject("/Font")] = DictionaryObject({NameObject("/F1"): font_ref})
+            commands.append(f"BT /F1 12 Tf 72 720 Td ({page_text}) Tj ET".encode("ascii"))
+
+        content = DecodedStreamObject()
+        content.set_data(b"\n".join(commands))
+        page[NameObject("/Resources")] = resources
+        page[NameObject("/Contents")] = writer._add_object(content)
+
+    writer.write(output)
+    return output.getvalue()
 
 
 def make_minimal_docx() -> bytes:
