@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
+from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     JSON,
     CheckConstraint,
@@ -40,6 +41,26 @@ class DocumentChunk(Base):
             "ordinal",
             unique=True,
         ),
+        Index(
+            "ix_document_chunks_embedding_model",
+            "embedding_provider",
+            "embedding_model",
+        ),
+        Index(
+            "ix_document_chunks_embedding_hnsw",
+            "embedding",
+            postgresql_using="hnsw",
+            postgresql_ops={"embedding": "vector_cosine_ops"},
+        ),
+        CheckConstraint(
+            "(embedding IS NULL AND embedding_provider IS NULL AND embedding_model IS NULL "
+            "AND embedding_dimension IS NULL AND embedding_content_hash IS NULL "
+            "AND embedded_at IS NULL) OR "
+            "(embedding IS NOT NULL AND embedding_provider IS NOT NULL "
+            "AND embedding_model IS NOT NULL AND embedding_dimension = 512 "
+            "AND embedding_content_hash IS NOT NULL AND embedded_at IS NOT NULL)",
+            name="ck_document_chunks_embedding_metadata",
+        ),
     )
 
     id: Mapped[UUID] = mapped_column(PostgreSQLUUID(as_uuid=True), primary_key=True, default=uuid4)
@@ -61,6 +82,12 @@ class DocumentChunk(Base):
     chunking_strategy: Mapped[str] = mapped_column(String(50), nullable=False)
     chunk_size: Mapped[int] = mapped_column(Integer, nullable=False)
     chunk_overlap: Mapped[int] = mapped_column(Integer, nullable=False)
+    embedding: Mapped[list[float] | None] = mapped_column(Vector(512), nullable=True)
+    embedding_provider: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    embedding_model: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    embedding_dimension: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    embedding_content_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    embedded_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )

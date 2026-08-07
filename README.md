@@ -6,7 +6,7 @@
 
 ## 当前进度
 
-当前已完成 **Stage 8：结构化解析与可追溯切片（工程验收与学习验收均完成，等待独立提交）**。
+当前处于 **Stage 9：embedding 与 dense 检索（工程验收完成，学习验收与独立提交待完成）**。
 
 已经具备：
 
@@ -24,13 +24,17 @@
 - 确定性结构切片和 `document_chunks` 追溯元数据；重处理幂等且同文档并发处理串行化。
 - 制度版本、生效期、访问范围和替代关系元数据。
 - 6 篇垂直制度样本、版本化 manifest，以及 20 题经项目负责人逐题人工复核的评测基线 v0。
-- Ruff、83 项自动化测试、真实 Alembic upgrade/check 和 API 闭环冒烟通过。
+- 可替换 embedding Provider、本地 BGE Provider、512 维 pgvector 字段、模型追踪元数据和 HNSW 索引。
+- chunk 级幂等批量向量化，以及知识库、费用日期、访问范围和模型版本过滤的 dense 检索 API。
+- 30 题经项目负责人逐题复核的 Stage 9 检索评测基线，覆盖版本、日期、权限、跨文档和范围边界。
+- 可复现的真实 BGE baseline runner：临时导入、解析、向量化、30 题检索、指标报告和数据清理形成闭环。
+- Ruff、100 项自动化测试、真实 Alembic upgrade/check、测试向量与真实 BGE 数据库闭环通过。
 
-Stage 8 下一步是由用户检查工作树并创建独立提交；提交后进入 Stage 9 embedding 与 dense 检索。20 题目前只冻结了人工复核答案，尚未运行真实检索或问答准确率；模型问答和前端也尚未实现。
+Stage 8 已由 `5e987d2` 独立提交。Stage 9 使用 ModelScope 的 `AI-ModelScope/bge-small-zh-v1.5@master` 快照，权重 SHA-256 固定为 `354763b9...a026`；在 6 篇虚构制度、30 个 chunks 和 30 题人工复核集上，文档版本级 macro Recall@5、完整命中率、禁止版本过滤准确率和整题通过率均为 `1.0`，P50/P95 检索延迟为 `31.840/56.112 ms`。完整报告位于 `data/evaluation/results/stage9_bge_dense_baseline.json`。该结果只证明当前小型离线检索集通过，不代表回答准确率或生产效果；模型问答和前端仍未实现。
 
 ## 学习入口
 
-[Stage 8 学习说明](docs/learning/stage-08-parsing-and-chunking.md)现作为已验收的代码阅读和面试复盘入口；Stage 7 的摄取复习入口仍保留在[Stage 7 学习说明](docs/learning/stage-07-document-ingestion.md)。当前实施入口以最新交接文档的 Stage 9 启动顺序为准。
+当前从 [Stage 9 学习说明](docs/learning/stage-09-embedding-and-dense-retrieval.md)进入；已验收的 [Stage 8 学习说明](docs/learning/stage-08-parsing-and-chunking.md)继续作为解析与切片复盘入口。
 
 ## 本地启动
 
@@ -40,6 +44,7 @@ Stage 8 下一步是由用户检查工作树并创建独立提交；提交后进
 cd D:\xuexi\projects\agent_project
 docker compose up -d
 cd backend
+..\.venv\Scripts\python.exe -m pip install -e ".[embedding,embedding-download,dev]"
 ..\.venv\Scripts\python.exe -m alembic upgrade head
 ..\.venv\Scripts\python.exe -m uvicorn app.main:app --reload
 ```

@@ -73,4 +73,9 @@ class DocumentChunkResponse(BaseModel):
     chunking_strategy: str
     chunk_size: int
     chunk_overlap: int
+    embedding_provider: str | None
+    embedding_model: str | None
+    embedding_dimension: int | None
+    embedding_content_hash: str | None
+    embedded_at: datetime | None
     created_at: datetime

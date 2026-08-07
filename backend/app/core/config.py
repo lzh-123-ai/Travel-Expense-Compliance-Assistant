@@ -16,6 +16,13 @@ class Settings(BaseSettings):
     upload_dir: Path = PROJECT_ROOT / "uploads"
     max_document_size_bytes: int = 10 * 1024 * 1024
     max_docx_uncompressed_size_bytes: int = 50 * 1024 * 1024
+    embedding_provider: Literal["sentence_transformers"] = "sentence_transformers"
+    embedding_model_name: str = "BAAI/bge-small-zh-v1.5"
+    embedding_model_path: Path | None = None
+    embedding_dimension: int = 512
+    embedding_batch_size: int = 32
+    embedding_query_instruction: str = "为这个句子生成表示以用于检索相关文章："
+    dense_search_max_top_k: int = 20
 
     model_config = SettingsConfigDict(
         env_file=PROJECT_ROOT / ".env",

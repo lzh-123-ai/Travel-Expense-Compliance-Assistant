@@ -19,6 +19,12 @@ def test_document_chunk_has_traceable_content_columns() -> None:
         "chunking_strategy",
         "chunk_size",
         "chunk_overlap",
+        "embedding",
+        "embedding_provider",
+        "embedding_model",
+        "embedding_dimension",
+        "embedding_content_hash",
+        "embedded_at",
         "created_at",
     }
 
@@ -29,6 +35,13 @@ def test_document_chunk_has_traceable_content_columns() -> None:
     )
     assert unique_order.unique is True
     assert [column.name for column in unique_order.columns] == ["document_id", "ordinal"]
+
+    vector_index = next(
+        index
+        for index in DocumentChunk.__table__.indexes
+        if index.name == "ix_document_chunks_embedding_hnsw"
+    )
+    assert vector_index.dialect_options["postgresql"]["using"] == "hnsw"
 
 
 def test_document_chunk_is_deleted_with_its_document() -> None:

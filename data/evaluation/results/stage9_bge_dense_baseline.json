@@ -1,0 +1,2317 @@
+{
+  "run_id": "stage9-20260805T072635Z-767d79a0",
+  "started_at": "2026-08-05T07:26:35.430680+00:00",
+  "finished_at": "2026-08-05T07:26:52.484624+00:00",
+  "dataset_version": "stage9-retrieval-v0",
+  "dataset_annotation_status": "reviewed",
+  "retrieval_strategy": "pgvector_cosine_dense",
+  "metric_scope": "document_version_labels_in_top_5_chunks",
+  "provider": "sentence_transformers",
+  "model_name": "BAAI/bge-small-zh-v1.5",
+  "model_source": "ModelScope",
+  "model_source_id": "AI-ModelScope/bge-small-zh-v1.5",
+  "model_source_revision": "master",
+  "model_weight_sha256": "354763b9b1357bc9c44f62c6be2276321081ed2567773608c0d0785b61d5a026",
+  "embedding_dimension": 512,
+  "query_instruction": "为这个句子生成表示以用于检索相关文章：",
+  "batch_size": 32,
+  "top_k": 5,
+  "documents": 6,
+  "chunks": 30,
+  "embedded_chunks": 30,
+  "aggregate": {
+    "evaluated_cases": 30,
+    "cases_with_expected_labels": 29,
+    "cases_with_forbidden_labels": 8,
+    "macro_recall_at_5": 1.0,
+    "full_expected_set_accuracy": 1.0,
+    "forbidden_filter_accuracy": 1.0,
+    "case_pass_rate": 1.0
+  },
+  "latency_ms": {
+    "p50": 31.84,
+    "p95": 56.112,
+    "max": 65.183
+  },
+  "estimated_embedding_api_cost_usd": 0.0,
+  "environment": {
+    "python": "3.11.9",
+    "sentence_transformers": "5.6.1",
+    "torch": "2.13.0",
+    "pgvector": "0.5.0"
+  },
+  "cases": [
+    {
+      "case_id": "DENSE-EVAL-001",
+      "category": "version_filter",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2025.1"
+      ],
+      "forbidden_version_labels": [
+        "TRAVEL-2026.1"
+      ],
+      "retrieved_version_labels": [
+        "TRAVEL-2025.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "2025年上海住宿费上限是多少？",
+      "expense_date": "2025-10-12",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 47.508,
+      "hits": [
+        {
+          "chunk_id": "d54ed724-a148-4f33-b163-b0ace7451335",
+          "document_id": "9ffaa63e-dc2d-4e8c-b6d8-447975c25f5f",
+          "version_label": "TRAVEL-2025.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2025 版）",
+            "第四章 住宿费"
+          ],
+          "similarity": 0.679456
+        },
+        {
+          "chunk_id": "eea2e880-ac41-4d1c-89b1-c7a60ea2bb26",
+          "document_id": "9ffaa63e-dc2d-4e8c-b6d8-447975c25f5f",
+          "version_label": "TRAVEL-2025.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2025 版）",
+            "第三章 城际交通"
+          ],
+          "similarity": 0.439793
+        },
+        {
+          "chunk_id": "726309b1-8288-4707-9084-89bb15993683",
+          "document_id": "9ffaa63e-dc2d-4e8c-b6d8-447975c25f5f",
+          "version_label": "TRAVEL-2025.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2025 版）",
+            "第五章 伙食补助"
+          ],
+          "similarity": 0.434945
+        },
+        {
+          "chunk_id": "e9aae4c7-f61a-418a-81fc-94d78089fa35",
+          "document_id": "9ffaa63e-dc2d-4e8c-b6d8-447975c25f5f",
+          "version_label": "TRAVEL-2025.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2025 版）",
+            "第一章 适用范围"
+          ],
+          "similarity": 0.430371
+        },
+        {
+          "chunk_id": "a4ce2d25-59a8-49e0-954b-4ea89e1d2bc4",
+          "document_id": "9ffaa63e-dc2d-4e8c-b6d8-447975c25f5f",
+          "version_label": "TRAVEL-2025.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2025 版）"
+          ],
+          "similarity": 0.42033
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-002",
+      "category": "version_filter",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2026.1"
+      ],
+      "forbidden_version_labels": [
+        "TRAVEL-2025.1"
+      ],
+      "retrieved_version_labels": [
+        "TRAVEL-2026.1",
+        "INVOICE-2026.1",
+        "REIMB-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "2026年上海住宿费上限是多少？",
+      "expense_date": "2026-03-18",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 39.368,
+      "hits": [
+        {
+          "chunk_id": "dc92dc8f-fcae-4213-8ef2-ecf86d81deb5",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第四章 住宿费"
+          ],
+          "similarity": 0.644828
+        },
+        {
+          "chunk_id": "aa3904a0-c6f7-4572-98a0-b06f980f963a",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第三章 住宿附件"
+          ],
+          "similarity": 0.546587
+        },
+        {
+          "chunk_id": "a5372563-eb4b-452e-8f19-f028b785e296",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第三章 超标准费用"
+          ],
+          "similarity": 0.537378
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.516051
+        },
+        {
+          "chunk_id": "92ca4716-34f6-4550-b13e-e4cd7bb0feaf",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第一章 提交时限"
+          ],
+          "similarity": 0.438369
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-003",
+      "category": "direct_fact",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "HOTEL-SUP-2026.1",
+        "TRAVEL-2026.1",
+        "REIMB-2026.1",
+        "INVOICE-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "2026年省会城市住宿标准",
+      "expense_date": "2026-06-10",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 33.389,
+      "hits": [
+        {
+          "chunk_id": "52d9f212-c3e6-48af-be64-3a65ffea3bad",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）"
+          ],
+          "similarity": 0.633906
+        },
+        {
+          "chunk_id": "dc92dc8f-fcae-4213-8ef2-ecf86d81deb5",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第四章 住宿费"
+          ],
+          "similarity": 0.545524
+        },
+        {
+          "chunk_id": "43258acf-e19f-4ca8-b4f6-9b24a892365b",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第二条 临时标准"
+          ],
+          "similarity": 0.519264
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.468032
+        },
+        {
+          "chunk_id": "0de60bbb-24cb-4490-8434-89a8d97f2e56",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）"
+          ],
+          "similarity": 0.467992
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-004",
+      "category": "direct_fact",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "HOTEL-SUP-2026.1",
+        "TRAVEL-2026.1",
+        "INVOICE-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "2026年普通城市住宿上限",
+      "expense_date": "2026-06-10",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 34.243,
+      "hits": [
+        {
+          "chunk_id": "43258acf-e19f-4ca8-b4f6-9b24a892365b",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第二条 临时标准"
+          ],
+          "similarity": 0.609604
+        },
+        {
+          "chunk_id": "52d9f212-c3e6-48af-be64-3a65ffea3bad",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）"
+          ],
+          "similarity": 0.607708
+        },
+        {
+          "chunk_id": "dc92dc8f-fcae-4213-8ef2-ecf86d81deb5",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第四章 住宿费"
+          ],
+          "similarity": 0.554867
+        },
+        {
+          "chunk_id": "a2a4a036-e749-4ccc-ad0c-861d203b180f",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）"
+          ],
+          "similarity": 0.456369
+        },
+        {
+          "chunk_id": "0de60bbb-24cb-4490-8434-89a8d97f2e56",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）"
+          ],
+          "similarity": 0.452121
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-005",
+      "category": "version_filter",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2025.1"
+      ],
+      "forbidden_version_labels": [
+        "TRAVEL-2026.1"
+      ],
+      "retrieved_version_labels": [
+        "TRAVEL-2025.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "2025年国内差旅伙食补助",
+      "expense_date": "2025-08-01",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 37.194,
+      "hits": [
+        {
+          "chunk_id": "a4ce2d25-59a8-49e0-954b-4ea89e1d2bc4",
+          "document_id": "9ffaa63e-dc2d-4e8c-b6d8-447975c25f5f",
+          "version_label": "TRAVEL-2025.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2025 版）"
+          ],
+          "similarity": 0.58098
+        },
+        {
+          "chunk_id": "726309b1-8288-4707-9084-89bb15993683",
+          "document_id": "9ffaa63e-dc2d-4e8c-b6d8-447975c25f5f",
+          "version_label": "TRAVEL-2025.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2025 版）",
+            "第五章 伙食补助"
+          ],
+          "similarity": 0.570653
+        },
+        {
+          "chunk_id": "d54ed724-a148-4f33-b163-b0ace7451335",
+          "document_id": "9ffaa63e-dc2d-4e8c-b6d8-447975c25f5f",
+          "version_label": "TRAVEL-2025.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2025 版）",
+            "第四章 住宿费"
+          ],
+          "similarity": 0.452328
+        },
+        {
+          "chunk_id": "e9aae4c7-f61a-418a-81fc-94d78089fa35",
+          "document_id": "9ffaa63e-dc2d-4e8c-b6d8-447975c25f5f",
+          "version_label": "TRAVEL-2025.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2025 版）",
+            "第一章 适用范围"
+          ],
+          "similarity": 0.400415
+        },
+        {
+          "chunk_id": "9c262140-f2f2-4b97-be93-fabd6a6499bb",
+          "document_id": "9ffaa63e-dc2d-4e8c-b6d8-447975c25f5f",
+          "version_label": "TRAVEL-2025.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2025 版）",
+            "第二章 出差申请"
+          ],
+          "similarity": 0.397013
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-006",
+      "category": "version_filter",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2026.1"
+      ],
+      "forbidden_version_labels": [
+        "TRAVEL-2025.1"
+      ],
+      "retrieved_version_labels": [
+        "TRAVEL-2026.1",
+        "HOTEL-SUP-2026.1",
+        "INVOICE-2026.1",
+        "REIMB-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "2026年国内差旅伙食补助",
+      "expense_date": "2026-08-01",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 39.534,
+      "hits": [
+        {
+          "chunk_id": "922b41ea-671d-423b-876b-eaf360ce1ffa",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第五章 伙食补助"
+          ],
+          "similarity": 0.567788
+        },
+        {
+          "chunk_id": "a2a4a036-e749-4ccc-ad0c-861d203b180f",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）"
+          ],
+          "similarity": 0.566221
+        },
+        {
+          "chunk_id": "43258acf-e19f-4ca8-b4f6-9b24a892365b",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第二条 临时标准"
+          ],
+          "similarity": 0.527507
+        },
+        {
+          "chunk_id": "0de60bbb-24cb-4490-8434-89a8d97f2e56",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）"
+          ],
+          "similarity": 0.527035
+        },
+        {
+          "chunk_id": "47d6b57d-e495-445e-937f-73921f6bacfe",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）"
+          ],
+          "similarity": 0.516825
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-007",
+      "category": "direct_fact",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "TRAVEL-2026.1",
+        "HOTEL-SUP-2026.1",
+        "REIMB-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "高铁动车出差按什么席别报销？",
+      "expense_date": "2026-05-02",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 33.718,
+      "hits": [
+        {
+          "chunk_id": "8ef21c9a-f2fc-4905-a225-349e0da8d14b",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第三章 城际交通"
+          ],
+          "similarity": 0.698417
+        },
+        {
+          "chunk_id": "b1da09c9-b00f-4cde-8ec3-1c03af5e83ea",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第三条 审批要求"
+          ],
+          "similarity": 0.577169
+        },
+        {
+          "chunk_id": "81300385-1fed-4561-9720-366688f9cf5d",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第四章 审批流程"
+          ],
+          "similarity": 0.544417
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.534787
+        },
+        {
+          "chunk_id": "92ca4716-34f6-4550-b13e-e4cd7bb0feaf",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第一章 提交时限"
+          ],
+          "similarity": 0.534469
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-008",
+      "category": "direct_fact",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "TRAVEL-2026.1",
+        "HOTEL-SUP-2026.1",
+        "REIMB-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "国内出差飞机舱位报销标准",
+      "expense_date": "2026-05-02",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 40.56,
+      "hits": [
+        {
+          "chunk_id": "8ef21c9a-f2fc-4905-a225-349e0da8d14b",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第三章 城际交通"
+          ],
+          "similarity": 0.64051
+        },
+        {
+          "chunk_id": "b1da09c9-b00f-4cde-8ec3-1c03af5e83ea",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第三条 审批要求"
+          ],
+          "similarity": 0.622093
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.60076
+        },
+        {
+          "chunk_id": "81300385-1fed-4561-9720-366688f9cf5d",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第四章 审批流程"
+          ],
+          "similarity": 0.586792
+        },
+        {
+          "chunk_id": "92ca4716-34f6-4550-b13e-e4cd7bb0feaf",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第一章 提交时限"
+          ],
+          "similarity": 0.524366
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-009",
+      "category": "direct_fact",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "TRAVEL-2026.1",
+        "REIMB-2026.1",
+        "HOTEL-SUP-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "紧急出差最晚何时补申请？",
+      "expense_date": "2026-07-07",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 65.183,
+      "hits": [
+        {
+          "chunk_id": "8dd5ba66-5f55-4670-88f5-4d07735ac83f",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第二章 出差申请"
+          ],
+          "similarity": 0.680176
+        },
+        {
+          "chunk_id": "92ca4716-34f6-4550-b13e-e4cd7bb0feaf",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第一章 提交时限"
+          ],
+          "similarity": 0.59207
+        },
+        {
+          "chunk_id": "b1da09c9-b00f-4cde-8ec3-1c03af5e83ea",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第三条 审批要求"
+          ],
+          "similarity": 0.585236
+        },
+        {
+          "chunk_id": "d5f5ddef-78e8-4b6c-af14-b9e1006d6077",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第一条 适用条件"
+          ],
+          "similarity": 0.533907
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.499042
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-010",
+      "category": "scope_boundary",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "HOTEL-SUP-2026.1",
+        "REIMB-2026.1",
+        "TRAVEL-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "法国出差住宿和餐补标准",
+      "expense_date": "2026-05-12",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 38.026,
+      "hits": [
+        {
+          "chunk_id": "b1da09c9-b00f-4cde-8ec3-1c03af5e83ea",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第三条 审批要求"
+          ],
+          "similarity": 0.525261
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.523635
+        },
+        {
+          "chunk_id": "52d9f212-c3e6-48af-be64-3a65ffea3bad",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）"
+          ],
+          "similarity": 0.48064
+        },
+        {
+          "chunk_id": "43258acf-e19f-4ca8-b4f6-9b24a892365b",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第二条 临时标准"
+          ],
+          "similarity": 0.48043
+        },
+        {
+          "chunk_id": "dc92dc8f-fcae-4213-8ef2-ecf86d81deb5",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第四章 住宿费"
+          ],
+          "similarity": 0.45941
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-011",
+      "category": "direct_fact",
+      "top_k": 5,
+      "expected_version_labels": [
+        "REIMB-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "REIMB-2026.1",
+        "HOTEL-SUP-2026.1",
+        "TRAVEL-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "返程后多久提交差旅报销？",
+      "expense_date": "2026-05-10",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 33.35,
+      "hits": [
+        {
+          "chunk_id": "92ca4716-34f6-4550-b13e-e4cd7bb0feaf",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第一章 提交时限"
+          ],
+          "similarity": 0.775329
+        },
+        {
+          "chunk_id": "81300385-1fed-4561-9720-366688f9cf5d",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第四章 审批流程"
+          ],
+          "similarity": 0.701075
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.681154
+        },
+        {
+          "chunk_id": "b1da09c9-b00f-4cde-8ec3-1c03af5e83ea",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第三条 审批要求"
+          ],
+          "similarity": 0.655658
+        },
+        {
+          "chunk_id": "8dd5ba66-5f55-4670-88f5-4d07735ac83f",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第二章 出差申请"
+          ],
+          "similarity": 0.633698
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-012",
+      "category": "direct_fact",
+      "top_k": 5,
+      "expected_version_labels": [
+        "REIMB-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "REIMB-2026.1",
+        "INVOICE-2026.1",
+        "HOTEL-SUP-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "差旅报销基础附件有哪些？",
+      "expense_date": "2026-05-10",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 31.84,
+      "hits": [
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.708563
+        },
+        {
+          "chunk_id": "81300385-1fed-4561-9720-366688f9cf5d",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第四章 审批流程"
+          ],
+          "similarity": 0.620132
+        },
+        {
+          "chunk_id": "0de60bbb-24cb-4490-8434-89a8d97f2e56",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）"
+          ],
+          "similarity": 0.574919
+        },
+        {
+          "chunk_id": "b1da09c9-b00f-4cde-8ec3-1c03af5e83ea",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第三条 审批要求"
+          ],
+          "similarity": 0.56826
+        },
+        {
+          "chunk_id": "92ca4716-34f6-4550-b13e-e4cd7bb0feaf",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第一章 提交时限"
+          ],
+          "similarity": 0.564881
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-013",
+      "category": "cross_document",
+      "top_k": 5,
+      "expected_version_labels": [
+        "REIMB-2026.1",
+        "INVOICE-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "INVOICE-2026.1",
+        "REIMB-2026.1",
+        "TRAVEL-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "住宿费报销需要哪些材料？",
+      "expense_date": "2026-05-10",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 56.112,
+      "hits": [
+        {
+          "chunk_id": "aa3904a0-c6f7-4572-98a0-b06f980f963a",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第三章 住宿附件"
+          ],
+          "similarity": 0.7031
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.678545
+        },
+        {
+          "chunk_id": "a5372563-eb4b-452e-8f19-f028b785e296",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第三章 超标准费用"
+          ],
+          "similarity": 0.663594
+        },
+        {
+          "chunk_id": "dc92dc8f-fcae-4213-8ef2-ecf86d81deb5",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第四章 住宿费"
+          ],
+          "similarity": 0.605147
+        },
+        {
+          "chunk_id": "81300385-1fed-4561-9720-366688f9cf5d",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第四章 审批流程"
+          ],
+          "similarity": 0.565303
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-014",
+      "category": "direct_fact",
+      "top_k": 5,
+      "expected_version_labels": [
+        "INVOICE-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "INVOICE-2026.1",
+        "REIMB-2026.1",
+        "HOTEL-SUP-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "电子发票能否只上传聊天截图？",
+      "expense_date": "2026-04-12",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 30.693,
+      "hits": [
+        {
+          "chunk_id": "806bcd19-98fc-4c89-9583-72baaf8d489d",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第一章 电子发票"
+          ],
+          "similarity": 0.723497
+        },
+        {
+          "chunk_id": "cf26e94c-d986-4690-8efa-c14399e5a965",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第二章 交通附件"
+          ],
+          "similarity": 0.479818
+        },
+        {
+          "chunk_id": "8156d681-a7dc-4496-a7d3-178c5fe89deb",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第五章 票据遗失"
+          ],
+          "similarity": 0.471616
+        },
+        {
+          "chunk_id": "aa3904a0-c6f7-4572-98a0-b06f980f963a",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第三章 住宿附件"
+          ],
+          "similarity": 0.444934
+        },
+        {
+          "chunk_id": "d5f5ddef-78e8-4b6c-af14-b9e1006d6077",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第一条 适用条件"
+          ],
+          "similarity": 0.442072
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-015",
+      "category": "direct_fact",
+      "top_k": 5,
+      "expected_version_labels": [
+        "INVOICE-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "INVOICE-2026.1",
+        "REIMB-2026.1",
+        "TRAVEL-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "机票报销需要什么附件？",
+      "expense_date": "2026-04-12",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 36.412,
+      "hits": [
+        {
+          "chunk_id": "cf26e94c-d986-4690-8efa-c14399e5a965",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第二章 交通附件"
+          ],
+          "similarity": 0.68127
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.624006
+        },
+        {
+          "chunk_id": "8ef21c9a-f2fc-4905-a225-349e0da8d14b",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第三章 城际交通"
+          ],
+          "similarity": 0.564166
+        },
+        {
+          "chunk_id": "aa3904a0-c6f7-4572-98a0-b06f980f963a",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第三章 住宿附件"
+          ],
+          "similarity": 0.549411
+        },
+        {
+          "chunk_id": "806bcd19-98fc-4c89-9583-72baaf8d489d",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第一章 电子发票"
+          ],
+          "similarity": 0.537346
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-016",
+      "category": "direct_fact",
+      "top_k": 5,
+      "expected_version_labels": [
+        "INVOICE-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "INVOICE-2026.1",
+        "REIMB-2026.1",
+        "TRAVEL-2026.1",
+        "HOTEL-SUP-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "铁路费用报销要提供什么凭证？",
+      "expense_date": "2026-04-12",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 30.495,
+      "hits": [
+        {
+          "chunk_id": "cf26e94c-d986-4690-8efa-c14399e5a965",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第二章 交通附件"
+          ],
+          "similarity": 0.675123
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.601542
+        },
+        {
+          "chunk_id": "8ef21c9a-f2fc-4905-a225-349e0da8d14b",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第三章 城际交通"
+          ],
+          "similarity": 0.593147
+        },
+        {
+          "chunk_id": "b1da09c9-b00f-4cde-8ec3-1c03af5e83ea",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第三条 审批要求"
+          ],
+          "similarity": 0.567334
+        },
+        {
+          "chunk_id": "81300385-1fed-4561-9720-366688f9cf5d",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第四章 审批流程"
+          ],
+          "similarity": 0.552502
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-017",
+      "category": "direct_fact",
+      "top_k": 5,
+      "expected_version_labels": [
+        "REIMB-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "REIMB-2026.1",
+        "INVOICE-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "原始票据遗失如何处理？",
+      "expense_date": "2026-04-12",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 29.744,
+      "hits": [
+        {
+          "chunk_id": "8156d681-a7dc-4496-a7d3-178c5fe89deb",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第五章 票据遗失"
+          ],
+          "similarity": 0.705261
+        },
+        {
+          "chunk_id": "806bcd19-98fc-4c89-9583-72baaf8d489d",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第一章 电子发票"
+          ],
+          "similarity": 0.504663
+        },
+        {
+          "chunk_id": "cf26e94c-d986-4690-8efa-c14399e5a965",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第二章 交通附件"
+          ],
+          "similarity": 0.472149
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.45702
+        },
+        {
+          "chunk_id": "0de60bbb-24cb-4490-8434-89a8d97f2e56",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）"
+          ],
+          "similarity": 0.452859
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-018",
+      "category": "cross_document",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2026.1",
+        "REIMB-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "HOTEL-SUP-2026.1",
+        "REIMB-2026.1",
+        "TRAVEL-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "上海住宿760元如何申请超标准费用？",
+      "expense_date": "2026-05-20",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 27.563,
+      "hits": [
+        {
+          "chunk_id": "43258acf-e19f-4ca8-b4f6-9b24a892365b",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第二条 临时标准"
+          ],
+          "similarity": 0.703639
+        },
+        {
+          "chunk_id": "a5372563-eb4b-452e-8f19-f028b785e296",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第三章 超标准费用"
+          ],
+          "similarity": 0.687853
+        },
+        {
+          "chunk_id": "b1da09c9-b00f-4cde-8ec3-1c03af5e83ea",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第三条 审批要求"
+          ],
+          "similarity": 0.633934
+        },
+        {
+          "chunk_id": "dc92dc8f-fcae-4213-8ef2-ecf86d81deb5",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第四章 住宿费"
+          ],
+          "similarity": 0.621583
+        },
+        {
+          "chunk_id": "52d9f212-c3e6-48af-be64-3a65ffea3bad",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）"
+          ],
+          "similarity": 0.612466
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-019",
+      "category": "direct_fact",
+      "top_k": 5,
+      "expected_version_labels": [
+        "REIMB-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "REIMB-2026.1",
+        "HOTEL-SUP-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "普通差旅报销审批顺序",
+      "expense_date": "2026-06-01",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 30.683,
+      "hits": [
+        {
+          "chunk_id": "81300385-1fed-4561-9720-366688f9cf5d",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第四章 审批流程"
+          ],
+          "similarity": 0.816132
+        },
+        {
+          "chunk_id": "b1da09c9-b00f-4cde-8ec3-1c03af5e83ea",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第三条 审批要求"
+          ],
+          "similarity": 0.728819
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.704378
+        },
+        {
+          "chunk_id": "92ca4716-34f6-4550-b13e-e4cd7bb0feaf",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第一章 提交时限"
+          ],
+          "similarity": 0.677126
+        },
+        {
+          "chunk_id": "47d6b57d-e495-445e-937f-73921f6bacfe",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）"
+          ],
+          "similarity": 0.626792
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-020",
+      "category": "cross_document",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2026.1",
+        "HOTEL-SUP-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "HOTEL-SUP-2026.1",
+        "TRAVEL-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "2026年上海普通出差的住宿上限是多少？参加公司指定大型展会时，满足条件后最高可以提高到多少？",
+      "expense_date": "2026-05-18",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 37.998,
+      "hits": [
+        {
+          "chunk_id": "43258acf-e19f-4ca8-b4f6-9b24a892365b",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第二条 临时标准"
+          ],
+          "similarity": 0.717848
+        },
+        {
+          "chunk_id": "52d9f212-c3e6-48af-be64-3a65ffea3bad",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）"
+          ],
+          "similarity": 0.679603
+        },
+        {
+          "chunk_id": "dc92dc8f-fcae-4213-8ef2-ecf86d81deb5",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第四章 住宿费"
+          ],
+          "similarity": 0.625897
+        },
+        {
+          "chunk_id": "d5f5ddef-78e8-4b6c-af14-b9e1006d6077",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第一条 适用条件"
+          ],
+          "similarity": 0.601217
+        },
+        {
+          "chunk_id": "b1da09c9-b00f-4cde-8ec3-1c03af5e83ea",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第三条 审批要求"
+          ],
+          "similarity": 0.576065
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-021",
+      "category": "date_filter",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2026.1"
+      ],
+      "forbidden_version_labels": [
+        "HOTEL-SUP-2026.1"
+      ],
+      "retrieved_version_labels": [
+        "TRAVEL-2026.1",
+        "REIMB-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "二月上海普通客户会议能按720元报销吗？",
+      "expense_date": "2026-02-16",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 30.92,
+      "hits": [
+        {
+          "chunk_id": "dc92dc8f-fcae-4213-8ef2-ecf86d81deb5",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第四章 住宿费"
+          ],
+          "similarity": 0.553994
+        },
+        {
+          "chunk_id": "81300385-1fed-4561-9720-366688f9cf5d",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第四章 审批流程"
+          ],
+          "similarity": 0.541747
+        },
+        {
+          "chunk_id": "92ca4716-34f6-4550-b13e-e4cd7bb0feaf",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第一章 提交时限"
+          ],
+          "similarity": 0.539535
+        },
+        {
+          "chunk_id": "a5372563-eb4b-452e-8f19-f028b785e296",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第三章 超标准费用"
+          ],
+          "similarity": 0.529099
+        },
+        {
+          "chunk_id": "8ef21c9a-f2fc-4905-a225-349e0da8d14b",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第三章 城际交通"
+          ],
+          "similarity": 0.494106
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-022",
+      "category": "direct_fact",
+      "top_k": 5,
+      "expected_version_labels": [
+        "HOTEL-SUP-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "HOTEL-SUP-2026.1",
+        "TRAVEL-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "使用上海展会临时标准需要满足什么条件？",
+      "expense_date": "2026-05-18",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 31.215,
+      "hits": [
+        {
+          "chunk_id": "d5f5ddef-78e8-4b6c-af14-b9e1006d6077",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第一条 适用条件"
+          ],
+          "similarity": 0.654523
+        },
+        {
+          "chunk_id": "b1da09c9-b00f-4cde-8ec3-1c03af5e83ea",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第三条 审批要求"
+          ],
+          "similarity": 0.593875
+        },
+        {
+          "chunk_id": "52d9f212-c3e6-48af-be64-3a65ffea3bad",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）"
+          ],
+          "similarity": 0.584322
+        },
+        {
+          "chunk_id": "43258acf-e19f-4ca8-b4f6-9b24a892365b",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第二条 临时标准"
+          ],
+          "similarity": 0.559443
+        },
+        {
+          "chunk_id": "8ef21c9a-f2fc-4905-a225-349e0da8d14b",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第三章 城际交通"
+          ],
+          "similarity": 0.488208
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-023",
+      "category": "cross_document",
+      "top_k": 5,
+      "expected_version_labels": [
+        "HOTEL-SUP-2026.1",
+        "REIMB-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "TRAVEL-2026.1",
+        "HOTEL-SUP-2026.1",
+        "REIMB-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "展会住宿预计超过720元如何处理？",
+      "expense_date": "2026-05-18",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 28.649,
+      "hits": [
+        {
+          "chunk_id": "dc92dc8f-fcae-4213-8ef2-ecf86d81deb5",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第四章 住宿费"
+          ],
+          "similarity": 0.642624
+        },
+        {
+          "chunk_id": "52d9f212-c3e6-48af-be64-3a65ffea3bad",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）"
+          ],
+          "similarity": 0.592954
+        },
+        {
+          "chunk_id": "43258acf-e19f-4ca8-b4f6-9b24a892365b",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第二条 临时标准"
+          ],
+          "similarity": 0.592575
+        },
+        {
+          "chunk_id": "a5372563-eb4b-452e-8f19-f028b785e296",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第三章 超标准费用"
+          ],
+          "similarity": 0.559794
+        },
+        {
+          "chunk_id": "b1da09c9-b00f-4cde-8ec3-1c03af5e83ea",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第三条 审批要求"
+          ],
+          "similarity": 0.557753
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-024",
+      "category": "permission_filter",
+      "top_k": 5,
+      "expected_version_labels": [],
+      "forbidden_version_labels": [
+        "AUDIT-2026.1"
+      ],
+      "retrieved_version_labels": [
+        "INVOICE-2026.1",
+        "REIMB-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": null,
+      "passed": true,
+      "query": "住宿发票触发财务加强复核的内部阈值",
+      "expense_date": "2026-05-12",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 31.338,
+      "hits": [
+        {
+          "chunk_id": "aa3904a0-c6f7-4572-98a0-b06f980f963a",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第三章 住宿附件"
+          ],
+          "similarity": 0.536524
+        },
+        {
+          "chunk_id": "a5372563-eb4b-452e-8f19-f028b785e296",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第三章 超标准费用"
+          ],
+          "similarity": 0.525237
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.516246
+        },
+        {
+          "chunk_id": "81300385-1fed-4561-9720-366688f9cf5d",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第四章 审批流程"
+          ],
+          "similarity": 0.504521
+        },
+        {
+          "chunk_id": "92ca4716-34f6-4550-b13e-e4cd7bb0feaf",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第一章 提交时限"
+          ],
+          "similarity": 0.481396
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-025",
+      "category": "permission_filter",
+      "top_k": 5,
+      "expected_version_labels": [
+        "AUDIT-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "AUDIT-2026.1",
+        "INVOICE-2026.1",
+        "REIMB-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "住宿发票达到什么金额要加强复核？",
+      "expense_date": "2026-05-12",
+      "allowed_scopes": [
+        "all_employees",
+        "finance_only"
+      ],
+      "latency_ms": 31.537,
+      "hits": [
+        {
+          "chunk_id": "1eb159dc-f4cd-41c1-8a21-fc9f0e1a7d8f",
+          "document_id": "24b4b94a-26c9-459b-8c45-2a0fa51fbdaf",
+          "version_label": "AUDIT-2026.1",
+          "section_path": [
+            "星河科技差旅报销财务审核 SOP（内部）",
+            "第二章 抽样复核"
+          ],
+          "similarity": 0.786824
+        },
+        {
+          "chunk_id": "aa3904a0-c6f7-4572-98a0-b06f980f963a",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第三章 住宿附件"
+          ],
+          "similarity": 0.639118
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.6205
+        },
+        {
+          "chunk_id": "398613b6-0f14-475f-9786-9d9804d35569",
+          "document_id": "24b4b94a-26c9-459b-8c45-2a0fa51fbdaf",
+          "version_label": "AUDIT-2026.1",
+          "section_path": [
+            "星河科技差旅报销财务审核 SOP（内部）",
+            "第三章 异常处理"
+          ],
+          "similarity": 0.598939
+        },
+        {
+          "chunk_id": "a5372563-eb4b-452e-8f19-f028b785e296",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第三章 超标准费用"
+          ],
+          "similarity": 0.595848
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-026",
+      "category": "permission_filter",
+      "top_k": 5,
+      "expected_version_labels": [
+        "AUDIT-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "AUDIT-2026.1",
+        "INVOICE-2026.1",
+        "REIMB-2026.1",
+        "HOTEL-SUP-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "入住人日期金额不一致时财务怎么处理？",
+      "expense_date": "2026-05-12",
+      "allowed_scopes": [
+        "all_employees",
+        "finance_only"
+      ],
+      "latency_ms": 32.695,
+      "hits": [
+        {
+          "chunk_id": "398613b6-0f14-475f-9786-9d9804d35569",
+          "document_id": "24b4b94a-26c9-459b-8c45-2a0fa51fbdaf",
+          "version_label": "AUDIT-2026.1",
+          "section_path": [
+            "星河科技差旅报销财务审核 SOP（内部）",
+            "第三章 异常处理"
+          ],
+          "similarity": 0.677995
+        },
+        {
+          "chunk_id": "aa3904a0-c6f7-4572-98a0-b06f980f963a",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第三章 住宿附件"
+          ],
+          "similarity": 0.570811
+        },
+        {
+          "chunk_id": "92ca4716-34f6-4550-b13e-e4cd7bb0feaf",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第一章 提交时限"
+          ],
+          "similarity": 0.562931
+        },
+        {
+          "chunk_id": "43258acf-e19f-4ca8-b4f6-9b24a892365b",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第二条 临时标准"
+          ],
+          "similarity": 0.531914
+        },
+        {
+          "chunk_id": "1eb159dc-f4cd-41c1-8a21-fc9f0e1a7d8f",
+          "document_id": "24b4b94a-26c9-459b-8c45-2a0fa51fbdaf",
+          "version_label": "AUDIT-2026.1",
+          "section_path": [
+            "星河科技差旅报销财务审核 SOP（内部）",
+            "第二章 抽样复核"
+          ],
+          "similarity": 0.530342
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-027",
+      "category": "date_filter",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2026.1"
+      ],
+      "forbidden_version_labels": [
+        "HOTEL-SUP-2026.1"
+      ],
+      "retrieved_version_labels": [
+        "TRAVEL-2026.1",
+        "REIMB-2026.1",
+        "INVOICE-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "2026年1月上海住宿标准",
+      "expense_date": "2026-01-15",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 28.23,
+      "hits": [
+        {
+          "chunk_id": "dc92dc8f-fcae-4213-8ef2-ecf86d81deb5",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第四章 住宿费"
+          ],
+          "similarity": 0.507535
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.479224
+        },
+        {
+          "chunk_id": "0de60bbb-24cb-4490-8434-89a8d97f2e56",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）"
+          ],
+          "similarity": 0.459205
+        },
+        {
+          "chunk_id": "a2a4a036-e749-4ccc-ad0c-861d203b180f",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）"
+          ],
+          "similarity": 0.443427
+        },
+        {
+          "chunk_id": "aa3904a0-c6f7-4572-98a0-b06f980f963a",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第三章 住宿附件"
+          ],
+          "similarity": 0.440962
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-028",
+      "category": "version_filter",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2025.1"
+      ],
+      "forbidden_version_labels": [
+        "TRAVEL-2026.1"
+      ],
+      "retrieved_version_labels": [
+        "TRAVEL-2025.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "2025年省会城市住宿费标准",
+      "expense_date": "2025-06-10",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 27.74,
+      "hits": [
+        {
+          "chunk_id": "d54ed724-a148-4f33-b163-b0ace7451335",
+          "document_id": "9ffaa63e-dc2d-4e8c-b6d8-447975c25f5f",
+          "version_label": "TRAVEL-2025.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2025 版）",
+            "第四章 住宿费"
+          ],
+          "similarity": 0.661487
+        },
+        {
+          "chunk_id": "a4ce2d25-59a8-49e0-954b-4ea89e1d2bc4",
+          "document_id": "9ffaa63e-dc2d-4e8c-b6d8-447975c25f5f",
+          "version_label": "TRAVEL-2025.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2025 版）"
+          ],
+          "similarity": 0.476416
+        },
+        {
+          "chunk_id": "eea2e880-ac41-4d1c-89b1-c7a60ea2bb26",
+          "document_id": "9ffaa63e-dc2d-4e8c-b6d8-447975c25f5f",
+          "version_label": "TRAVEL-2025.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2025 版）",
+            "第三章 城际交通"
+          ],
+          "similarity": 0.444844
+        },
+        {
+          "chunk_id": "e9aae4c7-f61a-418a-81fc-94d78089fa35",
+          "document_id": "9ffaa63e-dc2d-4e8c-b6d8-447975c25f5f",
+          "version_label": "TRAVEL-2025.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2025 版）",
+            "第一章 适用范围"
+          ],
+          "similarity": 0.405266
+        },
+        {
+          "chunk_id": "726309b1-8288-4707-9084-89bb15993683",
+          "document_id": "9ffaa63e-dc2d-4e8c-b6d8-447975c25f5f",
+          "version_label": "TRAVEL-2025.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2025 版）",
+            "第五章 伙食补助"
+          ],
+          "similarity": 0.389788
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-029",
+      "category": "scope_boundary",
+      "top_k": 5,
+      "expected_version_labels": [
+        "TRAVEL-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "TRAVEL-2026.1",
+        "HOTEL-SUP-2026.1",
+        "REIMB-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "国内差旅办法适用于哪些地区？",
+      "expense_date": "2026-05-12",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 22.884,
+      "hits": [
+        {
+          "chunk_id": "a2a4a036-e749-4ccc-ad0c-861d203b180f",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）"
+          ],
+          "similarity": 0.61293
+        },
+        {
+          "chunk_id": "b1da09c9-b00f-4cde-8ec3-1c03af5e83ea",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第三条 审批要求"
+          ],
+          "similarity": 0.597558
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.56173
+        },
+        {
+          "chunk_id": "81300385-1fed-4561-9720-366688f9cf5d",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第四章 审批流程"
+          ],
+          "similarity": 0.552853
+        },
+        {
+          "chunk_id": "8ecdcce8-2076-4ca3-8dd2-562ba13c41e8",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第一章 适用范围"
+          ],
+          "similarity": 0.551255
+        }
+      ]
+    },
+    {
+      "case_id": "DENSE-EVAL-030",
+      "category": "cross_document",
+      "top_k": 5,
+      "expected_version_labels": [
+        "INVOICE-2026.1",
+        "REIMB-2026.1"
+      ],
+      "forbidden_version_labels": [],
+      "retrieved_version_labels": [
+        "INVOICE-2026.1",
+        "REIMB-2026.1",
+        "TRAVEL-2026.1",
+        "HOTEL-SUP-2026.1"
+      ],
+      "missing_expected_labels": [],
+      "retrieved_forbidden_labels": [],
+      "recall_at_k": 1.0,
+      "passed": true,
+      "query": "住宿只有支付截图没有发票和酒店账单能报销吗？",
+      "expense_date": "2026-05-12",
+      "allowed_scopes": [
+        "all_employees"
+      ],
+      "latency_ms": 29.57,
+      "hits": [
+        {
+          "chunk_id": "aa3904a0-c6f7-4572-98a0-b06f980f963a",
+          "document_id": "a8ae6717-402e-4cd7-a5f1-3c832f2548ad",
+          "version_label": "INVOICE-2026.1",
+          "section_path": [
+            "星河科技差旅票据与附件规范（2026 版）",
+            "第三章 住宿附件"
+          ],
+          "similarity": 0.751411
+        },
+        {
+          "chunk_id": "dace1d68-59ba-4cf7-8c49-f7108b34ae88",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第二章 基础附件"
+          ],
+          "similarity": 0.677938
+        },
+        {
+          "chunk_id": "a5372563-eb4b-452e-8f19-f028b785e296",
+          "document_id": "24f39506-9c5f-401c-9e71-d079d9d0c9d2",
+          "version_label": "REIMB-2026.1",
+          "section_path": [
+            "星河科技差旅报销管理办法（2026 版）",
+            "第三章 超标准费用"
+          ],
+          "similarity": 0.588112
+        },
+        {
+          "chunk_id": "dc92dc8f-fcae-4213-8ef2-ecf86d81deb5",
+          "document_id": "7d2d15f7-4cbc-4ec3-b61d-7ee5d78456a7",
+          "version_label": "TRAVEL-2026.1",
+          "section_path": [
+            "星河科技国内差旅管理办法（2026 版）",
+            "第四章 住宿费"
+          ],
+          "similarity": 0.57411
+        },
+        {
+          "chunk_id": "b1da09c9-b00f-4cde-8ec3-1c03af5e83ea",
+          "document_id": "3cbf0270-d2af-4749-9e0c-ab2af79baf3a",
+          "version_label": "HOTEL-SUP-2026.1",
+          "section_path": [
+            "上海大型展会期间住宿标准补充通知（2026）",
+            "第三条 审批要求"
+          ],
+          "similarity": 0.5608
+        }
+      ]
+    }
+  ]
+}

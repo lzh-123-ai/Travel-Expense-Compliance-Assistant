@@ -212,6 +212,11 @@ def test_list_chunks_returns_traceability_metadata_in_ordinal_order(tmp_path: Pa
             "chunking_strategy": "structure_aware_v1",
             "chunk_size": 800,
             "chunk_overlap": 100,
+            "embedding_provider": None,
+            "embedding_model": None,
+            "embedding_dimension": None,
+            "embedding_content_hash": None,
+            "embedded_at": None,
             "created_at": "2026-07-30T08:30:00Z",
         }
     ]

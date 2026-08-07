@@ -105,3 +105,47 @@ class EvaluationRun(BaseModel):
     started_at: datetime
     config: EvaluationRunConfig
     results: list[EvalCaseResult] = Field(default_factory=list)
+
+
+class RetrievalEvalCase(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str = Field(pattern=r"^DENSE-EVAL-\d{3}$")
+    category: Literal[
+        "direct_fact",
+        "cross_document",
+        "version_filter",
+        "date_filter",
+        "permission_filter",
+        "scope_boundary",
+    ]
+    query: str = Field(min_length=4)
+    expense_date: date
+    allowed_scopes: list[Literal["all_employees", "finance_only"]] = Field(min_length=1)
+    expected_version_labels: list[str] = Field(default_factory=list)
+    forbidden_version_labels: list[str] = Field(default_factory=list)
+    top_k: int = Field(default=5, ge=1, le=20)
+
+    @model_validator(mode="after")
+    def validate_retrieval_labels(self) -> RetrievalEvalCase:
+        if not self.expected_version_labels and not self.forbidden_version_labels:
+            raise ValueError("Retrieval cases require an expected or forbidden version label")
+        if set(self.expected_version_labels) & set(self.forbidden_version_labels):
+            raise ValueError("A version label cannot be both expected and forbidden")
+        return self
+
+
+class RetrievalEvalDataset(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    dataset_version: str = Field(pattern=r"^stage9-retrieval-v\d+$")
+    annotation_status: Literal["draft_needs_human_review", "reviewed"]
+    description: str = Field(min_length=10)
+    cases: list[RetrievalEvalCase] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_unique_case_ids(self) -> RetrievalEvalDataset:
+        case_ids = [case.id for case in self.cases]
+        if len(case_ids) != len(set(case_ids)):
+            raise ValueError("Retrieval evaluation case IDs must be unique")
+        return self

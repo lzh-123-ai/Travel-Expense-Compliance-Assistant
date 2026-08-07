@@ -16,6 +16,7 @@ from app.schemas.document import (
     DocumentMetadataUpdate,
     DocumentResponse,
 )
+from app.schemas.retrieval import DocumentEmbeddingResponse
 from app.services.document_processing import (
     DocumentProcessingService,
     get_document_processing_service,
@@ -26,6 +27,14 @@ from app.services.document_validation import (
     UnsupportedDocumentTypeError,
     validate_stored_content,
     validate_upload_metadata,
+)
+from app.services.embeddings import (
+    DocumentEmbeddingService,
+    DocumentNotReadyForEmbeddingError,
+    EmbeddingProvider,
+    EmbeddingProviderError,
+    get_document_embedding_service,
+    get_embedding_provider,
 )
 from app.services.storage import (
     DocumentTooLargeError,
@@ -38,6 +47,8 @@ router = APIRouter(prefix="/knowledge-bases/{knowledge_base_id}/documents")
 DatabaseSession = Annotated[AsyncSession, Depends(get_db_session)]
 DocumentStorage = Annotated[StorageService, Depends(get_storage_service)]
 DocumentProcessor = Annotated[DocumentProcessingService, Depends(get_document_processing_service)]
+EmbeddingProviderDependency = Annotated[EmbeddingProvider, Depends(get_embedding_provider)]
+DocumentEmbedder = Annotated[DocumentEmbeddingService, Depends(get_document_embedding_service)]
 
 
 async def _require_knowledge_base(session: AsyncSession, knowledge_base_id: UUID) -> None:
@@ -212,6 +223,43 @@ async def process_document(
 ) -> Document:
     document = await _get_document_for_processing(session, knowledge_base_id, document_id)
     return await processor.process(document, session, storage)
+
+
+@router.post(
+    "/{document_id}/embeddings",
+    response_model=DocumentEmbeddingResponse,
+    summary="Create or refresh document chunk embeddings",
+)
+async def embed_document(
+    knowledge_base_id: UUID,
+    document_id: UUID,
+    session: DatabaseSession,
+    provider: EmbeddingProviderDependency,
+    embedder: DocumentEmbedder,
+) -> DocumentEmbeddingResponse:
+    document = await _get_document(session, knowledge_base_id, document_id)
+    try:
+        result = await embedder.index_document(document, session, provider)
+    except DocumentNotReadyForEmbeddingError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(exc),
+        ) from exc
+    except EmbeddingProviderError as exc:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=str(exc),
+        ) from exc
+    return DocumentEmbeddingResponse(
+        document_id=result.document_id,
+        provider_name=result.provider_name,
+        model_name=result.model_name,
+        dimension=result.dimension,
+        total_chunks=result.total_chunks,
+        embedded_chunks=result.embedded_chunks,
+        skipped_chunks=result.skipped_chunks,
+    )
 
 
 @router.post(
