@@ -16,7 +16,7 @@ from app.schemas.document import (
     DocumentMetadataUpdate,
     DocumentResponse,
 )
-from app.schemas.retrieval import DocumentEmbeddingResponse
+from app.schemas.retrieval import DocumentEmbeddingResponse, DocumentKeywordIndexResponse
 from app.services.document_processing import (
     DocumentProcessingService,
     get_document_processing_service,
@@ -36,6 +36,11 @@ from app.services.embeddings import (
     get_document_embedding_service,
     get_embedding_provider,
 )
+from app.services.keyword_indexing import (
+    DocumentKeywordIndexingService,
+    DocumentNotReadyForKeywordIndexingError,
+    get_document_keyword_indexing_service,
+)
 from app.services.storage import (
     DocumentTooLargeError,
     StorageService,
@@ -49,6 +54,10 @@ DocumentStorage = Annotated[StorageService, Depends(get_storage_service)]
 DocumentProcessor = Annotated[DocumentProcessingService, Depends(get_document_processing_service)]
 EmbeddingProviderDependency = Annotated[EmbeddingProvider, Depends(get_embedding_provider)]
 DocumentEmbedder = Annotated[DocumentEmbeddingService, Depends(get_document_embedding_service)]
+DocumentKeywordIndexer = Annotated[
+    DocumentKeywordIndexingService,
+    Depends(get_document_keyword_indexing_service),
+]
 
 
 async def _require_knowledge_base(session: AsyncSession, knowledge_base_id: UUID) -> None:
@@ -258,6 +267,34 @@ async def embed_document(
         dimension=result.dimension,
         total_chunks=result.total_chunks,
         embedded_chunks=result.embedded_chunks,
+        skipped_chunks=result.skipped_chunks,
+    )
+
+
+@router.post(
+    "/{document_id}/keyword-index",
+    response_model=DocumentKeywordIndexResponse,
+    summary="Create or refresh the document keyword index",
+)
+async def index_document_keywords(
+    knowledge_base_id: UUID,
+    document_id: UUID,
+    session: DatabaseSession,
+    indexer: DocumentKeywordIndexer,
+) -> DocumentKeywordIndexResponse:
+    document = await _get_document(session, knowledge_base_id, document_id)
+    try:
+        result = await indexer.index_document(document, session)
+    except DocumentNotReadyForKeywordIndexingError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(exc),
+        ) from exc
+    return DocumentKeywordIndexResponse(
+        document_id=result.document_id,
+        tokenizer=result.tokenizer,
+        total_chunks=result.total_chunks,
+        indexed_chunks=result.indexed_chunks,
         skipped_chunks=result.skipped_chunks,
     )
 

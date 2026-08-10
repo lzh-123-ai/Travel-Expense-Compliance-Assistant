@@ -110,7 +110,7 @@ class EvaluationRun(BaseModel):
 class RetrievalEvalCase(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    id: str = Field(pattern=r"^DENSE-EVAL-\d{3}$")
+    id: str = Field(pattern=r"^(?:DENSE|HYBRID)-EVAL-\d{3}$")
     category: Literal[
         "direct_fact",
         "cross_document",
@@ -138,7 +138,7 @@ class RetrievalEvalCase(BaseModel):
 class RetrievalEvalDataset(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    dataset_version: str = Field(pattern=r"^stage9-retrieval-v\d+$")
+    dataset_version: str = Field(pattern=r"^stage(?:9|10)-retrieval-v\d+$")
     annotation_status: Literal["draft_needs_human_review", "reviewed"]
     description: str = Field(min_length=10)
     cases: list[RetrievalEvalCase] = Field(min_length=1)

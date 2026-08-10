@@ -15,6 +15,14 @@ class DocumentEmbeddingResponse(BaseModel):
     skipped_chunks: int
 
 
+class DocumentKeywordIndexResponse(BaseModel):
+    document_id: UUID
+    tokenizer: str
+    total_chunks: int
+    indexed_chunks: int
+    skipped_chunks: int
+
+
 class DenseSearchRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -33,6 +41,9 @@ class DenseSearchHitResponse(BaseModel):
     page_end: int | None
     section_path: list[str]
     similarity: float
+    policy_type: str | None = None
+    effective_from: date | None = None
+    effective_to: date | None = None
 
 
 class DenseSearchResponse(BaseModel):
@@ -43,3 +54,64 @@ class DenseSearchResponse(BaseModel):
     top_k: int
     searched_at: datetime
     hits: list[DenseSearchHitResponse]
+
+
+class KeywordSearchHitResponse(BaseModel):
+    chunk_id: UUID
+    document_id: UUID
+    original_filename: str
+    version_label: str | None
+    content: str
+    page_start: int | None
+    page_end: int | None
+    section_path: list[str]
+    keyword_score: float
+    policy_type: str | None = None
+    effective_from: date | None = None
+    effective_to: date | None = None
+
+
+class KeywordSearchResponse(BaseModel):
+    query: str
+    expense_date: date
+    tokenizer: str
+    top_k: int
+    searched_at: datetime
+    hits: list[KeywordSearchHitResponse]
+
+
+class VersionConflictResponse(BaseModel):
+    policy_type: str
+    version_labels: list[str]
+
+
+class HybridSearchHitResponse(BaseModel):
+    chunk_id: UUID
+    document_id: UUID
+    original_filename: str
+    version_label: str | None
+    content: str
+    page_start: int | None
+    page_end: int | None
+    section_path: list[str]
+    dense_similarity: float | None
+    keyword_score: float | None
+    dense_rank: int | None
+    keyword_rank: int | None
+    rrf_score: float
+    document_rrf_score: float
+    policy_type: str | None = None
+    effective_from: date | None = None
+    effective_to: date | None = None
+
+
+class HybridSearchResponse(BaseModel):
+    query: str
+    expense_date: date
+    provider_name: str
+    model_name: str
+    tokenizer: str
+    top_k: int
+    searched_at: datetime
+    version_conflicts: list[VersionConflictResponse]
+    hits: list[HybridSearchHitResponse]

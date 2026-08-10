@@ -25,6 +25,10 @@ def test_document_chunk_has_traceable_content_columns() -> None:
         "embedding_dimension",
         "embedding_content_hash",
         "embedded_at",
+        "keyword_search_text",
+        "keyword_tokenizer",
+        "keyword_content_hash",
+        "keyword_indexed_at",
         "created_at",
     }
 
@@ -42,6 +46,13 @@ def test_document_chunk_has_traceable_content_columns() -> None:
         if index.name == "ix_document_chunks_embedding_hnsw"
     )
     assert vector_index.dialect_options["postgresql"]["using"] == "hnsw"
+
+    keyword_index = next(
+        index
+        for index in DocumentChunk.__table__.indexes
+        if index.name == "ix_document_chunks_keyword_search_gin"
+    )
+    assert keyword_index.dialect_options["postgresql"]["using"] == "gin"
 
 
 def test_document_chunk_is_deleted_with_its_document() -> None:

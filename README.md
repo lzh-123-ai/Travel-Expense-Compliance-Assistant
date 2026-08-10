@@ -6,7 +6,7 @@
 
 ## 当前进度
 
-当前处于 **Stage 9：embedding 与 dense 检索（工程验收完成，学习验收与独立提交待完成）**。
+**Stage 10：中文关键词与 hybrid 检索已完成工程实现、正式对照和学习验收，下一步进入 Stage 11 引用回答与拒答。**
 
 已经具备：
 
@@ -28,13 +28,15 @@
 - chunk 级幂等批量向量化，以及知识库、费用日期、访问范围和模型版本过滤的 dense 检索 API。
 - 30 题经项目负责人逐题复核的 Stage 9 检索评测基线，覆盖版本、日期、权限、跨文档和范围边界。
 - 可复现的真实 BGE baseline runner：临时导入、解析、向量化、30 题检索、指标报告和数据清理形成闭环。
-- Ruff、100 项自动化测试、真实 Alembic upgrade/check、测试向量与真实 BGE 数据库闭环通过。
+- 确定性中文关键词索引、PostgreSQL GIN 全文检索，以及文档感知 RRF hybrid 检索。
+- 40 题经项目负责人逐题确认的 dense/keyword/hybrid 正式同集对照，新增 MRR、版本正确率和失败案例记录。
+- Ruff、107 项自动化测试、真实 Alembic upgrade/check、测试向量与真实 BGE 数据库闭环通过。
 
-Stage 8 已由 `5e987d2` 独立提交。Stage 9 使用 ModelScope 的 `AI-ModelScope/bge-small-zh-v1.5@master` 快照，权重 SHA-256 固定为 `354763b9...a026`；在 6 篇虚构制度、30 个 chunks 和 30 题人工复核集上，文档版本级 macro Recall@5、完整命中率、禁止版本过滤准确率和整题通过率均为 `1.0`，P50/P95 检索延迟为 `31.840/56.112 ms`。完整报告位于 `data/evaluation/results/stage9_bge_dense_baseline.json`。该结果只证明当前小型离线检索集通过，不代表回答准确率或生产效果；模型问答和前端仍未实现。
+Stage 8 已由 `5e987d2` 提交，Stage 9 已由 `9863285` 提交。Stage 10 正式基线在同一 40 题上得到：dense/hybrid 整题通过率均为 `1.0`，keyword 为 `0.975`；文档版本级 MRR 分别为 `0.9167/0.9211/0.9298`。完整报告位于 `data/evaluation/results/stage10_retrieval_comparison.json`。这些结果只衡量当前小型离线集上的文档版本检索，不代表回答准确率或生产效果。
 
 ## 学习入口
 
-当前从 [Stage 9 学习说明](docs/learning/stage-09-embedding-and-dense-retrieval.md)进入；已验收的 [Stage 8 学习说明](docs/learning/stage-08-parsing-and-chunking.md)继续作为解析与切片复盘入口。
+当前从 [Stage 10 学习说明](docs/learning/stage-10-keyword-and-hybrid-retrieval.md)复盘 hybrid 检索；Stage 11 将从固定回答契约、引用和拒答边界切入。
 
 ## 本地启动
 
@@ -63,8 +65,13 @@ GET    /api/v1/knowledge-bases/{knowledge_base_id}/documents
 GET    /api/v1/knowledge-bases/{knowledge_base_id}/documents/{document_id}
 PATCH  /api/v1/knowledge-bases/{knowledge_base_id}/documents/{document_id}/metadata
 POST   /api/v1/knowledge-bases/{knowledge_base_id}/documents/{document_id}/process
+POST   /api/v1/knowledge-bases/{knowledge_base_id}/documents/{document_id}/embeddings
+POST   /api/v1/knowledge-bases/{knowledge_base_id}/documents/{document_id}/keyword-index
 GET    /api/v1/knowledge-bases/{knowledge_base_id}/documents/{document_id}/chunks
 DELETE /api/v1/knowledge-bases/{knowledge_base_id}/documents/{document_id}
+POST   /api/v1/knowledge-bases/{knowledge_base_id}/search
+POST   /api/v1/knowledge-bases/{knowledge_base_id}/search/keyword
+POST   /api/v1/knowledge-bases/{knowledge_base_id}/search/hybrid
 ```
 
 重复内容按“同一知识库内 SHA-256 相同”判断，返回 `409` 和已有文档 ID。Markdown/TXT 必须使用 UTF-8。PDF 必须包含有效文件头和结束标记；DOCX 必须是包含必要 Word 条目的未加密 ZIP，且受到解压总大小限制。

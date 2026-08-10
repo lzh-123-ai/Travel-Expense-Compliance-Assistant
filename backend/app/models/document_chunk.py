@@ -13,6 +13,7 @@ from sqlalchemy import (
     String,
     Text,
     func,
+    text,
 )
 from sqlalchemy.dialects.postgresql import UUID as PostgreSQLUUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -52,6 +53,11 @@ class DocumentChunk(Base):
             postgresql_using="hnsw",
             postgresql_ops={"embedding": "vector_cosine_ops"},
         ),
+        Index(
+            "ix_document_chunks_keyword_search_gin",
+            text("to_tsvector('simple', keyword_search_text)"),
+            postgresql_using="gin",
+        ),
         CheckConstraint(
             "(embedding IS NULL AND embedding_provider IS NULL AND embedding_model IS NULL "
             "AND embedding_dimension IS NULL AND embedding_content_hash IS NULL "
@@ -60,6 +66,13 @@ class DocumentChunk(Base):
             "AND embedding_model IS NOT NULL AND embedding_dimension = 512 "
             "AND embedding_content_hash IS NOT NULL AND embedded_at IS NOT NULL)",
             name="ck_document_chunks_embedding_metadata",
+        ),
+        CheckConstraint(
+            "(keyword_search_text IS NULL AND keyword_tokenizer IS NULL "
+            "AND keyword_content_hash IS NULL AND keyword_indexed_at IS NULL) OR "
+            "(keyword_search_text IS NOT NULL AND keyword_tokenizer IS NOT NULL "
+            "AND keyword_content_hash IS NOT NULL AND keyword_indexed_at IS NOT NULL)",
+            name="ck_document_chunks_keyword_metadata",
         ),
     )
 
@@ -88,6 +101,12 @@ class DocumentChunk(Base):
     embedding_dimension: Mapped[int | None] = mapped_column(Integer, nullable=True)
     embedding_content_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
     embedded_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    keyword_search_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    keyword_tokenizer: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    keyword_content_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    keyword_indexed_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )

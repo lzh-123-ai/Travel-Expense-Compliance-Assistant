@@ -2,7 +2,7 @@
 
 ## 当前阶段状态
 
-Stage 9 工程验收已完成，当前等待代码阅读、自检题和独立提交：
+Stage 9 工程、学习验收和独立提交均已完成，提交为 `9863285`：
 
 - 已完成 embedding Provider 契约、Sentence Transformers 本地 Provider 和安全错误边界。
 - 已完成 512 维 pgvector 字段、embedding 追踪元数据、HNSW 索引与 Alembic 迁移。
@@ -113,6 +113,4 @@ cd D:\xuexi\projects\agent_project\backend
 
 ## 下一步
 
-1. 按推荐顺序阅读 Stage 9 代码，并完成 8 道自检题。
-2. 复述向量化、dense 检索和 baseline 三条链路，重点解释模型追踪、日期/权限过滤与指标口径。
-3. 学习验收通过后创建 Stage 9 独立提交，再进入 Stage 10 的关键词与 hybrid 检索对照。
+Stage 9 不再重复开发。后续从 `stage-10-keyword-and-hybrid-retrieval.md` 进入关键词与 hybrid 对照；需要复盘时只回看本页两条主链路与自检题。

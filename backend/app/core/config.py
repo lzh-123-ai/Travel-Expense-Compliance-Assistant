@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     embedding_batch_size: int = 32
     embedding_query_instruction: str = "为这个句子生成表示以用于检索相关文章："
     dense_search_max_top_k: int = 20
+    keyword_tokenizer_version: str = "domain_bigram_v1"
 
     model_config = SettingsConfigDict(
         env_file=PROJECT_ROOT / ".env",

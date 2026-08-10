@@ -38,6 +38,8 @@ def test_case_metric_deduplicates_labels_and_detects_missing_and_forbidden() -> 
     assert metric.missing_expected_labels == ("HOTEL-SUP-2026.1",)
     assert metric.retrieved_forbidden_labels == ("TRAVEL-2025.1",)
     assert metric.recall_at_k == 0.5
+    assert metric.reciprocal_rank == 1.0
+    assert metric.version_correct is False
     assert metric.passed is False
 
 
@@ -58,6 +60,8 @@ def test_aggregate_separates_recall_from_forbidden_filter_accuracy() -> None:
     aggregate = aggregate_retrieval_metrics([recalled, permission_case])
 
     assert aggregate.macro_recall_at_5 == 1.0
+    assert aggregate.mean_reciprocal_rank == 1.0
     assert aggregate.full_expected_set_accuracy == 1.0
     assert aggregate.forbidden_filter_accuracy == 1.0
+    assert aggregate.version_correctness == 1.0
     assert aggregate.case_pass_rate == 1.0
