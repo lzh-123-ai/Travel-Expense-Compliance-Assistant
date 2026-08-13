@@ -61,6 +61,20 @@ A级：状态和重处理替换；B级：页码、标题路径、OCR 警告和�
 
 A级：ready、模型一致性和幂等；B级：批量向量化和失败边界；C级：pgvector 列声明。
 
+必读代码：`backend/app/services/embeddings/indexing.py`、`backend/app/services/embeddings/contracts.py`、`backend/tests/test_embedding_services.py`、`backend/app/api/routes/documents.py` 的 embeddings 入口。
+
+可跳过代码：Sentence Transformer 加载细节、HNSW DDL 参数和本地模型下载脚本。
+
+本轮小修改：增加“同批次一条向量仍有效、另一条 content hash 已变化”的测试，验证只向 Provider 发送过时切片，并返回 `embedded_chunks=1/skipped_chunks=1`。
+
+故障定位练习：如果内容已变但仍被跳过，沿 embeddings 路由 → `index_document` 的 `stale_chunks` 条件 → `embedding_content_hash` 与 `content_hash` 断言定位；如果 Provider 收到全部 chunks，检查 stale 列表是否在批处理前生成。
+
+验收问题：
+
+1. 为什么 provider、model、dimension 和 content hash 必须一起记录？
+2. 为什么 embedding 服务不能靠向量相似度判断日期或权限？
+3. Provider 在第二批失败时，为什么当前实现不提交第一批的半成品？
+
 ## Stage 10：关键词与混合检索
 
 阅读顺序：`tests/test_stage10_retrieval.py` → `routes/retrieval.py` → `services/retrieval.py` → dense/keyword 两路 → RRF 与文档多样性。

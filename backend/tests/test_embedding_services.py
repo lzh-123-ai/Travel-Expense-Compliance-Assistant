@@ -157,6 +157,37 @@ async def test_embedding_service_skips_current_model_and_content_hash() -> None:
 
 
 @pytest.mark.asyncio
+async def test_embedding_service_updates_only_content_changed_chunks() -> None:
+    current_chunk = make_chunk(0)
+    current_chunk.embedding = list(vector())
+    current_chunk.embedding_provider = "fixture"
+    current_chunk.embedding_model = "fixture-v1"
+    current_chunk.embedding_dimension = 512
+    current_chunk.embedding_content_hash = current_chunk.content_hash
+
+    changed_chunk = make_chunk(1)
+    changed_chunk.embedding = list(vector())
+    changed_chunk.embedding_provider = "fixture"
+    changed_chunk.embedding_model = "fixture-v1"
+    changed_chunk.embedding_dimension = 512
+    changed_chunk.embedding_content_hash = "f" * 64
+
+    session = session_with_chunks([current_chunk, changed_chunk])
+    provider = FakeProvider()
+    provider.embed_documents.return_value = (vector(1),)
+
+    result = await DocumentEmbeddingService().index_document(make_document(), session, provider)
+
+    assert result.embedded_chunks == 1
+    assert result.skipped_chunks == 1
+    provider.embed_documents.assert_awaited_once_with([changed_chunk.content])
+    assert current_chunk.embedding == list(vector())
+    assert changed_chunk.embedding == list(vector(1))
+    assert changed_chunk.embedding_content_hash == changed_chunk.content_hash
+    session.commit.assert_awaited_once()
+
+
+@pytest.mark.asyncio
 async def test_embedding_service_does_not_persist_half_finished_batches() -> None:
     chunks = [make_chunk(0), make_chunk(1)]
     session = session_with_chunks(chunks)
