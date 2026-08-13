@@ -39,6 +39,20 @@ A级：能解释上传入口、真实内容校验、数据库提交和补偿边�
 
 A级：状态和重处理替换；B级：页码、标题路径、OCR 警告和滑窗；C级：解析契约和 fixture。
 
+必读代码：`backend/app/api/routes/documents.py` 的 `process_document`/`_get_document_for_processing`、`backend/app/services/document_processing.py`、`backend/tests/test_document_processing.py`、`backend/tests/test_document_stage8_api.py`。
+
+可跳过代码：PDF/XObject 的库细节、DOCX XML 命名空间、评测 JSON 的序列化细节。
+
+本轮小修改：为处理 API 增加“文档不属于路径中的知识库”测试。它必须返回 404，解析 Service 不得被调用，并确认联合查询仍携带 `FOR UPDATE` 行锁。
+
+故障定位练习：如果跨知识库请求仍开始解析，沿 `process_document` → `_get_document_for_processing` 的两个 `where` 条件 → `test_process_endpoint_rejects_document_outside_knowledge_base` 定位；如果重处理后有重复 chunks，沿 `DocumentProcessingService.process` → `_replace_chunks` → `DocumentChunk` 的 `(document_id, ordinal)` 唯一索引定位。
+
+验收问题：
+
+1. 为什么 `Document.status=ready` 不表示 OCR 已完成？
+2. `FOR UPDATE` 行锁和 `(document_id, ordinal)` 唯一索引分别解决什么并发问题？
+3. 为什么重处理必须先删除旧 chunks，再写新 chunks？
+
 ## Stage 9：向量化与 dense 检索
 
 阅读顺序：`tests/test_embedding_services.py` → `documents.py` 向量入口 → `backend/app/services/embeddings/indexing.py` → Provider 契约 → `DocumentChunk` embedding 字段。

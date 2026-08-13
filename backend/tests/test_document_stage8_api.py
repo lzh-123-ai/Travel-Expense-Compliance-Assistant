@@ -18,6 +18,7 @@ from app.services.document_processing import (
 from app.services.storage import LocalStorage, get_storage_service
 
 KNOWLEDGE_BASE_ID = UUID("2f1c75f4-bf91-4f40-aee7-54152e57b0f8")
+OTHER_KNOWLEDGE_BASE_ID = UUID("9a8ef23e-52d9-4803-90de-f6d8ab4bb349")
 DOCUMENT_ID = UUID("4a40cf8c-0d67-4e0f-9ef1-1c4d9ec1e7a3")
 SUPERSEDED_DOCUMENT_ID = UUID("7e0b6af8-9e13-497f-b484-4178f6400d74")
 CHUNK_ID = UUID("1056bc33-2194-4965-b148-9bde6180db44")
@@ -241,5 +242,26 @@ def test_process_endpoint_delegates_to_processing_service(tmp_path: Path) -> Non
 
     assert response.status_code == 200
     processor.process.assert_awaited_once_with(document, session, storage)
+    processing_statement = session.execute.await_args.args[0]
+    assert processing_statement._for_update_arg is not None
+
+
+def test_process_endpoint_rejects_document_outside_knowledge_base(tmp_path: Path) -> None:
+    processor = AsyncMock(spec=DocumentProcessingService)
+    session = AsyncMock(spec=AsyncSession)
+    session.execute.return_value = scalar_result(None)
+    configure_app(session, LocalStorage(tmp_path), processor)
+
+    try:
+        with TestClient(app) as client:
+            response = client.post(
+                f"/api/v1/knowledge-bases/{OTHER_KNOWLEDGE_BASE_ID}/documents/{DOCUMENT_ID}/process"
+            )
+    finally:
+        app.dependency_overrides.clear()
+
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Document not found"}
+    processor.process.assert_not_awaited()
     processing_statement = session.execute.await_args.args[0]
     assert processing_statement._for_update_arg is not None
