@@ -105,6 +105,20 @@ A级：过滤必须早于融合；B级：RRF 和多样性代价；C级：评测 
 
 A级：回答 Service 主骨架和安全边界；B级：Prompt/Provider/引用评测；C级：Schema 和 runner 样板。
 
+必读代码：`backend/app/services/answering.py`、`backend/app/api/routes/answers.py`、`backend/app/services/answer_prompts.py`、`backend/tests/test_stage11_answering.py`。
+
+可跳过代码：LangChain 消息对象、百炼 SDK 重试细节、RAGAS runner 的并发和序列化样板。
+
+本轮小修改：增加公共回答 API 的不可信引用测试，验证模型返回不存在的 `S9` 时服务端返回 502，而不是把它映射成真实引用或 200 正常答案。
+
+故障定位练习：如果虚构来源进入响应，沿 `answers.py` → `AnswerService.answer` 的 `evidence_by_id/unknown_ids` → `test_answer_rejects_citation_not_present_in_retrieved_context` 和本轮 API 测试定位；如果权限或日期切片进入模型上下文，回到 Stage 10 的两路 SQL 过滤，不要只改 Prompt。
+
+验收问题：
+
+1. 引用白名单能证明什么，为什么不能证明答案要点完整或事实正确？
+2. 为什么缺日期和无证据时不应调用回答模型？
+3. 为什么检索上下文必须被 Prompt 标记为不可信数据，但这仍不能替代服务端过滤？
+
 ## 完成标准
 
 完成每阶段后，至少能回答三个验收问题，并能用概念搜索词在 1-2 分钟内定位“入口 → Service → 查询条件 → 测试”。Stage 7-11 回溯完成后，再进入 Stage 12 Function Calling。

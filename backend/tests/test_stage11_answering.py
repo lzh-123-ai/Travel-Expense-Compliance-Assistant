@@ -614,3 +614,31 @@ def test_public_answer_api_forces_employee_scope() -> None:
     assert response.status_code == 200
     assert response.json()["citations"][0]["source_id"] == "S1"
     assert service.answer.await_args.kwargs["allowed_scopes"] == PUBLIC_DOCUMENT_SCOPES
+
+
+def test_public_answer_api_rejects_untrusted_model_citation() -> None:
+    session = AsyncMock(spec=AsyncSession)
+    session.get.return_value = MagicMock()
+    service = AsyncMock(spec=AnswerService)
+    service.answer.side_effect = AnswerOutputError("Model cited sources that were not provided: S9")
+    provider = make_provider(citation_ids=["S9"])
+    app.dependency_overrides[get_db_session] = override_db_session(session)
+    app.dependency_overrides[get_embedding_provider] = lambda: FakeEmbeddingProvider()
+    app.dependency_overrides[get_answer_provider] = lambda: provider
+    app.dependency_overrides[get_answer_service] = lambda: service
+
+    try:
+        with TestClient(app) as client:
+            response = client.post(
+                f"/api/v1/knowledge-bases/{KB_ID}/answer",
+                json={
+                    "question": "上海住宿费是多少？",
+                    "expense_date": "2026-05-01",
+                    "top_k": 5,
+                },
+            )
+    finally:
+        app.dependency_overrides.clear()
+
+    assert response.status_code == 502
+    assert response.json() == {"detail": "Answer model returned an untrusted citation"}
