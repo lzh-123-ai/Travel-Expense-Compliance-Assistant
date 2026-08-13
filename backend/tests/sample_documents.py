@@ -109,3 +109,11 @@ def make_minimal_docx() -> bytes:
             "Travel reimbursement policy</w:t></w:r></w:p></w:body></w:document>",
         )
     return output.getvalue()
+
+
+def make_generic_zip() -> bytes:
+    """生成可打开但不包含 OOXML 文档骨架的普通 ZIP。"""
+    output = BytesIO()
+    with ZipFile(output, "w", ZIP_DEFLATED) as archive:
+        archive.writestr("notes.txt", "not a Word document")
+    return output.getvalue()

@@ -16,7 +16,7 @@ from app.main import app
 from app.models.document import Document
 from app.models.knowledge_base import KnowledgeBase
 from app.services.storage import LocalStorage, get_storage_service
-from tests.sample_documents import make_minimal_docx, make_minimal_pdf
+from tests.sample_documents import make_generic_zip, make_minimal_docx, make_minimal_pdf
 
 KNOWLEDGE_BASE_ID = UUID("2f1c75f4-bf91-4f40-aee7-54152e57b0f8")
 DOCUMENT_ID = UUID("4a40cf8c-0d67-4e0f-9ef1-1c4d9ec1e7a3")
@@ -194,6 +194,32 @@ def test_upload_document_rejects_fake_pdf_and_removes_it(tmp_path: Path) -> None
     assert response.status_code == 422
     assert response.json()["detail"] == "File content is not a PDF document"
     assert list((tmp_path / "documents").glob("*")) == []
+
+
+def test_upload_document_rejects_zip_disguised_as_docx_and_removes_it(tmp_path: Path) -> None:
+    session = make_session()
+    configure_app(session, LocalStorage(tmp_path))
+
+    fake_docx = make_generic_zip()
+    try:
+        with TestClient(app) as client:
+            response = client.post(
+                f"/api/v1/knowledge-bases/{KNOWLEDGE_BASE_ID}/documents",
+                files={
+                    "file": (
+                        "policy.docx",
+                        fake_docx,
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    )
+                },
+            )
+    finally:
+        app.dependency_overrides.clear()
+
+    assert response.status_code == 422
+    assert response.json()["detail"] == "File is a ZIP archive but not a DOCX document"
+    assert [path for path in tmp_path.rglob("*") if path.is_file()] == []
+    session.add.assert_not_called()
 
 
 def test_upload_document_returns_existing_id_for_duplicate_content(tmp_path: Path) -> None:
