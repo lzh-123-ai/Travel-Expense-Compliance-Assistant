@@ -83,6 +83,20 @@ A级：ready、模型一致性和幂等；B级：批量向量化和失败边界�
 
 A级：过滤必须早于融合；B级：RRF 和多样性代价；C级：评测 JSON。
 
+必读代码：`backend/app/services/retrieval.py`、`backend/app/api/routes/retrieval.py`、`backend/tests/test_stage10_retrieval.py`。
+
+可跳过代码：PostgreSQL 全文检索实现细节、RRF 常量的调参过程、基线报告 JSON 全量字段。
+
+本轮小修改：增加空 `allowed_scopes` 测试，验证 Hybrid 直接返回空结果，dense 和 keyword 两条召回路径均不调用；没有获授权范围时不应先召回再过滤或融合。
+
+故障定位练习：若越权或过期切片进入 RRF，沿 `routes/retrieval.py` 的身份范围来源 → `HybridRetrievalService.search` 的参数透传 → `DenseRetrievalService` 与 `KeywordRetrievalService` 各自的 `_document_scope_filters` 定位；不要只检查 RRF，因为污染在融合之前发生。
+
+验收问题：
+
+1. 为什么 dense 与 keyword 路径都要独立执行日期和权限过滤？
+2. 为什么 RRF 不能直接相加 dense similarity 与 keyword score？
+3. 文档多样性先选代表切片会牺牲什么，又避免什么？
+
 ## Stage 11：引用回答与评测
 
 阅读顺序：`tests/test_stage11_answering.py` → `routes/answers.py` → `services/answering.py` → `answer_prompts.py`/Provider → `evaluation/answer_metrics.py`。

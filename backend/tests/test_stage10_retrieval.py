@@ -290,6 +290,27 @@ async def test_hybrid_rrf_rewards_shared_hits_and_reports_version_conflicts() ->
     assert keyword.search.await_args.kwargs["allowed_scopes"] == PUBLIC_DOCUMENT_SCOPES
 
 
+@pytest.mark.asyncio
+async def test_hybrid_search_with_no_allowed_scopes_skips_both_retrieval_paths() -> None:
+    dense = AsyncMock(spec=DenseRetrievalService)
+    keyword = AsyncMock(spec=KeywordRetrievalService)
+    service = HybridRetrievalService(dense=dense, keyword=keyword)
+
+    result = await service.search(
+        AsyncMock(spec=AsyncSession),
+        FakeProvider(),
+        knowledge_base_id=KB_ID,
+        query="住宿标准",
+        expense_date=date(2026, 5, 1),
+        allowed_scopes=frozenset(),
+        top_k=3,
+    )
+
+    assert result == HybridSearchResult(hits=(), version_conflicts=())
+    dense.search.assert_not_awaited()
+    keyword.search.assert_not_awaited()
+
+
 def override_db_session(
     session: AsyncSession,
 ) -> Callable[[], AsyncIterator[AsyncSession]]:
