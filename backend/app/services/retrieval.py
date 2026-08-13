@@ -47,6 +47,8 @@ class DenseSearchHit:
     policy_type: str | None = None
     effective_from: date | None = None
     effective_to: date | None = None
+    text_extraction_status: str = "complete"
+    needs_ocr: bool = False
 
     @property
     def similarity(self) -> float:
@@ -67,6 +69,8 @@ class KeywordSearchHit:
     policy_type: str | None = None
     effective_from: date | None = None
     effective_to: date | None = None
+    text_extraction_status: str = "complete"
+    needs_ocr: bool = False
 
 
 class DenseRetrievalService:
@@ -121,6 +125,8 @@ class DenseRetrievalService:
                 policy_type=document.policy_type,
                 effective_from=document.effective_from,
                 effective_to=document.effective_to,
+                text_extraction_status=document.text_extraction_status,
+                needs_ocr=document.needs_ocr,
             )
             for chunk, document, cosine_distance in result.all()
         )
@@ -180,6 +186,8 @@ class KeywordRetrievalService:
                 policy_type=document.policy_type,
                 effective_from=document.effective_from,
                 effective_to=document.effective_to,
+                text_extraction_status=document.text_extraction_status,
+                needs_ocr=document.needs_ocr,
             )
             for chunk, document, keyword_score in result.all()
         )
@@ -210,6 +218,8 @@ class HybridSearchHit:
     policy_type: str | None = None
     effective_from: date | None = None
     effective_to: date | None = None
+    text_extraction_status: str = "complete"
+    needs_ocr: bool = False
 
 
 @dataclass(frozen=True)
@@ -317,6 +327,8 @@ class HybridRetrievalService:
                     policy_type=source.policy_type,
                     effective_from=source.effective_from,
                     effective_to=source.effective_to,
+                    text_extraction_status=source.text_extraction_status,
+                    needs_ocr=source.needs_ocr,
                 )
             )
         merged.sort(

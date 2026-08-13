@@ -1,0 +1,67 @@
+{
+  "run_id": "stage11-ragas-20260812T163139Z",
+  "created_at": "2026-08-12T16:31:39.228400+00:00",
+  "source_report": "D:\\xuexi\\projects\\agent_project\\data\\evaluation\\results\\stage11_prompt_comparison.json",
+  "source_report_sha256": "2857ca629d26dccbefc66ea4642a4bb731564500e36398dcef6c8a82af5855d9",
+  "source_run_id": "stage11-20260811T054809Z-591169d0",
+  "dataset_version": "stage8-v0",
+  "prompt_revisions": {
+    "v0": "v0-core-contract-r2",
+    "v1": "v1-structured-r2"
+  },
+  "judge_provider": "bailian-openai-compatible",
+  "judge_model": "qwen3.7-plus-2026-05-26",
+  "judge_base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+  "judge_concurrency": 2,
+  "ragas_version": "0.4.3",
+  "metrics": [
+    "faithfulness",
+    "factual_correctness",
+    "context_recall"
+  ],
+  "scope": "answered cases only; auxiliary LLM-judged metrics",
+  "usage_tracking": "judge token and monetary cost are not exposed by this runner",
+  "prompts": {
+    "v1": {
+      "evaluated_cases": 2,
+      "aggregate": {
+        "faithfulness": 1.0,
+        "factual_correctness": 0.685,
+        "context_recall": 1.0
+      },
+      "metric_errors": 1,
+      "cases": [
+        {
+          "case_id": "TRAVEL-EVAL-013",
+          "scores": {
+            "faithfulness": null,
+            "factual_correctness": 0.7,
+            "context_recall": 1.0
+          },
+          "reasons": {
+            "faithfulness": null,
+            "factual_correctness": null,
+            "context_recall": null
+          },
+          "errors": {
+            "faithfulness": "InstructorRetryException: Connection error."
+          }
+        },
+        {
+          "case_id": "TRAVEL-EVAL-016",
+          "scores": {
+            "faithfulness": 1.0,
+            "factual_correctness": 0.67,
+            "context_recall": 1.0
+          },
+          "reasons": {
+            "faithfulness": null,
+            "factual_correctness": null,
+            "context_recall": null
+          },
+          "errors": {}
+        }
+      ]
+    }
+  }
+}

@@ -15,6 +15,11 @@ htmlcov/
 data/
 uploads/
 
+# Local generated artifacts that are not part of the RAG learning project.
+output/
+tmp/
+tools/build_targeted_resume.py
+
 # Stage 8 keeps only curated policy fixtures and evaluation annotations in Git.
 !data/
 data/*

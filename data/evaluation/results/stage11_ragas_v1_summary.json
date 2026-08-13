@@ -1,0 +1,95 @@
+{
+  "summary_id": "stage11-ragas-v1-summary-v1",
+  "created_at": "2026-08-13",
+  "dataset_version": "stage8-v0",
+  "prompt_version": "v1",
+  "prompt_revision": "v1-structured-r2",
+  "source_answer_report": {
+    "path": "stage11_prompt_comparison.json",
+    "sha256": "2857ca629d26dccbefc66ea4642a4bb731564500e36398dcef6c8a82af5855d9"
+  },
+  "ragas_runs": [
+    {
+      "path": "stage11_ragas_v1.json",
+      "sha256": "96e8eb578b5ec9d02e04b743bb532ce1a6b2b2373b92b87028cfa3f71b207dba",
+      "run_id": "stage11-ragas-20260812T162318Z",
+      "purpose": "primary",
+      "observed_wall_time_seconds": 1129.8
+    },
+    {
+      "path": "stage11_ragas_v1_retry.json",
+      "sha256": "b038d78eb0bb8c587ee0bda79df6cc9851ed5bbf187a4b8cb9907fafcf07c2e2",
+      "run_id": "stage11-ragas-20260812T163139Z",
+      "purpose": "retry_failed_faithfulness_for_cases_013_and_016",
+      "observed_wall_time_seconds": 460.8
+    }
+  ],
+  "judge": {
+    "provider": "bailian-openai-compatible",
+    "region_endpoint": "beijing",
+    "model": "qwen3.7-plus-2026-05-26",
+    "ragas_version": "0.4.3",
+    "langchain_community_version": "0.4.1",
+    "temperature": 0,
+    "usage_tracking": "judge token and monetary cost are not exposed by the current RAGAS runner"
+  },
+  "scope": {
+    "dataset_cases": 20,
+    "evaluated_cases": 15,
+    "rule": "only cases whose expected and actual status are both answered",
+    "excluded_cases": "refusal, clarification and status-error cases remain covered by domain metrics"
+  },
+  "merged_metrics": {
+    "faithfulness": {
+      "mean": 0.9464285714285714,
+      "valid_cases": 14,
+      "missing_cases": ["TRAVEL-EVAL-013"]
+    },
+    "factual_correctness": {
+      "mean": 0.5013333333333334,
+      "valid_cases": 15,
+      "missing_cases": []
+    },
+    "context_recall": {
+      "mean": 0.9777777777777777,
+      "valid_cases": 15,
+      "missing_cases": []
+    },
+    "metric_slots": 45,
+    "valid_metric_slots": 44,
+    "missing_metric_slots": 1
+  },
+  "remaining_error": {
+    "case_id": "TRAVEL-EVAL-013",
+    "metric": "faithfulness",
+    "error": "InstructorRetryException: Connection error",
+    "decision": "retained as missing after one targeted retry; no repeated reruns"
+  },
+  "calibration_findings": [
+    {
+      "case_id": "TRAVEL-EVAL-014",
+      "ragas_factual_correctness": 0.0,
+      "human_verdict": "full",
+      "finding": "RAGAS produced a false negative although the four-step approval order matched all reviewed answer points."
+    },
+    {
+      "case_id": "TRAVEL-EVAL-007",
+      "ragas_faithfulness": 0.25,
+      "human_verdict": "full",
+      "finding": "RAGAS substantially under-scored an answer whose transport standards and upgrade exception were supported by the cited policy."
+    },
+    {
+      "case_id": "TRAVEL-EVAL-010",
+      "ragas_factual_correctness": 0.8,
+      "human_verdict": "partial",
+      "finding": "Both evaluators detected incompleteness, while the human review identified the exact missing checkout-date field and missing source merge."
+    },
+    {
+      "case_id": "TRAVEL-EVAL-013",
+      "ragas_factual_correctness": 0.7,
+      "human_verdict": "partial",
+      "finding": "RAGAS did not express the business cost of introducing an irrelevant exhibition exception and extra citation."
+    }
+  ],
+  "conclusion": "RAGAS adds a reproducible auxiliary view but cannot replace date, permission, version, citation, refusal or human answer-point checks."
+}

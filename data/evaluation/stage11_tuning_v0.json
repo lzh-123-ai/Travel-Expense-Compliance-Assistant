@@ -1,0 +1,157 @@
+{
+  "dataset_version": "stage11-tuning-v0",
+  "annotation_status": "reviewed",
+  "description": "Stage 11 独立 Prompt 调优集，只用于发现和修正回答失败，不参与最终冻结集成绩；题目未复用原 20 题措辞，已按制度原文、日期权限、预期来源、答案要点和失败标签完成核验。",
+  "cases": [
+    {
+      "id": "TRAVEL-TUNE-001",
+      "category": "cross_document",
+      "question": "报销上海酒店费用时，通用附件和酒店账单本身分别要准备到什么程度？",
+      "role": "employee",
+      "expense_date": "2026-06-08",
+      "expected_sources": [
+        {"document_key": "travel_reimbursement_policy_v1", "version_label": "REIMB-2026.1", "relevant_sections": ["第二章 基础附件"]},
+        {"document_key": "invoice_attachment_standard_v1", "version_label": "INVOICE-2026.1", "relevant_sections": ["第三章 住宿附件"]}
+      ],
+      "acceptable_answer_points": ["已批准出差申请、完整行程单、合规发票和付款凭证", "酒店账单显示入住人、入住和离店日期、房费金额", "支付截图不能替代发票和酒店账单"],
+      "should_refuse": false,
+      "clarification_required": false,
+      "failure_labels": ["missing_document", "missing_attachment"],
+      "expected_route": null,
+      "expected_tool": null,
+      "expected_arguments": null,
+      "execution_allowed": true
+    },
+    {
+      "id": "TRAVEL-TUNE-002",
+      "category": "cross_document",
+      "question": "我有酒店发票和付款记录，住宿报销还缺哪些基础证明，酒店账单要写哪些日期？",
+      "role": "employee",
+      "expense_date": "2026-07-03",
+      "expected_sources": [
+        {"document_key": "travel_reimbursement_policy_v1", "version_label": "REIMB-2026.1", "relevant_sections": ["第二章 基础附件"]},
+        {"document_key": "invoice_attachment_standard_v1", "version_label": "INVOICE-2026.1", "relevant_sections": ["第三章 住宿附件"]}
+      ],
+      "acceptable_answer_points": ["还需要已批准出差申请和完整行程单", "酒店账单至少显示入住人、入住日期、离店日期和房费金额", "现有材料仍不完整"],
+      "should_refuse": false,
+      "clarification_required": false,
+      "failure_labels": ["missing_document", "missing_attachment"],
+      "expected_route": null,
+      "expected_tool": null,
+      "expected_arguments": null,
+      "execution_allowed": true
+    },
+    {
+      "id": "TRAVEL-TUNE-003",
+      "category": "cross_document",
+      "question": "去上海拜访供应商，酒店报价每晚 650 元，出发前需要办理什么手续？",
+      "role": "employee",
+      "expense_date": "2026-05-22",
+      "expected_sources": [
+        {"document_key": "domestic_travel_policy_v2", "version_label": "TRAVEL-2026.1", "relevant_sections": ["第四章 住宿费"]},
+        {"document_key": "travel_reimbursement_policy_v1", "version_label": "REIMB-2026.1", "relevant_sections": ["第三章 超标准费用"]}
+      ],
+      "acceptable_answer_points": ["650 元超过普通上海住宿上限 600 元", "费用发生前提交超标说明", "取得部门负责人和财务负责人事前批准", "批准不代表一定全额报销"],
+      "should_refuse": false,
+      "clarification_required": false,
+      "failure_labels": ["irrelevant_exception", "missing_condition"],
+      "expected_route": null,
+      "expected_tool": null,
+      "expected_arguments": null,
+      "execution_allowed": true
+    },
+    {
+      "id": "TRAVEL-TUNE-004",
+      "category": "cross_document",
+      "question": "上海普通客户培训期间住 610 元一晚的酒店，能直接按标准报销吗？",
+      "role": "employee",
+      "expense_date": "2026-09-14",
+      "expected_sources": [
+        {"document_key": "domestic_travel_policy_v2", "version_label": "TRAVEL-2026.1", "relevant_sections": ["第四章 住宿费"]},
+        {"document_key": "travel_reimbursement_policy_v1", "version_label": "REIMB-2026.1", "relevant_sections": ["第三章 超标准费用"]}
+      ],
+      "acceptable_answer_points": ["不能直接按普通标准报销", "普通上海住宿上限为 600 元", "客户培训不满足公司指定大型展会条件", "超标准费用应事前说明并批准"],
+      "should_refuse": false,
+      "clarification_required": false,
+      "failure_labels": ["irrelevant_exception", "wrong_amount"],
+      "expected_route": null,
+      "expected_tool": null,
+      "expected_arguments": null,
+      "execution_allowed": true
+    },
+    {
+      "id": "TRAVEL-TUNE-005",
+      "category": "multi_condition",
+      "question": "行政部门已确认活动在公司上海展会清单和指定日期内，申请也关联了清单，住宿可按哪个上限执行？",
+      "role": "employee",
+      "expense_date": "2026-10-16",
+      "expected_sources": [
+        {"document_key": "domestic_travel_policy_v2", "version_label": "TRAVEL-2026.1", "relevant_sections": ["第四章 住宿费"]},
+        {"document_key": "shanghai_exhibition_hotel_notice_2026", "version_label": "HOTEL-SUP-2026.1", "relevant_sections": ["第一条 适用条件", "第二条 临时标准"]}
+      ],
+      "acceptable_answer_points": ["按问题所述条件可执行临时标准", "600 元上浮 20%", "最高每人每晚 720 元"],
+      "should_refuse": false,
+      "clarification_required": false,
+      "failure_labels": ["over_clarification", "missing_condition"],
+      "expected_route": null,
+      "expected_tool": null,
+      "expected_arguments": null,
+      "execution_allowed": true
+    },
+    {
+      "id": "TRAVEL-TUNE-006",
+      "category": "multi_condition",
+      "question": "公司指定展会的上海行程已按要求填了展会名称并关联清单，临时住宿标准怎样计算？",
+      "role": "employee",
+      "expense_date": "2026-11-05",
+      "expected_sources": [
+        {"document_key": "domestic_travel_policy_v2", "version_label": "TRAVEL-2026.1", "relevant_sections": ["第四章 住宿费"]},
+        {"document_key": "shanghai_exhibition_hotel_notice_2026", "version_label": "HOTEL-SUP-2026.1", "relevant_sections": ["第一条 适用条件", "第二条 临时标准"]}
+      ],
+      "acceptable_answer_points": ["满足指定展会日期等全部条件时适用", "基础标准每人每晚 600 元", "上浮 20% 后最高 720 元", "条件不满足仍为 600 元"],
+      "should_refuse": false,
+      "clarification_required": false,
+      "failure_labels": ["over_clarification", "wrong_amount"],
+      "expected_route": null,
+      "expected_tool": null,
+      "expected_arguments": null,
+      "execution_allowed": true
+    },
+    {
+      "id": "TRAVEL-TUNE-007",
+      "category": "multi_condition",
+      "question": "客户突发要求当天出发，确实无法提前走申请，制度给我的补办时限是什么？",
+      "role": "employee",
+      "expense_date": "2026-08-19",
+      "expected_sources": [
+        {"document_key": "domestic_travel_policy_v2", "version_label": "TRAVEL-2026.1", "relevant_sections": ["第二章 出差申请"]}
+      ],
+      "acceptable_answer_points": ["属于客户紧急事件等无法提前申请情形", "返岗后两个工作日内补交", "说明原因"],
+      "should_refuse": false,
+      "clarification_required": false,
+      "failure_labels": ["over_clarification", "wrong_deadline"],
+      "expected_route": null,
+      "expected_tool": null,
+      "expected_arguments": null,
+      "execution_allowed": true
+    },
+    {
+      "id": "TRAVEL-TUNE-008",
+      "category": "direct_fact",
+      "question": "行程结束后，报销单最迟应在多长时间内提交？不用帮我换算具体日期。",
+      "role": "employee",
+      "expense_date": "2026-06-17",
+      "expected_sources": [
+        {"document_key": "travel_reimbursement_policy_v1", "version_label": "REIMB-2026.1", "relevant_sections": ["第一章 提交时限"]}
+      ],
+      "acceptable_answer_points": ["返程后 15 个自然日内", "逾期说明原因", "直属经理确认后交财务复核"],
+      "should_refuse": false,
+      "clarification_required": false,
+      "failure_labels": ["over_clarification", "wrong_deadline"],
+      "expected_route": null,
+      "expected_tool": null,
+      "expected_arguments": null,
+      "execution_allowed": true
+    }
+  ]
+}

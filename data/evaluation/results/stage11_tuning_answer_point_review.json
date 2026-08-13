@@ -1,0 +1,132 @@
+{
+  "review_id": "stage11-tuning-answer-point-review-v0",
+  "reviewed_at": "2026-08-12",
+  "source_report": "stage11_tuning_prompt_comparison.json",
+  "dataset_version": "stage11-tuning-v0",
+  "dataset_cases": 8,
+  "review_status": "confirmed",
+  "reviewer": "project_agent",
+  "rubric": {
+    "full_pass": "状态、核心结论、必要条件和引用范围均符合题目标准",
+    "partial_pass": "核心结论基本正确，但遗漏必要条件、来源或存在轻微范围污染/过度追问",
+    "fail": "状态或核心结论错误，或遗漏会改变业务办理结果的关键信息",
+    "weighted_score": "(full_pass + 0.5 * partial_pass) / 8"
+  },
+  "prompts": {
+    "v0": {
+      "full_pass": 2,
+      "partial_pass": 5,
+      "fail": 1,
+      "full_pass_rate": 0.25,
+      "weighted_score": 0.5625,
+      "case_verdicts": {
+        "TRAVEL-TUNE-001": "partial",
+        "TRAVEL-TUNE-002": "full",
+        "TRAVEL-TUNE-003": "fail",
+        "TRAVEL-TUNE-004": "partial",
+        "TRAVEL-TUNE-005": "partial",
+        "TRAVEL-TUNE-006": "partial",
+        "TRAVEL-TUNE-007": "full",
+        "TRAVEL-TUNE-008": "partial"
+      }
+    },
+    "v1": {
+      "full_pass": 3,
+      "partial_pass": 4,
+      "fail": 1,
+      "full_pass_rate": 0.375,
+      "weighted_score": 0.625,
+      "case_verdicts": {
+        "TRAVEL-TUNE-001": "full",
+        "TRAVEL-TUNE-002": "partial",
+        "TRAVEL-TUNE-003": "fail",
+        "TRAVEL-TUNE-004": "partial",
+        "TRAVEL-TUNE-005": "full",
+        "TRAVEL-TUNE-006": "partial",
+        "TRAVEL-TUNE-007": "full",
+        "TRAVEL-TUNE-008": "partial"
+      }
+    },
+    "v2": {
+      "full_pass": 2,
+      "partial_pass": 5,
+      "fail": 1,
+      "full_pass_rate": 0.25,
+      "weighted_score": 0.5625,
+      "case_verdicts": {
+        "TRAVEL-TUNE-001": "partial",
+        "TRAVEL-TUNE-002": "partial",
+        "TRAVEL-TUNE-003": "fail",
+        "TRAVEL-TUNE-004": "partial",
+        "TRAVEL-TUNE-005": "full",
+        "TRAVEL-TUNE-006": "partial",
+        "TRAVEL-TUNE-007": "full",
+        "TRAVEL-TUNE-008": "partial"
+      }
+    }
+  },
+  "case_notes": [
+    {
+      "case_id": "TRAVEL-TUNE-001",
+      "v0": "partial",
+      "v1": "full",
+      "v2": "partial",
+      "note": "V1完整合并通用材料、酒店账单字段和支付截图限制；V0/V2遗漏支付截图不能替代正式材料。"
+    },
+    {
+      "case_id": "TRAVEL-TUNE-002",
+      "v0": "full",
+      "v1": "partial",
+      "v2": "partial",
+      "note": "V0覆盖缺失材料和账单字段；V1遗漏房费金额，V2遗漏已批准申请和完整行程单。"
+    },
+    {
+      "case_id": "TRAVEL-TUNE-003",
+      "v0": "fail",
+      "v1": "fail",
+      "v2": "fail",
+      "note": "供应商拜访不应追问展会例外；三版均错误转成needs_clarification，且没有完整给出部门负责人和财务负责人事前批准。"
+    },
+    {
+      "case_id": "TRAVEL-TUNE-004",
+      "v0": "partial",
+      "v1": "partial",
+      "v2": "partial",
+      "note": "普通客户培训超过600元和事前审批结论正确，但三版均引入无关展会例外并产生额外引用。"
+    },
+    {
+      "case_id": "TRAVEL-TUNE-005",
+      "v0": "partial",
+      "v1": "full",
+      "v2": "full",
+      "note": "三版金额结论正确；V0没有引用基础600元制度，V1/V2完整说明600元上浮20%至720元。"
+    },
+    {
+      "case_id": "TRAVEL-TUNE-006",
+      "v0": "fail",
+      "v1": "partial",
+      "v2": "partial",
+      "note": "三版都使用了条件式回答，但均遗漏指定展会日期这一条件以及条件不满足时回到600元。"
+    },
+    {
+      "case_id": "TRAVEL-TUNE-007",
+      "v0": "full",
+      "v1": "full",
+      "v2": "full",
+      "note": "三版均正确识别紧急情形、返岗后两个工作日和说明原因。"
+    },
+    {
+      "case_id": "TRAVEL-TUNE-008",
+      "v0": "partial",
+      "v1": "partial",
+      "v2": "partial",
+      "note": "三版均正确回答返程后15个自然日且未过度追问，但都遗漏逾期说明、直属经理确认和财务复核。"
+    }
+  ],
+  "decision": {
+    "selected_prompt": "v1",
+    "promote_v2": false,
+    "reason": "V2自动硬通过率与V1同为0.75，但人工加权分0.5625低于V1的0.625，且V2输入token比V1增加约12.3%；V2未稳定解决无关例外污染，因此不进入线上配置。",
+    "v2_status": "retained_offline_as_failed_experiment"
+  }
+}

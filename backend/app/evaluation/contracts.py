@@ -18,7 +18,7 @@ class ExpectedSource(BaseModel):
 class EvalCase(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    id: str = Field(pattern=r"^TRAVEL-EVAL-\d{3}$")
+    id: str = Field(pattern=r"^TRAVEL-(?:EVAL|TUNE)-\d{3}$")
     category: Literal[
         "direct_fact",
         "multi_condition",
@@ -56,7 +56,7 @@ class EvalCase(BaseModel):
 class EvalDataset(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    dataset_version: str = Field(pattern=r"^stage8-v\d+$")
+    dataset_version: str = Field(pattern=r"^stage(?:8-v\d+|11-tuning-v\d+)$")
     annotation_status: Literal["draft_needs_human_review", "reviewed"]
     description: str = Field(min_length=10)
     cases: list[EvalCase] = Field(min_length=1)

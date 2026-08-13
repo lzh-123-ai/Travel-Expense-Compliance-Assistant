@@ -6,7 +6,7 @@
 
 ## 当前进度
 
-**Stage 10：中文关键词与 hybrid 检索已完成工程实现、正式对照和学习验收，下一步进入 Stage 11 引用回答与拒答。**
+当前处于 **Stage 11：引用回答与拒答收尾**。回答核心、V0/V1 Prompt、引用白名单、百炼 LangChain Provider、公共回答 API、正式对照 runner、20 题回答要点人工复核、8 题 V0/V1/V2 调优对照和 V1 RAGAS 辅助校准均已完成。调优结果不支持晋级 V2，线上默认继续使用 V1；V2 保留为可复现的失败实验。
 
 已经具备：
 
@@ -30,13 +30,22 @@
 - 可复现的真实 BGE baseline runner：临时导入、解析、向量化、30 题检索、指标报告和数据清理形成闭环。
 - 确定性中文关键词索引、PostgreSQL GIN 全文检索，以及文档感知 RRF hybrid 检索。
 - 40 题经项目负责人逐题确认的 dense/keyword/hybrid 正式同集对照，新增 MRR、版本正确率和失败案例记录。
-- Ruff、107 项自动化测试、真实 Alembic upgrade/check、测试向量与真实 BGE 数据库闭环通过。
+- 固定回答状态、可追溯引用、缺日期追问、无证据拒答，以及部分文本提取和版本冲突警告。
+- 阿里云百炼 OpenAI 兼容 Provider 的 LangChain 适配；Key 只从 `DASHSCOPE_API_KEY` 读取，测试不联网。
+- 固定 20 题的 V0/V1 回答对照 runner，记录状态、引用边界、越权来源安全、延迟和 token；人工回答要点复核单独保存在 `data/evaluation/results/stage11_answer_point_review.json`。
+- 不复用原题措辞的 8 题 Stage 11 已核验调优集，覆盖多来源合并、无关例外抑制、条件式回答和相对期限；V2 当前只允许离线评测，不能作为线上默认版本。
+- RAGAS 0.4.3 辅助入口复用冻结回答和召回上下文，评判忠实度、事实正确性和上下文召回；兼容依赖被显式锁定，且它不替代权限、日期、引用和人工要点硬指标。
+- Ruff、124 项自动化测试、真实 Alembic upgrade/check、测试向量与真实 BGE 数据库闭环通过。
 
-Stage 8 已由 `5e987d2` 提交，Stage 9 已由 `9863285` 提交。Stage 10 正式基线在同一 40 题上得到：dense/hybrid 整题通过率均为 `1.0`，keyword 为 `0.975`；文档版本级 MRR 分别为 `0.9167/0.9211/0.9298`。完整报告位于 `data/evaluation/results/stage10_retrieval_comparison.json`。这些结果只衡量当前小型离线集上的文档版本检索，不代表回答准确率或生产效果。
+Stage 8、9、10 已分别由 `5e987d2`、`9863285`、`a590b99` 提交。Stage 10 正式基线在同一 40 题上得到：dense/hybrid 整题通过率均为 `1.0`，keyword 为 `0.975`；文档版本级 MRR 分别为 `0.9167/0.9211/0.9298`。完整报告位于 `data/evaluation/results/stage10_retrieval_comparison.json`。这些结果只衡量当前小型离线集上的文档版本检索，不代表回答准确率或生产效果。
+
+Stage 11 正式回答基线使用 `qwen3.7-plus-2026-05-26`、温度 0、关闭思考和同一 hybrid top-5。V0/V1 的硬通过率分别为 `0.85/0.80`，禁止来源安全率均为 `1.0`，且没有请求或结构化输出错误。20 题人工复核的完整通过率为 `0.20/0.30`，加权人工分为 `0.575/0.60`；这组原始结果单独看不足以决定默认 Prompt，最终结合独立调优集和安全边界选择 V1。完整机器报告位于 `data/evaluation/results/stage11_prompt_comparison.json`，人工复核位于 `data/evaluation/results/stage11_answer_point_review.json`。
+
+独立 8 题调优集上，V0/V1/V2 自动硬通过率为 `0.625/0.75/0.75`，人工加权分为 `0.5625/0.625/0.5625`。V2 比 V1 多约 `12.3%` 输入 token，却没有稳定解决无关例外污染和多来源漏合并，因此不进入线上配置。V1 的 RAGAS 辅助结果为：忠实度 `0.9464`（14 个有效样本、1 个网络缺分）、事实正确性 `0.5013`、上下文召回 `0.9778`；人工与 RAGAS 存在明确冲突，所以不把该分数宣传成业务准确率。
 
 ## 学习入口
 
-当前从 [Stage 10 学习说明](docs/learning/stage-10-keyword-and-hybrid-retrieval.md)复盘 hybrid 检索；Stage 11 将从固定回答契约、引用和拒答边界切入。
+当前先看 [代码导航地图](docs/learning/code-navigation-map.md)，再从 [Stage 11 学习说明](docs/learning/stage-11-answering-and-evaluation.md)完成本阶段验收；随后按约定进行 Stage 7–11 轻量回溯训练，再进入 Stage 12 Function Calling。[Stage 10 学习说明](docs/learning/stage-10-keyword-and-hybrid-retrieval.md)继续作为 hybrid 检索复盘入口。
 
 ## 本地启动
 
@@ -72,6 +81,7 @@ DELETE /api/v1/knowledge-bases/{knowledge_base_id}/documents/{document_id}
 POST   /api/v1/knowledge-bases/{knowledge_base_id}/search
 POST   /api/v1/knowledge-bases/{knowledge_base_id}/search/keyword
 POST   /api/v1/knowledge-bases/{knowledge_base_id}/search/hybrid
+POST   /api/v1/knowledge-bases/{knowledge_base_id}/answer
 ```
 
 重复内容按“同一知识库内 SHA-256 相同”判断，返回 `409` 和已有文档 ID。Markdown/TXT 必须使用 UTF-8。PDF 必须包含有效文件头和结束标记；DOCX 必须是包含必要 Word 条目的未加密 ZIP，且受到解压总大小限制。

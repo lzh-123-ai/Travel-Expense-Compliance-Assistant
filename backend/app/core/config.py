@@ -2,6 +2,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
+from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
@@ -24,6 +25,15 @@ class Settings(BaseSettings):
     embedding_query_instruction: str = "为这个句子生成表示以用于检索相关文章："
     dense_search_max_top_k: int = 20
     keyword_tokenizer_version: str = "domain_bigram_v1"
+    answer_provider: Literal["bailian"] = "bailian"
+    answer_model_name: str = "qwen-plus"
+    answer_base_url: str = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    dashscope_api_key: SecretStr | None = None
+    answer_temperature: float = 0.0
+    answer_enable_thinking: bool = False
+    answer_timeout_seconds: float = 60.0
+    answer_max_retries: int = 2
+    answer_prompt_version: Literal["v0", "v1"] = "v1"
 
     model_config = SettingsConfigDict(
         env_file=PROJECT_ROOT / ".env",

@@ -1,5 +1,12 @@
 """Versioned evaluation dataset and run contracts."""
 
+from app.evaluation.answer_metrics import (
+    AnswerAggregateMetrics,
+    AnswerCaseMetric,
+    aggregate_answer_metrics,
+    expected_answer_status,
+    score_answer_case,
+)
 from app.evaluation.contracts import (
     EvalCase,
     EvalCaseResult,
@@ -19,6 +26,8 @@ from app.evaluation.retrieval_metrics import (
 )
 
 __all__ = [
+    "AnswerAggregateMetrics",
+    "AnswerCaseMetric",
     "EvalCase",
     "EvalCaseResult",
     "EvalDataset",
@@ -32,5 +41,8 @@ __all__ = [
     "RetrievalAggregateMetrics",
     "RetrievalCaseMetric",
     "aggregate_retrieval_metrics",
+    "aggregate_answer_metrics",
+    "expected_answer_status",
+    "score_answer_case",
     "score_retrieval_case",
 ]
