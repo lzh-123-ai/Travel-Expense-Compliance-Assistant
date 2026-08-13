@@ -1,3 +1,9 @@
+"""为文档切片准备增量关键词索引。
+
+它与向量索引并行，但写入的是确定性的可搜索文本和分词器版本。检索会拒绝
+与当前文本不匹配的关键词数据。
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -35,6 +41,7 @@ class DocumentKeywordIndexingService:
         document: Document,
         session: AsyncSession,
     ) -> DocumentKeywordIndexResult:
+        """仅刷新分词结果与当前内容不再匹配的切片。"""
         if document.status != "ready":
             raise DocumentNotReadyForKeywordIndexingError(
                 "Document must be parsed successfully before keyword indexing"

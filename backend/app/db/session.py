@@ -1,3 +1,5 @@
+"""单个 HTTP 请求或评测运行使用的异步 SQLAlchemy 会话生命周期。"""
+
 from collections.abc import AsyncIterator
 
 from sqlalchemy.ext.asyncio import (

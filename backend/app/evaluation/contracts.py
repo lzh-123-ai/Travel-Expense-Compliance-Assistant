@@ -1,3 +1,5 @@
+"""离线检索和回答评测使用的、可版本化的 Pydantic 契约。"""
+
 from __future__ import annotations
 
 from datetime import date, datetime

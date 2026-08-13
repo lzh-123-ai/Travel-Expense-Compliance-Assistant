@@ -1,3 +1,5 @@
+"""确定性的回答决策/引用指标；不是大模型质量裁判。"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

@@ -1,3 +1,5 @@
+"""供环境诊断使用的轻量应用元数据接口。"""
+
 from fastapi import APIRouter
 
 from app.core.config import get_settings

@@ -1,3 +1,5 @@
+"""离线 Stage 9 dense 检索基线运行器；不会被 API 请求调用。"""
+
 from __future__ import annotations
 
 import argparse

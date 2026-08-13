@@ -1,3 +1,5 @@
+"""一个隔离知识库中文档的 ORM 根容器。"""
+
 from datetime import datetime
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4

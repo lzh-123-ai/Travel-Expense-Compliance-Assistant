@@ -45,7 +45,7 @@ Stage 11 正式回答基线使用 `qwen3.7-plus-2026-05-26`、温度 0、关闭�
 
 ## 学习入口
 
-当前先看 [代码导航地图](docs/learning/code-navigation-map.md)，再从 [Stage 11 学习说明](docs/learning/stage-11-answering-and-evaluation.md)完成本阶段验收；随后按约定进行 Stage 7–11 轻量回溯训练，再进入 Stage 12 Function Calling。[Stage 10 学习说明](docs/learning/stage-10-keyword-and-hybrid-retrieval.md)继续作为 hybrid 检索复盘入口。
+当前先看 [代码导航地图](docs/learning/code-navigation-map.md) 与 [代码注释与定位约定](docs/learning/code-commenting-guide.md)，再从 [Stage 11 学习说明](docs/learning/stage-11-answering-and-evaluation.md)完成本阶段验收；随后按约定进行 Stage 7–11 轻量回溯训练，再进入 Stage 12 Function Calling。[Stage 10 学习说明](docs/learning/stage-10-keyword-and-hybrid-retrieval.md)继续作为 hybrid 检索复盘入口。
 
 ## 本地启动
 

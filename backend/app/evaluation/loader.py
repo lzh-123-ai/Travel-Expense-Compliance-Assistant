@@ -1,3 +1,5 @@
+"""从 JSON 文件加载并校验版本化评测数据集。"""
+
 import json
 from pathlib import Path
 

@@ -1,3 +1,5 @@
+"""离线 Stage 10 dense/关键词/混合对照运行器；不处理 HTTP 请求。"""
+
 from __future__ import annotations
 
 import argparse

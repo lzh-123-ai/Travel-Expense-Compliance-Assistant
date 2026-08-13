@@ -1,3 +1,9 @@
+"""基于数据库的 dense、关键词和混合检索。
+
+所有检索模式都必须在候选进入融合或大模型前，执行相同的知识库、有效日期、
+文档状态和服务端权限范围过滤。主链路阅读 ``HybridRetrievalService.search``。
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -24,6 +30,10 @@ def _document_scope_filters(
     expense_date: date,
     allowed_scopes: frozenset[str],
 ) -> tuple[object, ...]:
+    """返回每条检索链路共用、不可省略的 SQL 过滤条件。
+
+    SQL 过滤保证越权或失效文本不会进入排序、融合、Prompt 或检索证据日志。
+    """
     return (
         Document.knowledge_base_id == knowledge_base_id,
         Document.status == "ready",
@@ -85,6 +95,11 @@ class DenseRetrievalService:
         allowed_scopes: frozenset[str],
         top_k: int,
     ) -> tuple[DenseSearchHit, ...]:
+        """向量化问题，并只对已授权且当前有效的切片排序。
+
+        pgvector/HNSW 只用于降低候选搜索成本；权限和制度适用性仍以 SQL 条件
+        为唯一事实来源。
+        """
         if not allowed_scopes:
             return ()
         query_vector = await provider.embed_query(query)
@@ -146,6 +161,7 @@ class KeywordRetrievalService:
         allowed_scopes: frozenset[str],
         top_k: int,
     ) -> tuple[KeywordSearchHit, ...]:
+        """执行全文关键词检索，并使用与 dense 相同的安全过滤。"""
         if not allowed_scopes:
             return ()
         query_terms = tokenize(query)
@@ -254,9 +270,16 @@ class HybridRetrievalService:
         top_k: int,
         candidate_k: int | None = None,
     ) -> HybridSearchResult:
+        """用 RRF 和文档多样性融合两条已安全过滤的检索链路。
+
+        RRF 融合排名而非不可比较的 dense 与关键词分数尺度。选择器会先为不同
+        文档保留代表切片，再用高排名切片填满剩余位置。
+        """
+        # 服务端权限为空时必须提前返回，绝不能退化为无过滤检索。
         if not allowed_scopes:
             return HybridSearchResult(hits=(), version_conflicts=())
         candidate_limit = candidate_k or max(top_k * 4, 20)
+        # 每条检索路线都重复 SQL 过滤；融合无法修复不安全的候选输入。
         dense_hits = await self.dense.search(
             session,
             provider,
@@ -353,6 +376,7 @@ def _select_document_aware_hits(
     top_k: int,
     diversity_slots: int,
 ) -> tuple[HybridSearchHit, ...]:
+    """优先覆盖多个文档，再允许同一文档的相邻切片填满 top-k。"""
     by_document: dict[UUID, list[HybridSearchHit]] = {}
     for hit in merged:
         by_document.setdefault(hit.document_id, []).append(hit)
@@ -381,6 +405,7 @@ def _select_document_aware_hits(
 
 
 def _detect_version_conflicts(hits: tuple[HybridSearchHit, ...]) -> tuple[VersionConflict, ...]:
+    """显式暴露多个制度版本，不静默替用户选择其中一个。"""
     versions_by_policy: dict[str, set[str]] = {}
     for hit in hits:
         if hit.policy_type and hit.version_label:

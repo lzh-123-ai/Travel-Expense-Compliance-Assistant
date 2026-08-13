@@ -1,3 +1,9 @@
+"""有据回答编排与模型输出信任边界。
+
+本服务从混合检索获取已经过滤的证据，构建版本化 Prompt，调用可替换的
+Provider，并拒绝模型不可能获得的引用。Route 只负责将结果转换为 HTTP 响应。
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -20,6 +26,7 @@ from app.services.retrieval import HybridRetrievalService, VersionConflict
 
 
 class AnswerDraft(BaseModel):
+    """回答模型 Provider 必须返回的严格结构化输出。"""
     model_config = ConfigDict(extra="forbid")
 
     status: Literal["answered", "refused", "needs_clarification"]
@@ -30,6 +37,7 @@ class AnswerDraft(BaseModel):
     @field_validator("citation_ids")
     @classmethod
     def validate_citation_ids(cls, values: list[str]) -> list[str]:
+        """只允许唯一的本次 Prompt 来源 ID，不接受任意 URL 或 UUID。"""
         if len(values) != len(set(values)):
             raise ValueError("Citation IDs must be unique")
         if any(not value.startswith("S") or not value[1:].isdigit() for value in values):
@@ -38,6 +46,7 @@ class AnswerDraft(BaseModel):
 
     @model_validator(mode="after")
     def validate_decision(self) -> AnswerDraft:
+        """让每种回答决策都足够明确，便于 API 直接处理。"""
         if self.status == "answered" and not self.citation_ids:
             raise ValueError("Answered output requires at least one citation")
         if self.status == "needs_clarification" and not self.missing_information:
@@ -121,6 +130,12 @@ class AnswerService:
         top_k: int = 5,
         prompt_version: PromptVersion = "v1",
     ) -> AnswerResult:
+        """只基于已检索证据回答，否则返回确定性结果。
+
+        Stage 11 对制度适用性问题要求费用日期。Stage 12 的意图路由应收窄此
+        规则，不能让不走制度检索的业务状态问题也被日期阻塞。
+        """
+        # 检索前避免消耗模型资源，也避免不安全地猜测制度版本。
         if expense_date is None:
             return _deterministic_result(
                 answer_provider=answer_provider,
@@ -130,6 +145,7 @@ class AnswerService:
                 missing_information=("expense_date",),
             )
 
+        # 检索在 SQL 中执行权限/日期过滤；Prompt 文本不是访问控制，不能替代它。
         retrieval = await self.retriever.search(
             session,
             embedding_provider,
@@ -156,6 +172,7 @@ class AnswerService:
             version_conflicts=retrieval.version_conflicts,
         )
         generated = await answer_provider.generate_answer(prompt)
+        # 引用 ID 是单次请求的白名单；模型不能虚构来源或引用未进入 Prompt 的切片。
         evidence_by_id = {item.source_id: item for item in evidence}
         unknown_ids = set(generated.draft.citation_ids) - set(evidence_by_id)
         if unknown_ids:
@@ -201,6 +218,7 @@ def _build_warnings(
     evidence: tuple[AnswerEvidence, ...],
     conflicts: tuple[VersionConflict, ...],
 ) -> tuple[AnswerWarning, ...]:
+    """显式返回证据限制，不在后台静默篡改回答正文。"""
     warnings: list[AnswerWarning] = []
     warned_documents: set[UUID] = set()
     for item in evidence:
@@ -234,6 +252,7 @@ def _deterministic_result(
     answer: str,
     missing_information: tuple[str, ...] = (),
 ) -> AnswerResult:
+    """为追问和无证据拒答路径构建不调用模型的确定性结果。"""
     return AnswerResult(
         status=status,
         answer=answer,

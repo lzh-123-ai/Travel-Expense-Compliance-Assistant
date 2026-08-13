@@ -1,3 +1,5 @@
+"""基于证据的回答、引用和显式限制的 HTTP 数据结构。"""
+
 from datetime import date
 from typing import Literal
 from uuid import UUID

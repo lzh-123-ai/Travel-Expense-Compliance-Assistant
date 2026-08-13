@@ -1,3 +1,9 @@
+"""用于 PostgreSQL 关键词检索的确定性中英文分词器。
+
+已知报销领域词会保持完整；未知中文连续文本退化为二元切分，因此项目不依赖
+外部分词服务。
+"""
+
 from __future__ import annotations
 
 import re
@@ -62,6 +68,7 @@ _DOMAIN_TERMS = frozenset(
 
 
 def _segment_cjk(run: str) -> list[str]:
+    """优先保留最长已知领域词，未知词再输出二元词组。"""
     terms: list[str] = []
     index = 0
     while index < len(run):
@@ -93,4 +100,5 @@ def tokenize(text: str) -> tuple[str, ...]:
 
 
 def searchable_text(text: str) -> str:
+    """返回可直接给 PostgreSQL 使用的空格分隔规范化检索词。"""
     return " ".join(tokenize(text))

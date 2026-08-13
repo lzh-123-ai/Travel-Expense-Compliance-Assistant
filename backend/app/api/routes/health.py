@@ -1,3 +1,5 @@
+"""存活检查接口：确认 API 进程是否可访问。"""
+
 from fastapi import APIRouter
 
 from app.core.config import get_settings

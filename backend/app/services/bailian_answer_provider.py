@@ -1,3 +1,9 @@
+"""位于 Provider 无关回答协议之后的阿里云百炼适配器。
+
+只有本模块知道 SDK 和模型构造细节。回答编排和测试依赖 ``AnswerProvider``，
+因此模型网络调用可替换。
+"""
+
 from __future__ import annotations
 
 import json

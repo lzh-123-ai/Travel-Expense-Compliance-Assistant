@@ -1,3 +1,9 @@
+"""dense、关键词和混合检索的 HTTP 诊断入口。
+
+所有 Route 都将权限范围和日期传给 Service。Stage 12 必须用服务端身份替换当前
+临时公共权限，绝不能相信客户端传来的角色。
+"""
+
 from datetime import UTC, datetime
 from typing import Annotated
 from uuid import UUID
@@ -48,6 +54,7 @@ async def dense_search(
     provider: EmbeddingProviderDependency,
     retriever: DenseRetriever,
 ) -> DenseSearchResponse:
+    """运行 dense 诊断；向量排序前已执行权限范围过滤。"""
     if await session.get(KnowledgeBase, knowledge_base_id) is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -104,6 +111,7 @@ async def keyword_search(
     session: DatabaseSession,
     retriever: KeywordRetriever,
 ) -> KeywordSearchResponse:
+    """运行关键词诊断，使用相同的制度权限范围和日期要求。"""
     if await session.get(KnowledgeBase, knowledge_base_id) is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -155,6 +163,7 @@ async def hybrid_search(
     provider: EmbeddingProviderDependency,
     retriever: HybridRetriever,
 ) -> HybridSearchResponse:
+    """运行融合诊断，并暴露排序信息供评测和排错。"""
     if await session.get(KnowledgeBase, knowledge_base_id) is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

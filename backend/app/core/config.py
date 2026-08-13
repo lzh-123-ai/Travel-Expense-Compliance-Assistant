@@ -1,3 +1,5 @@
+"""基于环境变量的配置，用于组装基础设施适配器。"""
+
 from functools import lru_cache
 from pathlib import Path
 from typing import Literal

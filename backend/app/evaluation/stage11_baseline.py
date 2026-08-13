@@ -1,3 +1,5 @@
+"""保留可复现证据日志的离线 Stage 11 Prompt 对照运行器。"""
+
 from __future__ import annotations
 
 import argparse

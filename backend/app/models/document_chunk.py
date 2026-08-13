@@ -1,3 +1,9 @@
+"""可追溯派生文本切片及其检索数据的 ORM 记录。
+
+向量和关键词字段都是可选的派生数据。内容哈希保证解析、模型或分词器变化后，
+增量索引仍然正确。
+"""
+
 from datetime import datetime
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4

@@ -1,3 +1,5 @@
+"""依赖就绪诊断的 HTTP 响应数据结构。"""
+
 from typing import Literal
 
 from pydantic import BaseModel

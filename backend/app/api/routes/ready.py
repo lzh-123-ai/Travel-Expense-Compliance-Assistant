@@ -1,3 +1,5 @@
+"""就绪检查接口：确认接受真实请求所需的依赖是否可用。"""
+
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status

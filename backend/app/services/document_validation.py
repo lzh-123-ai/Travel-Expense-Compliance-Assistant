@@ -1,3 +1,10 @@
+"""上传元数据与已落盘内容校验。
+
+扩展名和声明的 MIME 类型都来自不可信客户端。因此上传路由必须先保存文件，再
+调用本模块检查实际字节内容。这里只校验 DOCX 的基础 OOXML 结构，不等同于扫描
+XML 内隐藏的病毒。
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -63,6 +70,7 @@ def validate_upload_metadata(
     filename: str | None,
     content_type: str | None,
 ) -> ValidatedUploadMetadata:
+    """规范化客户端文件名，并要求扩展名与 MIME 类型匹配白名单。"""
     raw_filename = filename or ""
     # 同时处理浏览器可能传来的 Windows 路径和恶意 POSIX 相对路径。
     safe_filename = PurePosixPath(PureWindowsPath(raw_filename).name).name
@@ -97,6 +105,7 @@ def validate_stored_content(
     document_format: DocumentFormat,
     max_uncompressed_size: int,
 ) -> None:
+    """落盘后校验字节内容，因为元数据不能代表真实内容。"""
     if document_format is DocumentFormat.PDF:
         _validate_pdf(storage, key)
     elif document_format is DocumentFormat.DOCX:
@@ -106,6 +115,7 @@ def validate_stored_content(
 
 
 def _validate_pdf(storage: StorageService, key: str) -> None:
+    """执行轻量级 PDF 文件头和结束标记结构校验。"""
     with storage.open(key) as document:
         if document.read(5) != b"%PDF-":
             raise InvalidDocumentContentError("File content is not a PDF document")
@@ -117,6 +127,7 @@ def _validate_pdf(storage: StorageService, key: str) -> None:
 
 
 def _validate_docx(storage: StorageService, key: str, max_uncompressed_size: int) -> None:
+    """拒绝 ZIP 伪装、损坏 OOXML、加密文档和 ZIP 炸弹形态。"""
     try:
         with storage.open(key) as document, ZipFile(document) as archive:
             entries = archive.infolist()
@@ -137,6 +148,7 @@ def _validate_docx(storage: StorageService, key: str, max_uncompressed_size: int
 
 
 def _validate_utf8_text(storage: StorageService, key: str) -> None:
+    """要求非空 UTF-8 文本，不接受任意二进制数据。"""
     with storage.open(key) as document:
         content = document.read()
     if not content:

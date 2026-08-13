@@ -1,3 +1,9 @@
+"""确定性且可追溯的文本切片。
+
+解析器提供页码和标题边界。本模块尽量保留这些边界，对长段落使用稳定的重叠
+窗口，并为切片计算内容哈希，供索引器只刷新发生变化的向量。
+"""
+
 from __future__ import annotations
 
 import hashlib
@@ -8,6 +14,7 @@ from app.services.parsing import ParsedDocument, ParsedSection
 
 @dataclass(frozen=True)
 class ChunkingConfig:
+    """随每个持久化切片保存的、可版本化的调参配置。"""
     max_characters: int = 800
     overlap_characters: int = 100
     strategy_name: str = "heading_page_v1"
@@ -28,6 +35,7 @@ class ChunkingConfig:
 
 @dataclass(frozen=True)
 class ChunkDraft:
+    """返回给处理服务的、与数据库无关的切片表示。"""
     ordinal: int
     content: str
     page_start: int | None
@@ -49,6 +57,7 @@ class DeterministicChunker:
         self.config = config or ChunkingConfig()
 
     def chunk(self, parsed: ParsedDocument) -> tuple[ChunkDraft, ...]:
+        """合并兼容区块，再生成序号稳定的切片草稿。"""
         groups: list[tuple[str, int | None, int | None, tuple[str, ...]]] = []
         current_text = ""
         current_page_start: int | None = None
@@ -95,6 +104,7 @@ class DeterministicChunker:
     def _split_section(
         self, section: ParsedSection
     ) -> list[tuple[str, int | None, int | None, tuple[str, ...]]]:
+        """用有上限的滑动窗口重叠拆分单个长区块。"""
         windows: list[tuple[str, int | None, int | None, tuple[str, ...]]] = []
         text = section.text
         start = 0
@@ -123,6 +133,7 @@ class DeterministicChunker:
         page_end: int | None,
         path: tuple[str, ...],
     ) -> ChunkDraft:
+        """附加溯源信息和供增量索引使用的内容哈希。"""
         return ChunkDraft(
             ordinal=ordinal,
             content=content,
@@ -141,6 +152,7 @@ class DeterministicChunker:
 
 
 def _pages_are_contiguous(previous: int | None, current: int | None) -> bool:
+    """DOCX 区块可连续合并，但 PDF 绝不能跨越缺失页码。"""
     if previous is None and current is None:
         return True
     if previous is None or current is None:
@@ -149,6 +161,7 @@ def _pages_are_contiguous(previous: int | None, current: int | None) -> bool:
 
 
 def _preferred_break(text: str, start: int, hard_end: int) -> int:
+    """优先在靠后的句末或段末截断，找不到则按硬性长度截断。"""
     lower_bound = start + int((hard_end - start) * 0.6)
     for marker in ("\n\n", "。", "！", "？", ";", "；", ". "):
         position = text.rfind(marker, lower_bound, hard_end)

@@ -1,3 +1,5 @@
+"""应用诊断元数据的 HTTP 响应数据结构。"""
+
 from pydantic import BaseModel
 
 

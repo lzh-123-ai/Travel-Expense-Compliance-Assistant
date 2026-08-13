@@ -1,3 +1,5 @@
+"""与 Provider 无关的向量化契约和向量形状校验。"""
+
 from __future__ import annotations
 
 import math

@@ -1,3 +1,9 @@
+"""基于证据的制度问答 HTTP 入口。
+
+Route 将请求数据交给 ``AnswerService``。它不能把授权写在 Prompt 中；检索会在
+模型看到证据之前执行权限/日期过滤。Stage 12 将从服务端身份提供权限范围。
+"""
+
 from typing import Annotated
 from uuid import UUID
 
@@ -30,6 +36,7 @@ AnswerProviderDependency = Annotated[AnswerProvider, Depends(get_answer_provider
 
 
 def get_answer_service() -> AnswerService:
+    """将 Route 连接到生产环境的混合检索实现。"""
     return AnswerService(get_hybrid_retrieval_service())
 
 
@@ -45,6 +52,7 @@ async def answer_question(
     answer_provider: AnswerProviderDependency,
     service: AnswerServiceDependency,
 ) -> AnswerResponse:
+    """回答制度问题，并将 Service/Provider 失败转换为 HTTP 响应。"""
     if await session.get(KnowledgeBase, knowledge_base_id) is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

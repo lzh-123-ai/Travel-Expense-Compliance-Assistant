@@ -1,3 +1,9 @@
+"""为 ready 文档切片持久化增量向量。
+
+Provider、模型、维度和内容哈希共同构成新鲜度契约。任何一项变化只会重新
+向量化对应的过期切片，未变化切片会被跳过。
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -38,6 +44,7 @@ class DocumentEmbeddingService:
         session: AsyncSession,
         provider: EmbeddingProvider,
     ) -> DocumentEmbeddingResult:
+        """分批向量化过期切片，只有发生变更时才提交事务。"""
         if document.status != "ready":
             raise DocumentNotReadyForEmbeddingError(
                 "Document must be parsed successfully before embedding"

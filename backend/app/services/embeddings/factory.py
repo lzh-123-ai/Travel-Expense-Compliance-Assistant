@@ -1,3 +1,5 @@
+"""根据应用配置选择向量化 Provider 的组装入口。"""
+
 from functools import lru_cache
 
 from app.core.config import PROJECT_ROOT, get_settings

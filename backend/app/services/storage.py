@@ -1,3 +1,9 @@
+"""带安全路径和删除补偿能力的文件系统适配器。
+
+数据库无法用事务控制磁盘。上传和删除路由因此通过本协议，在数据库提交前后
+显式执行清理、隔离、恢复或彻底删除。
+"""
+
 from __future__ import annotations
 
 import hashlib
@@ -41,6 +47,7 @@ class QuarantinedObject:
 
 
 class StorageService(Protocol):
+    """Route 和测试依赖的存储契约，具体实现可替换。"""
     async def save(self, source: AsyncReadable, key: str, max_size: int) -> StoredObject: ...
 
     def open(self, key: str) -> BinaryIO: ...
@@ -61,6 +68,7 @@ class LocalStorage:
         self.root = root.resolve()
 
     def _resolve(self, key: str) -> Path:
+        """解析相对 key，同时阻止路径逃逸出存储根目录。"""
         candidate = (self.root / key).resolve()
         try:
             candidate.relative_to(self.root)
@@ -69,6 +77,7 @@ class LocalStorage:
         return candidate
 
     async def save(self, source: AsyncReadable, key: str, max_size: int) -> StoredObject:
+        """边流式计算哈希边写入临时文件，完成后原子发布。"""
         destination = self._resolve(key)
         incoming_dir = self._resolve(".incoming")
         incoming_dir.mkdir(parents=True, exist_ok=True)
@@ -99,6 +108,7 @@ class LocalStorage:
         self._resolve(key).unlink(missing_ok=True)
 
     def quarantine(self, key: str) -> QuarantinedObject:
+        """先隐藏文件，使数据库删除失败时仍可恢复。"""
         source = self._resolve(key)
         if not source.exists():
             return QuarantinedObject(original_key=key, quarantine_key=None)
@@ -124,6 +134,7 @@ class LocalStorage:
 
 
 def get_storage_service() -> LocalStorage:
+    """根据配置的上传根目录构造本地存储适配器。"""
     return LocalStorage(get_settings().upload_dir)
 
 

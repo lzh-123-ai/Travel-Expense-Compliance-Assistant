@@ -1,3 +1,5 @@
+"""索引操作和检索诊断的 HTTP 数据结构。"""
+
 from datetime import date, datetime
 from typing import Annotated
 from uuid import UUID

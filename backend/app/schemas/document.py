@@ -1,3 +1,5 @@
+"""文档生命周期和切片查看的 HTTP 请求/响应数据结构。"""
+
 from datetime import date, datetime
 from typing import Annotated, Literal
 from uuid import UUID

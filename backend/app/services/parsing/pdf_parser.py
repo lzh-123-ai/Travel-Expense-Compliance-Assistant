@@ -1,3 +1,9 @@
+"""保留页码溯源与 OCR 警告的 PDF 原生文本解析器。
+
+每个可读取页面都会成为一个区块。纯图片页或提取失败页会标记为部分提取，
+交给后续 OCR 流程，绝不静默当作已索引文本。
+"""
+
 from __future__ import annotations
 
 import re

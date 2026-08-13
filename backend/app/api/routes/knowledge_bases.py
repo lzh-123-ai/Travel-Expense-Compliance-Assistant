@@ -1,3 +1,5 @@
+"""知识库 CRUD 接口，也是文档资源的父级边界。"""
+
 from typing import Annotated
 from uuid import UUID
 

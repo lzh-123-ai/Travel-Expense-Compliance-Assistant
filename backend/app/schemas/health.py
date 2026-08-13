@@ -1,3 +1,5 @@
+"""存活检查接口的 HTTP 响应数据结构。"""
+
 from typing import Literal
 
 from pydantic import BaseModel

@@ -1,3 +1,9 @@
+"""文档生命周期 HTTP 接口。
+
+建议按生命周期阅读：上传 -> 解析 -> 向量/关键词索引 -> 检索 -> 删除。
+本模块负责 HTTP 错误转换和跨存储补偿；具体实现位于 ``app.services``。
+"""
+
 from typing import Annotated
 from uuid import UUID, uuid4
 
@@ -61,6 +67,7 @@ DocumentKeywordIndexer = Annotated[
 
 
 async def _require_knowledge_base(session: AsyncSession, knowledge_base_id: UUID) -> None:
+    """提前失败，避免文档操作指向不存在的知识库。"""
     if await session.get(KnowledgeBase, knowledge_base_id) is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -73,6 +80,11 @@ async def _get_document(
     knowledge_base_id: UUID,
     document_id: UUID,
 ) -> Document:
+    """仅在文档属于 URL 中知识库时才加载它。
+
+    两个查询条件构成 IDOR 越权边界：只知道文档 UUID，不能通过另一个
+    知识库 URL 访问它。
+    """
     statement = select(Document).where(
         Document.id == document_id,
         Document.knowledge_base_id == knowledge_base_id,
@@ -116,6 +128,7 @@ async def _find_duplicate_id(
     knowledge_base_id: UUID,
     sha256: str,
 ) -> UUID | None:
+    """应用层快速查重；最终并发保障仍是数据库唯一约束。"""
     result = await session.execute(
         select(Document.id).where(
             Document.knowledge_base_id == knowledge_base_id,
@@ -126,6 +139,7 @@ async def _find_duplicate_id(
 
 
 def _duplicate_document_error(document_id: UUID) -> HTTPException:
+    """返回安全的冲突响应，不泄露已有文档内容。"""
     return HTTPException(
         status_code=status.HTTP_409_CONFLICT,
         detail={
@@ -140,6 +154,7 @@ async def list_documents(
     knowledge_base_id: UUID,
     session: DatabaseSession,
 ) -> list[Document]:
+    """只列出当前知识库中的文档。"""
     await _require_knowledge_base(session, knowledge_base_id)
     statement = (
         select(Document)
@@ -156,6 +171,7 @@ async def get_document(
     document_id: UUID,
     session: DatabaseSession,
 ) -> Document:
+    """完成知识库归属校验后返回单个文档。"""
     return await _get_document(session, knowledge_base_id, document_id)
 
 
@@ -169,6 +185,7 @@ async def list_document_chunks(
     document_id: UUID,
     session: DatabaseSession,
 ) -> list[DocumentChunk]:
+    """按确定性的文档顺序返回可追溯切片，供排查和查看。"""
     await _get_document(session, knowledge_base_id, document_id)
     result = await session.execute(
         select(DocumentChunk)
@@ -189,6 +206,7 @@ async def update_document_metadata(
     payload: DocumentMetadataUpdate,
     session: DatabaseSession,
 ) -> Document:
+    """更新制度元数据；检索时会将其作为数据库过滤条件执行。"""
     document = await _get_document(session, knowledge_base_id, document_id)
     update_fields = payload.model_dump(exclude_unset=True)
     effective_from = update_fields.get("effective_from", document.effective_from)
@@ -230,6 +248,7 @@ async def process_document(
     storage: DocumentStorage,
     processor: DocumentProcessor,
 ) -> Document:
+    """获取单文档行锁后执行解析，防止并发重建切片。"""
     document = await _get_document_for_processing(session, knowledge_base_id, document_id)
     return await processor.process(document, session, storage)
 
@@ -246,6 +265,7 @@ async def embed_document(
     provider: EmbeddingProviderDependency,
     embedder: DocumentEmbedder,
 ) -> DocumentEmbeddingResponse:
+    """仅创建缺失或过期的向量；Provider 失败时安全回滚。"""
     document = await _get_document(session, knowledge_base_id, document_id)
     try:
         result = await embedder.index_document(document, session, provider)
@@ -282,6 +302,7 @@ async def index_document_keywords(
     session: DatabaseSession,
     indexer: DocumentKeywordIndexer,
 ) -> DocumentKeywordIndexResponse:
+    """仅为 ready 文档创建缺失或过期的关键词字段。"""
     document = await _get_document(session, knowledge_base_id, document_id)
     try:
         result = await indexer.index_document(document, session)
@@ -311,6 +332,11 @@ async def upload_document(
     session: DatabaseSession,
     storage: DocumentStorage,
 ) -> Document:
+    """持久化已校验的上传，并同时使用应用层和数据库层去重。
+
+    只有落盘后才能计算哈希。若并发请求撞上唯一索引，本请求写入的物理文件
+    必须删除；外层清理同时覆盖校验失败和意外数据库异常。
+    """
     storage_key: str | None = None
     try:
         await _require_knowledge_base(session, knowledge_base_id)
@@ -353,6 +379,7 @@ async def upload_document(
                 detail=str(exc),
             ) from exc
 
+        # 此处只为快速返回用户提示；下方 ``commit`` 才是并发安全的最终去重。
         existing_id = await _find_duplicate_id(session, knowledge_base_id, stored.sha256)
         if existing_id is not None:
             raise _duplicate_document_error(existing_id)
@@ -370,6 +397,7 @@ async def upload_document(
         try:
             await session.commit()
         except IntegrityError as exc:
+            # 快速查询后，另一请求已提交相同知识库/哈希；只删除本请求的物理副本。
             await session.rollback()
             storage.delete(storage_key)
             storage_key = None
@@ -381,6 +409,7 @@ async def upload_document(
         await session.refresh(document)
         return document
     except Exception:
+        # 文件系统和数据库不能共享事务，因此在这里执行补偿清理。
         if storage_key is not None:
             storage.delete(storage_key)
         if session.in_transaction():
@@ -401,6 +430,11 @@ async def delete_document(
     session: DatabaseSession,
     storage: DocumentStorage,
 ) -> Response:
+    """用隔离/恢复模拟跨文件系统和数据库的删除事务。
+
+    文件先从正式目录隐藏；若数据库删除不能提交则恢复。只有数据库成为最终
+    事实后，才真正清理隔离区文件。
+    """
     document = await _get_document(session, knowledge_base_id, document_id)
     try:
         quarantined = storage.quarantine(document.storage_key)
@@ -414,6 +448,7 @@ async def delete_document(
         await session.delete(document)
         await session.commit()
     except Exception:
+        # 数据库侧未持久化时，撤销文件系统这一半操作。
         await session.rollback()
         try:
             storage.restore(quarantined)

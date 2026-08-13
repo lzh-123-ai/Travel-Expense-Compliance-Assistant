@@ -1,3 +1,9 @@
+"""所有文件格式解析器共用的、与数据库无关的契约。
+
+解析器在这里返回不可变事实；``DocumentProcessingService`` 再将其映射为
+数据库状态和切片。这让格式解析无需数据库或文件系统实现即可测试。
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

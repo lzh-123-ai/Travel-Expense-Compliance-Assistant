@@ -1,3 +1,9 @@
+"""延迟加载本地 BGE/SentenceTransformer 的向量化 Provider 适配器。
+
+模型直到第一次向量化请求才加载，避免导入路由或运行无关测试时无谓加载大型
+本地模型。
+"""
+
 from __future__ import annotations
 
 import asyncio

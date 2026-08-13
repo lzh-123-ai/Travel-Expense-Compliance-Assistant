@@ -1,3 +1,5 @@
+"""知识库父级资源的 HTTP 数据结构。"""
+
 from datetime import datetime
 from uuid import UUID
 

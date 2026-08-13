@@ -1,3 +1,5 @@
+"""按已校验的文档格式分发到对应解析器。"""
+
 from __future__ import annotations
 
 from typing import BinaryIO, Protocol

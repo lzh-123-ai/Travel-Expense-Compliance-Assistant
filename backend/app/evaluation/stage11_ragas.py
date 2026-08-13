@@ -1,3 +1,5 @@
+"""可选的离线 RAGAS 辅助评测；不是发布安全门槛。"""
+
 from __future__ import annotations
 
 import argparse

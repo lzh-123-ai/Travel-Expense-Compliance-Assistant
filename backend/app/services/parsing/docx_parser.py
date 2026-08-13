@@ -1,3 +1,9 @@
+"""保留标题路径、表格和图片限制的 DOCX 解析器。
+
+DOCX 没有可信的页码概念，因此切片保留标题路径而不是伪造页码。内嵌图片会
+报告给后续 OCR，但不会被当作文本。
+"""
+
 from __future__ import annotations
 
 import re

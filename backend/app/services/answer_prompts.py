@@ -1,3 +1,9 @@
+"""基于封闭检索证据集构建版本化 Prompt。
+
+Prompt 会为每个切片标记本次请求内的来源 ID。``AnswerService`` 随后用同一份
+白名单校验模型引用。
+"""
+
 from __future__ import annotations
 
 import json

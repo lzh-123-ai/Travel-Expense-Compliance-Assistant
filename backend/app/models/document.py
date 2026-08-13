@@ -1,3 +1,9 @@
+"""上传文件及其处理溯源信息的 ORM 记录。
+
+生命周期状态决定能否解析、索引和检索。有效日期和权限范围由检索 SQL 强制
+执行，不只是给 UI 展示的字段。
+"""
+
 from datetime import date, datetime
 from typing import TYPE_CHECKING
 from uuid import UUID, uuid4

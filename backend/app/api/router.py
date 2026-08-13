@@ -1,3 +1,9 @@
+"""HTTP 路由注册表，也是从 ``main.py`` 继续定位的第一站。
+
+每个被挂载模块负责一个业务面。Route 编排 HTTP 请求；Service 承担可复用的
+业务规则、存储操作和模型适配。
+"""
+
 from fastapi import APIRouter
 
 from app.api.routes import answers, documents, health, info, knowledge_bases, ready, retrieval

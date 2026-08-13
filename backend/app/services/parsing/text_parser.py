@@ -1,3 +1,9 @@
+"""UTF-8 纯文本和 Markdown 解析器。
+
+Markdown 图片 URL 会被移除但绝不请求。外部内容应进入受控的 OCR/媒体流程，
+不能由上传文档解析器直接访问。
+"""
+
 from __future__ import annotations
 
 import re
