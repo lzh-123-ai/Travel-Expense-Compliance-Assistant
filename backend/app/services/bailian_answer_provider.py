@@ -1,7 +1,6 @@
 """位于 Provider 无关回答协议之后的阿里云百炼适配器。
 
-只有本模块知道 SDK 和模型构造细节。回答编排和测试依赖 ``AnswerProvider``，
-因此模型网络调用可替换。
+SDK 和模型构造细节仅保留在本模块，回答编排只依赖 ``AnswerProvider`` 契约。
 """
 
 from __future__ import annotations
@@ -14,12 +13,13 @@ from langchain_openai import ChatOpenAI
 from pydantic import SecretStr, ValidationError
 
 from app.core.config import get_settings
+from app.core.observability import trace_stage
 from app.services.answer_prompts import AnswerPrompt
 from app.services.answering import AnswerDraft, AnswerProvider, GeneratedAnswer, GenerationUsage
 
 
 class AnswerProviderError(RuntimeError):
-    """The configured answer model is unavailable or returned an invalid payload."""
+    """回答模型不可用或返回了无效数据。"""
 
     def __init__(
         self,
@@ -60,9 +60,15 @@ class BailianAnswerProvider:
     async def generate_answer(self, prompt: AnswerPrompt) -> GeneratedAnswer:
         model = self._get_model()
         try:
-            response = await model.ainvoke(
-                [SystemMessage(content=prompt.system), HumanMessage(content=prompt.user)]
-            )
+            with trace_stage(
+                "model_request", provider=self.provider_name, model=self.model_name
+            ) as model_trace:
+                response = await model.ainvoke(
+                    [SystemMessage(content=prompt.system), HumanMessage(content=prompt.user)]
+                )
+                usage = _read_usage(response)
+                model_trace["input_tokens"] = usage.input_tokens
+                model_trace["output_tokens"] = usage.output_tokens
             content = response.content
             if not isinstance(content, str):
                 raise AnswerProviderError(
@@ -95,7 +101,7 @@ class BailianAnswerProvider:
 
     def _get_model(self):
         if self._model is None:
-            # The bound client is safe to reuse across concurrent evaluation requests.
+            # 绑定后的客户端可在并发请求之间安全复用。
             self._model = self._build_model()
         return self._model
 

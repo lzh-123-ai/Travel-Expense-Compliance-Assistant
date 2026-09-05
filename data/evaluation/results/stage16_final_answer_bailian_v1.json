@@ -1,0 +1,3158 @@
+{
+  "run_id": "stage11-20260822T122313Z-40cb3acf",
+  "started_at": "2026-08-22T12:23:13.789944+00:00",
+  "finished_at": "2026-08-22T12:23:53.505351+00:00",
+  "dataset_version": "stage8-v0",
+  "dataset_annotation_status": "reviewed",
+  "dataset_path": "D:\\xuexi\\projects\\agent_project\\data\\evaluation\\stage8_v0.json",
+  "evaluation_purpose": "frozen_regression",
+  "formal_baseline": true,
+  "metric_scope": "status, expected/forbidden document-version citations; answer point correctness pending human review",
+  "retrieval_config_version": "stage10-hybrid-rrf-v1",
+  "embedding_provider": "sentence_transformers",
+  "embedding_model": "BAAI/bge-small-zh-v1.5",
+  "embedding_model_source": "ModelScope",
+  "embedding_model_source_id": "AI-ModelScope/bge-small-zh-v1.5",
+  "embedding_model_source_revision": "master",
+  "embedding_model_weight_sha256": "354763b9b1357bc9c44f62c6be2276321081ed2567773608c0d0785b61d5a026",
+  "answer_provider": "bailian",
+  "answer_model": "qwen3.7-plus-2026-05-26",
+  "answer_base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+  "answer_temperature": 0.0,
+  "answer_enable_thinking": false,
+  "answer_concurrency": 2,
+  "prompt_revisions": {
+    "v1": "v1-structured-r2"
+  },
+  "top_k": 5,
+  "documents": 6,
+  "chunks": 30,
+  "embedded_chunks": 30,
+  "keyword_indexed_chunks": 30,
+  "environment": {
+    "python": "3.11.9",
+    "langchain_core": "1.5.4",
+    "langchain_openai": "1.4.3",
+    "openai": "2.53.0",
+    "sentence_transformers": "5.6.1"
+  },
+  "prompts": {
+    "v1": {
+      "aggregate": {
+        "evaluated_cases": 20,
+        "answered_cases": 17,
+        "refusal_cases": 2,
+        "clarification_cases": 1,
+        "status_accuracy": 0.95,
+        "answered_status_accuracy": 0.9411764705882353,
+        "refusal_status_accuracy": 1.0,
+        "clarification_status_accuracy": 1.0,
+        "citation_precision": 0.9298245614035089,
+        "citation_recall": 0.9411764705882353,
+        "forbidden_source_safety": 1.0,
+        "hard_pass_rate": 0.85,
+        "answer_point_review_status": "pending_human_review",
+        "model_calls": 19,
+        "provider_errors": 0,
+        "model_output_errors": 0,
+        "request_errors": 0,
+        "configuration_errors": 0,
+        "input_tokens": 22368,
+        "output_tokens": 1676,
+        "latency_ms": {
+          "mean": 3130.355,
+          "max": 6141.686
+        }
+      },
+      "cases": [
+        {
+          "case_id": "TRAVEL-EVAL-001",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "TRAVEL-2025.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "TRAVEL-2025.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "2025 年 10 月去上海出差，普通情况下住宿费每晚最高多少元？",
+          "role": "employee",
+          "expense_date": "2025-10-12",
+          "acceptable_answer_points": [
+            "适用 2025 版",
+            "每人每晚 500 元",
+            "标准内据实报销"
+          ],
+          "latency_ms": 5647.527,
+          "status": "answered",
+          "answer": "2025年10月去上海出差，住宿费每晚最高为500元。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "chunk_id": "660c5563-9320-414f-a0ea-bc6741c157ed",
+              "document_id": "8655f196-4027-454c-b732-b71371b9d5df",
+              "original_filename": "domestic_travel_policy_v1.md",
+              "version_label": "TRAVEL-2025.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 500 元；省会城市为每人每晚 400 元；其他城市为每人每晚 300 元。住宿费在标准内据实报销，不实行定额包干。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2025 版）",
+                "第四章 住宿费"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1136,
+          "output_tokens": 62,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "660c5563-9320-414f-a0ea-bc6741c157ed",
+              "document_id": "8655f196-4027-454c-b732-b71371b9d5df",
+              "original_filename": "domestic_travel_policy_v1.md",
+              "version_label": "TRAVEL-2025.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 500 元；省会城市为每人每晚 400 元；其他城市为每人每晚 300 元。住宿费在标准内据实报销，不实行定额包干。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2025 版）",
+                "第四章 住宿费"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 1,
+              "rrf_score": 0.03278688524590164,
+              "policy_type": "travel_policy",
+              "effective_from": "2025-01-01",
+              "effective_to": "2025-12-31"
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "8c1f6eb3-c21f-4694-a9d9-4eb156989e68",
+              "document_id": "8655f196-4027-454c-b732-b71371b9d5df",
+              "original_filename": "domestic_travel_policy_v1.md",
+              "version_label": "TRAVEL-2025.1",
+              "content": "第一章 适用范围\n\n本办法适用于星河科技员工在中国大陆境内因公出差。境外及港澳台出差不在本办法范围内，应另行咨询人力资源部和财务部。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2025 版）",
+                "第一章 适用范围"
+              ],
+              "dense_rank": 5,
+              "keyword_rank": 2,
+              "rrf_score": 0.0315136476426799,
+              "policy_type": "travel_policy",
+              "effective_from": "2025-01-01",
+              "effective_to": "2025-12-31"
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "bd5666b0-c2cc-4b7e-b80a-2eb54ddaa112",
+              "document_id": "8655f196-4027-454c-b732-b71371b9d5df",
+              "original_filename": "domestic_travel_policy_v1.md",
+              "version_label": "TRAVEL-2025.1",
+              "content": "第二章 出差申请\n\n员工原则上应在出发前完成线上出差申请并取得直属经理批准。遇到客户紧急事件等无法提前申请的情形，应在返岗后两个工作日内补交申请并说明原因。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2025 版）",
+                "第二章 出差申请"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 3,
+              "rrf_score": 0.03149801587301587,
+              "policy_type": "travel_policy",
+              "effective_from": "2025-01-01",
+              "effective_to": "2025-12-31"
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "d62ca9c0-490c-4be8-bbc6-7c39f14dda83",
+              "document_id": "8655f196-4027-454c-b732-b71371b9d5df",
+              "original_filename": "domestic_travel_policy_v1.md",
+              "version_label": "TRAVEL-2025.1",
+              "content": "第五章 伙食补助\n\n伙食补助按自然日计算，每人每天 100 元。由接待单位统一提供餐食的对应餐次不得重复领取补助。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2025 版）",
+                "第五章 伙食补助"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 5,
+              "rrf_score": 0.03125763125763126,
+              "policy_type": "travel_policy",
+              "effective_from": "2025-01-01",
+              "effective_to": "2025-12-31"
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "d395814e-29de-47f2-96b1-2abf89de8874",
+              "document_id": "8655f196-4027-454c-b732-b71371b9d5df",
+              "original_filename": "domestic_travel_policy_v1.md",
+              "version_label": "TRAVEL-2025.1",
+              "content": "星河科技国内差旅管理办法（2025 版）",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2025 版）"
+              ],
+              "dense_rank": 6,
+              "keyword_rank": 4,
+              "rrf_score": 0.030776515151515152,
+              "policy_type": "travel_policy",
+              "effective_from": "2025-01-01",
+              "effective_to": "2025-12-31"
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-002",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "2026 年 3 月去上海出差，普通情况下住宿费每晚最高多少元？",
+          "role": "employee",
+          "expense_date": "2026-03-18",
+          "acceptable_answer_points": [
+            "适用 2026 版",
+            "每人每晚 600 元",
+            "没有有效补充通知时执行基本标准"
+          ],
+          "latency_ms": 5646.937,
+          "status": "answered",
+          "answer": "2026年3月去上海出差，普通情况下住宿费上限为每人每晚600元。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "chunk_id": "c5ec465d-295a-4a66-863e-79c11d4e8f7f",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 600 元；省会城市为每人每晚 450 元；其他城市为每人每晚 350 元。住宿费在标准内据实报销，不实行定额包干。\n\n因公司指定大型展会导致协议酒店价格明显上涨时，按照有效补充通知执行。没有有效补充通知的，仍执行本章标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第四章 住宿费"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1168,
+          "output_tokens": 64,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "c5ec465d-295a-4a66-863e-79c11d4e8f7f",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 600 元；省会城市为每人每晚 450 元；其他城市为每人每晚 350 元。住宿费在标准内据实报销，不实行定额包干。\n\n因公司指定大型展会导致协议酒店价格明显上涨时，按照有效补充通知执行。没有有效补充通知的，仍执行本章标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第四章 住宿费"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 1,
+              "rrf_score": 0.03278688524590164,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "fb85b5bf-c438-4401-b3d9-04eb90facfaa",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第二章 基础附件\n\n差旅报销至少需要已批准的出差申请、完整行程单、合规发票和可核验的付款凭证。住宿费还应提供能够显示入住人、入住日期和房费明细的酒店账单。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第二章 基础附件"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": 3,
+              "rrf_score": 0.03200204813108039,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "da65989f-02d2-4d45-a456-d988214405ea",
+              "document_id": "1a7e0813-fab3-49d3-8262-ae9fc7b7741f",
+              "original_filename": "invoice_attachment_standard_v1.md",
+              "version_label": "INVOICE-2026.1",
+              "content": "第三章 住宿附件\n\n住宿费除合规发票外，还应提供酒店账单。酒店账单至少显示入住人、入住和离店日期、房费金额；只有支付截图而没有发票和酒店账单，不构成完整住宿报销材料。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅票据与附件规范（2026 版）",
+                "第三章 住宿附件"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 6,
+              "rrf_score": 0.031024531024531024,
+              "policy_type": "attachment_standard",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "349b7774-b5c4-495a-8497-a3dd6a418250",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第二章 出差申请\n\n员工原则上应在出发前完成线上出差申请并取得直属经理批准。遇到客户紧急事件等无法提前申请的情形，应在返岗后两个工作日内补交申请并说明原因。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第二章 出差申请"
+              ],
+              "dense_rank": 7,
+              "keyword_rank": 4,
+              "rrf_score": 0.03055037313432836,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "62a06909-8942-4b36-8ba8-843534473be0",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第一章 适用范围\n\n本办法适用于星河科技员工在中国大陆境内因公出差。境外及港澳台出差不在本办法范围内，应另行咨询人力资源部和财务部。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第一章 适用范围"
+              ],
+              "dense_rank": 10,
+              "keyword_rank": 2,
+              "rrf_score": 0.0304147465437788,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-003",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "2026 年去省会城市出差，住宿费上限是多少？",
+          "role": "employee",
+          "expense_date": "2026-06-10",
+          "acceptable_answer_points": [
+            "每人每晚 450 元",
+            "标准内据实报销"
+          ],
+          "latency_ms": 2351.794,
+          "status": "answered",
+          "answer": "2026年去省会城市出差，住宿费上限为每人每晚450元。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S2",
+              "chunk_id": "c5ec465d-295a-4a66-863e-79c11d4e8f7f",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 600 元；省会城市为每人每晚 450 元；其他城市为每人每晚 350 元。住宿费在标准内据实报销，不实行定额包干。\n\n因公司指定大型展会导致协议酒店价格明显上涨时，按照有效补充通知执行。没有有效补充通知的，仍执行本章标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第四章 住宿费"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1229,
+          "output_tokens": 61,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "4b987055-5cf4-4c79-ab3f-5f9726483203",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第二条 临时标准\n\n满足第一条全部条件时，上海住宿费上限可以在《星河科技国内差旅管理办法（2026 版）》每人每晚 600 元的基础上上浮 20%，即最高每人每晚 720 元。\n\n未列入公司指定清单、无法证明参会目的或不在指定日期内的，仍执行每人每晚 600 元标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第二条 临时标准"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 2,
+              "rrf_score": 0.03252247488101534,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "c5ec465d-295a-4a66-863e-79c11d4e8f7f",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 600 元；省会城市为每人每晚 450 元；其他城市为每人每晚 350 元。住宿费在标准内据实报销，不实行定额包干。\n\n因公司指定大型展会导致协议酒店价格明显上涨时，按照有效补充通知执行。没有有效补充通知的，仍执行本章标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第四章 住宿费"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": 1,
+              "rrf_score": 0.03252247488101534,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "fb85b5bf-c438-4401-b3d9-04eb90facfaa",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第二章 基础附件\n\n差旅报销至少需要已批准的出差申请、完整行程单、合规发票和可核验的付款凭证。住宿费还应提供能够显示入住人、入住日期和房费明细的酒店账单。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第二章 基础附件"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 5,
+              "rrf_score": 0.03125763125763126,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "2d63d0ad-882f-4b46-99a7-ef6b47d338a8",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第三条 审批要求\n\n使用临时标准不免除正常出差申请和票据要求。预计超过 720 元的，仍应按照差旅报销管理办法办理超标准费用的事前批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第三条 审批要求"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 8,
+              "rrf_score": 0.030330882352941176,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "62a06909-8942-4b36-8ba8-843534473be0",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第一章 适用范围\n\n本办法适用于星河科技员工在中国大陆境内因公出差。境外及港澳台出差不在本办法范围内，应另行咨询人力资源部和财务部。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第一章 适用范围"
+              ],
+              "dense_rank": 11,
+              "keyword_rank": 3,
+              "rrf_score": 0.029957522915269395,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-004",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "2026 年去非省会普通城市出差，住宿费上限是多少？",
+          "role": "employee",
+          "expense_date": "2026-06-10",
+          "acceptable_answer_points": [
+            "每人每晚 350 元",
+            "标准内据实报销"
+          ],
+          "latency_ms": 2208.027,
+          "status": "answered",
+          "answer": "2026年去非省会普通城市出差，住宿费上限为每人每晚350元。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S2",
+              "chunk_id": "c5ec465d-295a-4a66-863e-79c11d4e8f7f",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 600 元；省会城市为每人每晚 450 元；其他城市为每人每晚 350 元。住宿费在标准内据实报销，不实行定额包干。\n\n因公司指定大型展会导致协议酒店价格明显上涨时，按照有效补充通知执行。没有有效补充通知的，仍执行本章标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第四章 住宿费"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1231,
+          "output_tokens": 63,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "4b987055-5cf4-4c79-ab3f-5f9726483203",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第二条 临时标准\n\n满足第一条全部条件时，上海住宿费上限可以在《星河科技国内差旅管理办法（2026 版）》每人每晚 600 元的基础上上浮 20%，即最高每人每晚 720 元。\n\n未列入公司指定清单、无法证明参会目的或不在指定日期内的，仍执行每人每晚 600 元标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第二条 临时标准"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 2,
+              "rrf_score": 0.03252247488101534,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "c5ec465d-295a-4a66-863e-79c11d4e8f7f",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 600 元；省会城市为每人每晚 450 元；其他城市为每人每晚 350 元。住宿费在标准内据实报销，不实行定额包干。\n\n因公司指定大型展会导致协议酒店价格明显上涨时，按照有效补充通知执行。没有有效补充通知的，仍执行本章标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第四章 住宿费"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": 1,
+              "rrf_score": 0.03252247488101534,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "fb85b5bf-c438-4401-b3d9-04eb90facfaa",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第二章 基础附件\n\n差旅报销至少需要已批准的出差申请、完整行程单、合规发票和可核验的付款凭证。住宿费还应提供能够显示入住人、入住日期和房费明细的酒店账单。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第二章 基础附件"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 5,
+              "rrf_score": 0.031009615384615385,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "2d63d0ad-882f-4b46-99a7-ef6b47d338a8",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第三条 审批要求\n\n使用临时标准不免除正常出差申请和票据要求。预计超过 720 元的，仍应按照差旅报销管理办法办理超标准费用的事前批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第三条 审批要求"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 8,
+              "rrf_score": 0.03057889822595705,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "62a06909-8942-4b36-8ba8-843534473be0",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第一章 适用范围\n\n本办法适用于星河科技员工在中国大陆境内因公出差。境外及港澳台出差不在本办法范围内，应另行咨询人力资源部和财务部。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第一章 适用范围"
+              ],
+              "dense_rank": 10,
+              "keyword_rank": 3,
+              "rrf_score": 0.030158730158730156,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-005",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "TRAVEL-2025.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "TRAVEL-2025.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "2025 年国内出差的伙食补助每天多少元？",
+          "role": "employee",
+          "expense_date": "2025-08-01",
+          "acceptable_answer_points": [
+            "每人每天 100 元",
+            "接待方提供餐食时不得重复领取对应餐次补助"
+          ],
+          "latency_ms": 2407.318,
+          "status": "answered",
+          "answer": "2025年国内出差的伙食补助标准为每人每天100元。若由接待单位统一提供餐食，对应餐次不得重复领取补助。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "chunk_id": "d62ca9c0-490c-4be8-bbc6-7c39f14dda83",
+              "document_id": "8655f196-4027-454c-b732-b71371b9d5df",
+              "original_filename": "domestic_travel_policy_v1.md",
+              "version_label": "TRAVEL-2025.1",
+              "content": "第五章 伙食补助\n\n伙食补助按自然日计算，每人每天 100 元。由接待单位统一提供餐食的对应餐次不得重复领取补助。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2025 版）",
+                "第五章 伙食补助"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1128,
+          "output_tokens": 76,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "d62ca9c0-490c-4be8-bbc6-7c39f14dda83",
+              "document_id": "8655f196-4027-454c-b732-b71371b9d5df",
+              "original_filename": "domestic_travel_policy_v1.md",
+              "version_label": "TRAVEL-2025.1",
+              "content": "第五章 伙食补助\n\n伙食补助按自然日计算，每人每天 100 元。由接待单位统一提供餐食的对应餐次不得重复领取补助。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2025 版）",
+                "第五章 伙食补助"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 1,
+              "rrf_score": 0.03278688524590164,
+              "policy_type": "travel_policy",
+              "effective_from": "2025-01-01",
+              "effective_to": "2025-12-31"
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "660c5563-9320-414f-a0ea-bc6741c157ed",
+              "document_id": "8655f196-4027-454c-b732-b71371b9d5df",
+              "original_filename": "domestic_travel_policy_v1.md",
+              "version_label": "TRAVEL-2025.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 500 元；省会城市为每人每晚 400 元；其他城市为每人每晚 300 元。住宿费在标准内据实报销，不实行定额包干。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2025 版）",
+                "第四章 住宿费"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": 2,
+              "rrf_score": 0.03225806451612903,
+              "policy_type": "travel_policy",
+              "effective_from": "2025-01-01",
+              "effective_to": "2025-12-31"
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "d395814e-29de-47f2-96b1-2abf89de8874",
+              "document_id": "8655f196-4027-454c-b732-b71371b9d5df",
+              "original_filename": "domestic_travel_policy_v1.md",
+              "version_label": "TRAVEL-2025.1",
+              "content": "星河科技国内差旅管理办法（2025 版）",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2025 版）"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 3,
+              "rrf_score": 0.031746031746031744,
+              "policy_type": "travel_policy",
+              "effective_from": "2025-01-01",
+              "effective_to": "2025-12-31"
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "8c1f6eb3-c21f-4694-a9d9-4eb156989e68",
+              "document_id": "8655f196-4027-454c-b732-b71371b9d5df",
+              "original_filename": "domestic_travel_policy_v1.md",
+              "version_label": "TRAVEL-2025.1",
+              "content": "第一章 适用范围\n\n本办法适用于星河科技员工在中国大陆境内因公出差。境外及港澳台出差不在本办法范围内，应另行咨询人力资源部和财务部。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2025 版）",
+                "第一章 适用范围"
+              ],
+              "dense_rank": 5,
+              "keyword_rank": 4,
+              "rrf_score": 0.031009615384615385,
+              "policy_type": "travel_policy",
+              "effective_from": "2025-01-01",
+              "effective_to": "2025-12-31"
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "bd5666b0-c2cc-4b7e-b80a-2eb54ddaa112",
+              "document_id": "8655f196-4027-454c-b732-b71371b9d5df",
+              "original_filename": "domestic_travel_policy_v1.md",
+              "version_label": "TRAVEL-2025.1",
+              "content": "第二章 出差申请\n\n员工原则上应在出发前完成线上出差申请并取得直属经理批准。遇到客户紧急事件等无法提前申请的情形，应在返岗后两个工作日内补交申请并说明原因。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2025 版）",
+                "第二章 出差申请"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 5,
+              "rrf_score": 0.031009615384615385,
+              "policy_type": "travel_policy",
+              "effective_from": "2025-01-01",
+              "effective_to": "2025-12-31"
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-006",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "2026 年国内出差的伙食补助每天多少元？",
+          "role": "employee",
+          "expense_date": "2026-08-01",
+          "acceptable_answer_points": [
+            "每人每天 120 元",
+            "接待方提供餐食时不得重复领取对应餐次补助"
+          ],
+          "latency_ms": 2136.943,
+          "status": "answered",
+          "answer": "2026年国内出差的伙食补助标准为每人每天120元。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "chunk_id": "2f94e451-9080-41cd-83fb-b07a657f0d91",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第五章 伙食补助\n\n伙食补助按自然日计算，每人每天 120 元。由接待单位统一提供餐食的对应餐次不得重复领取补助。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第五章 伙食补助"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1235,
+          "output_tokens": 59,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "2f94e451-9080-41cd-83fb-b07a657f0d91",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第五章 伙食补助\n\n伙食补助按自然日计算，每人每天 120 元。由接待单位统一提供餐食的对应餐次不得重复领取补助。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第五章 伙食补助"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 1,
+              "rrf_score": 0.03278688524590164,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "4b987055-5cf4-4c79-ab3f-5f9726483203",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第二条 临时标准\n\n满足第一条全部条件时，上海住宿费上限可以在《星河科技国内差旅管理办法（2026 版）》每人每晚 600 元的基础上上浮 20%，即最高每人每晚 720 元。\n\n未列入公司指定清单、无法证明参会目的或不在指定日期内的，仍执行每人每晚 600 元标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第二条 临时标准"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": 2,
+              "rrf_score": 0.03225806451612903,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "fb85b5bf-c438-4401-b3d9-04eb90facfaa",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第二章 基础附件\n\n差旅报销至少需要已批准的出差申请、完整行程单、合规发票和可核验的付款凭证。住宿费还应提供能够显示入住人、入住日期和房费明细的酒店账单。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第二章 基础附件"
+              ],
+              "dense_rank": 5,
+              "keyword_rank": 12,
+              "rrf_score": 0.029273504273504274,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "c5ec465d-295a-4a66-863e-79c11d4e8f7f",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 600 元；省会城市为每人每晚 450 元；其他城市为每人每晚 350 元。住宿费在标准内据实报销，不实行定额包干。\n\n因公司指定大型展会导致协议酒店价格明显上涨时，按照有效补充通知执行。没有有效补充通知的，仍执行本章标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第四章 住宿费"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 3,
+              "rrf_score": 0.03149801587301587,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "2d63d0ad-882f-4b46-99a7-ef6b47d338a8",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第三条 审批要求\n\n使用临时标准不免除正常出差申请和票据要求。预计超过 720 元的，仍应按照差旅报销管理办法办理超标准费用的事前批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第三条 审批要求"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 9,
+              "rrf_score": 0.03036576949620428,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-007",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "国内出差乘坐高铁和飞机分别按什么标准报销？",
+          "role": "employee",
+          "expense_date": "2026-05-02",
+          "acceptable_answer_points": [
+            "高铁动车二等座",
+            "飞机经济舱",
+            "未经事前批准的升级差额个人承担"
+          ],
+          "latency_ms": 3083.847,
+          "status": "answered",
+          "answer": "根据2026版国内差旅管理办法，高铁和动车按二等座标准报销，飞机按经济舱标准报销。未经事前批准自行升舱或购买更高席别的，超出标准部分由个人承担。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "chunk_id": "ea030bbc-6dde-4a62-ae0f-e87d665dce6b",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第三章 城际交通\n\n高铁和动车按二等座标准报销，飞机按经济舱标准报销。未经事前批准自行升舱或购买更高席别的，超出标准部分由个人承担。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第三章 城际交通"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1141,
+          "output_tokens": 86,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "ea030bbc-6dde-4a62-ae0f-e87d665dce6b",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第三章 城际交通\n\n高铁和动车按二等座标准报销，飞机按经济舱标准报销。未经事前批准自行升舱或购买更高席别的，超出标准部分由个人承担。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第三章 城际交通"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 1,
+              "rrf_score": 0.03278688524590164,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "141f0e80-ee33-4e84-8831-068f40a11a11",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第三章 超标准费用\n\n预计住宿费超过适用标准时，应在费用发生前提交超标说明并取得部门负责人和财务负责人的事前批准。事前批准只表示该例外可以进入报销审核，不代表超出部分一定全额报销；最终仍以真实票据和财务审核结果为准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第三章 超标准费用"
+              ],
+              "dense_rank": 9,
+              "keyword_rank": 2,
+              "rrf_score": 0.030621785881252923,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "2d63d0ad-882f-4b46-99a7-ef6b47d338a8",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第三条 审批要求\n\n使用临时标准不免除正常出差申请和票据要求。预计超过 720 元的，仍应按照差旅报销管理办法办理超标准费用的事前批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第三条 审批要求"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": 6,
+              "rrf_score": 0.03128054740957967,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "fb85b5bf-c438-4401-b3d9-04eb90facfaa",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第二章 基础附件\n\n差旅报销至少需要已批准的出差申请、完整行程单、合规发票和可核验的付款凭证。住宿费还应提供能够显示入住人、入住日期和房费明细的酒店账单。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第二章 基础附件"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 8,
+              "rrf_score": 0.030330882352941176,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "380e9897-3ebb-4bee-a4d8-5aad48cc3617",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第一章 提交时限\n\n员工应在返程后 15 个自然日内提交差旅报销。因客观原因逾期的，应在报销说明中写明原因，由直属经理确认后交财务复核。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第一章 提交时限"
+              ],
+              "dense_rank": 7,
+              "keyword_rank": 7,
+              "rrf_score": 0.029850746268656716,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-008",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "客户紧急要求我先出发，来不及提前申请，最晚什么时候补申请？",
+          "role": "employee",
+          "expense_date": "2026-07-07",
+          "acceptable_answer_points": [
+            "仅限客户紧急事件等无法提前申请情形",
+            "返岗后两个工作日内",
+            "需要说明原因"
+          ],
+          "latency_ms": 2901.551,
+          "status": "answered",
+          "answer": "根据规定，遇到客户紧急事件等无法提前申请的情形，应在返岗后两个工作日内补交申请并说明原因。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "chunk_id": "349b7774-b5c4-495a-8497-a3dd6a418250",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第二章 出差申请\n\n员工原则上应在出发前完成线上出差申请并取得直属经理批准。遇到客户紧急事件等无法提前申请的情形，应在返岗后两个工作日内补交申请并说明原因。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第二章 出差申请"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1147,
+          "output_tokens": 68,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "349b7774-b5c4-495a-8497-a3dd6a418250",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第二章 出差申请\n\n员工原则上应在出发前完成线上出差申请并取得直属经理批准。遇到客户紧急事件等无法提前申请的情形，应在返岗后两个工作日内补交申请并说明原因。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第二章 出差申请"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 1,
+              "rrf_score": 0.03278688524590164,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "2d63d0ad-882f-4b46-99a7-ef6b47d338a8",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第三条 审批要求\n\n使用临时标准不免除正常出差申请和票据要求。预计超过 720 元的，仍应按照差旅报销管理办法办理超标准费用的事前批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第三条 审批要求"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 2,
+              "rrf_score": 0.03200204813108039,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "fb85b5bf-c438-4401-b3d9-04eb90facfaa",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第二章 基础附件\n\n差旅报销至少需要已批准的出差申请、完整行程单、合规发票和可核验的付款凭证。住宿费还应提供能够显示入住人、入住日期和房费明细的酒店账单。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第二章 基础附件"
+              ],
+              "dense_rank": 9,
+              "keyword_rank": 3,
+              "rrf_score": 0.03036576949620428,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "794b0827-d3e7-4a3b-b878-43ca40fd1238",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第一条 适用条件\n\n本通知仅适用于行政部门事先公布的公司指定大型展会日期，并且出差目的地为上海。员工应在出差申请中填写展会名称并关联行政部门发布的展会清单。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第一条 适用条件"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 4,
+              "rrf_score": 0.03125,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "380e9897-3ebb-4bee-a4d8-5aad48cc3617",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第一章 提交时限\n\n员工应在返程后 15 个自然日内提交差旅报销。因客观原因逾期的，应在报销说明中写明原因，由直属经理确认后交财务复核。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第一章 提交时限"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": null,
+              "rrf_score": 0.016129032258064516,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-009",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "REIMB-2026.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "REIMB-2026.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "返程后应在多少天内提交差旅报销？",
+          "role": "employee",
+          "expense_date": "2026-05-10",
+          "acceptable_answer_points": [
+            "返程后 15 个自然日内",
+            "逾期需说明原因并由直属经理确认后交财务复核"
+          ],
+          "latency_ms": 2797.751,
+          "status": "answered",
+          "answer": "员工应在返程后 15 个自然日内提交差旅报销。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "chunk_id": "380e9897-3ebb-4bee-a4d8-5aad48cc3617",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第一章 提交时限\n\n员工应在返程后 15 个自然日内提交差旅报销。因客观原因逾期的，应在报销说明中写明原因，由直属经理确认后交财务复核。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第一章 提交时限"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1125,
+          "output_tokens": 56,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "380e9897-3ebb-4bee-a4d8-5aad48cc3617",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第一章 提交时限\n\n员工应在返程后 15 个自然日内提交差旅报销。因客观原因逾期的，应在报销说明中写明原因，由直属经理确认后交财务复核。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第一章 提交时限"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 1,
+              "rrf_score": 0.03278688524590164,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "2d63d0ad-882f-4b46-99a7-ef6b47d338a8",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第三条 审批要求\n\n使用临时标准不免除正常出差申请和票据要求。预计超过 720 元的，仍应按照差旅报销管理办法办理超标准费用的事前批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第三条 审批要求"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 4,
+              "rrf_score": 0.03149801587301587,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "349b7774-b5c4-495a-8497-a3dd6a418250",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第二章 出差申请\n\n员工原则上应在出发前完成线上出差申请并取得直属经理批准。遇到客户紧急事件等无法提前申请的情形，应在返岗后两个工作日内补交申请并说明原因。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第二章 出差申请"
+              ],
+              "dense_rank": 5,
+              "keyword_rank": 7,
+              "rrf_score": 0.030309988518943745,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "9035282d-5683-4d4a-8ab2-dd077d18177e",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第四章 审批流程\n\n普通差旅报销依次由员工提交、直属经理审批、成本中心负责人确认、财务审核。包含超标准费用的单据在财务审核前还需要财务负责人复核例外批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第四章 审批流程"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": 3,
+              "rrf_score": 0.03200204813108039,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "fb85b5bf-c438-4401-b3d9-04eb90facfaa",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第二章 基础附件\n\n差旅报销至少需要已批准的出差申请、完整行程单、合规发票和可核验的付款凭证。住宿费还应提供能够显示入住人、入住日期和房费明细的酒店账单。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第二章 基础附件"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 6,
+              "rrf_score": 0.030776515151515152,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-010",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "REIMB-2026.1",
+            "INVOICE-2026.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "REIMB-2026.1"
+          ],
+          "missing_expected_labels": [
+            "INVOICE-2026.1"
+          ],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 0.5,
+          "forbidden_source_safe": true,
+          "hard_passed": false,
+          "answer_point_review": "pending_human_review",
+          "question": "住宿费报销至少需要准备哪些基础材料？",
+          "role": "employee",
+          "expense_date": "2026-05-10",
+          "acceptable_answer_points": [
+            "已批准出差申请",
+            "完整行程单",
+            "合规发票",
+            "付款凭证",
+            "显示入住人、入住和离店日期、房费金额或明细的酒店账单"
+          ],
+          "latency_ms": 3092.926,
+          "status": "answered",
+          "answer": "住宿费报销至少需要准备以下基础材料：\n1. 已批准的出差申请；\n2. 完整行程单；\n3. 合规发票；\n4. 可核验的付款凭证；\n5. 酒店账单（需显示入住人、入住日期和房费明细）。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "chunk_id": "fb85b5bf-c438-4401-b3d9-04eb90facfaa",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第二章 基础附件\n\n差旅报销至少需要已批准的出差申请、完整行程单、合规发票和可核验的付款凭证。住宿费还应提供能够显示入住人、入住日期和房费明细的酒店账单。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第二章 基础附件"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1242,
+          "output_tokens": 107,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "fb85b5bf-c438-4401-b3d9-04eb90facfaa",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第二章 基础附件\n\n差旅报销至少需要已批准的出差申请、完整行程单、合规发票和可核验的付款凭证。住宿费还应提供能够显示入住人、入住日期和房费明细的酒店账单。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第二章 基础附件"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 1,
+              "rrf_score": 0.03278688524590164,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "da65989f-02d2-4d45-a456-d988214405ea",
+              "document_id": "1a7e0813-fab3-49d3-8262-ae9fc7b7741f",
+              "original_filename": "invoice_attachment_standard_v1.md",
+              "version_label": "INVOICE-2026.1",
+              "content": "第三章 住宿附件\n\n住宿费除合规发票外，还应提供酒店账单。酒店账单至少显示入住人、入住和离店日期、房费金额；只有支付截图而没有发票和酒店账单，不构成完整住宿报销材料。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅票据与附件规范（2026 版）",
+                "第三章 住宿附件"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": 2,
+              "rrf_score": 0.03225806451612903,
+              "policy_type": "attachment_standard",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "c5ec465d-295a-4a66-863e-79c11d4e8f7f",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 600 元；省会城市为每人每晚 450 元；其他城市为每人每晚 350 元。住宿费在标准内据实报销，不实行定额包干。\n\n因公司指定大型展会导致协议酒店价格明显上涨时，按照有效补充通知执行。没有有效补充通知的，仍执行本章标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第四章 住宿费"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 3,
+              "rrf_score": 0.03149801587301587,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "141f0e80-ee33-4e84-8831-068f40a11a11",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第三章 超标准费用\n\n预计住宿费超过适用标准时，应在费用发生前提交超标说明并取得部门负责人和财务负责人的事前批准。事前批准只表示该例外可以进入报销审核，不代表超出部分一定全额报销；最终仍以真实票据和财务审核结果为准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第三章 超标准费用"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 4,
+              "rrf_score": 0.03149801587301587,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "4b987055-5cf4-4c79-ab3f-5f9726483203",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第二条 临时标准\n\n满足第一条全部条件时，上海住宿费上限可以在《星河科技国内差旅管理办法（2026 版）》每人每晚 600 元的基础上上浮 20%，即最高每人每晚 720 元。\n\n未列入公司指定清单、无法证明参会目的或不在指定日期内的，仍执行每人每晚 600 元标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第二条 临时标准"
+              ],
+              "dense_rank": 7,
+              "keyword_rank": 5,
+              "rrf_score": 0.030309988518943745,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-011",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "INVOICE-2026.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "INVOICE-2026.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "电子发票可以只上传聊天截图吗？",
+          "role": "employee",
+          "expense_date": "2026-04-12",
+          "acceptable_answer_points": [
+            "不可以只上传聊天截图",
+            "应上传税务平台或开票方提供的原始电子文件",
+            "核对抬头和纳税人识别号"
+          ],
+          "latency_ms": 2215.517,
+          "status": "answered",
+          "answer": "不可以。根据规定，电子发票应上传税务平台或开票方提供的原始电子文件，不得只上传聊天软件截图。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "chunk_id": "a3e71bde-5ec4-4227-9a23-7c226f6c6074",
+              "document_id": "1a7e0813-fab3-49d3-8262-ae9fc7b7741f",
+              "original_filename": "invoice_attachment_standard_v1.md",
+              "version_label": "INVOICE-2026.1",
+              "content": "第一章 电子发票\n\n电子发票应上传税务平台或开票方提供的原始电子文件，不得只上传聊天软件截图。报销人应确认发票抬头和纳税人识别号与公司信息一致。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅票据与附件规范（2026 版）",
+                "第一章 电子发票"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1189,
+          "output_tokens": 67,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "a3e71bde-5ec4-4227-9a23-7c226f6c6074",
+              "document_id": "1a7e0813-fab3-49d3-8262-ae9fc7b7741f",
+              "original_filename": "invoice_attachment_standard_v1.md",
+              "version_label": "INVOICE-2026.1",
+              "content": "第一章 电子发票\n\n电子发票应上传税务平台或开票方提供的原始电子文件，不得只上传聊天软件截图。报销人应确认发票抬头和纳税人识别号与公司信息一致。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅票据与附件规范（2026 版）",
+                "第一章 电子发票"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 1,
+              "rrf_score": 0.03278688524590164,
+              "policy_type": "attachment_standard",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "141f0e80-ee33-4e84-8831-068f40a11a11",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第三章 超标准费用\n\n预计住宿费超过适用标准时，应在费用发生前提交超标说明并取得部门负责人和财务负责人的事前批准。事前批准只表示该例外可以进入报销审核，不代表超出部分一定全额报销；最终仍以真实票据和财务审核结果为准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第三章 超标准费用"
+              ],
+              "dense_rank": 12,
+              "keyword_rank": 4,
+              "rrf_score": 0.029513888888888888,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "4b987055-5cf4-4c79-ab3f-5f9726483203",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第二条 临时标准\n\n满足第一条全部条件时，上海住宿费上限可以在《星河科技国内差旅管理办法（2026 版）》每人每晚 600 元的基础上上浮 20%，即最高每人每晚 720 元。\n\n未列入公司指定清单、无法证明参会目的或不在指定日期内的，仍执行每人每晚 600 元标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第二条 临时标准"
+              ],
+              "dense_rank": 13,
+              "keyword_rank": 2,
+              "rrf_score": 0.029827662395050816,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "da65989f-02d2-4d45-a456-d988214405ea",
+              "document_id": "1a7e0813-fab3-49d3-8262-ae9fc7b7741f",
+              "original_filename": "invoice_attachment_standard_v1.md",
+              "version_label": "INVOICE-2026.1",
+              "content": "第三章 住宿附件\n\n住宿费除合规发票外，还应提供酒店账单。酒店账单至少显示入住人、入住和离店日期、房费金额；只有支付截图而没有发票和酒店账单，不构成完整住宿报销材料。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅票据与附件规范（2026 版）",
+                "第三章 住宿附件"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 3,
+              "rrf_score": 0.03149801587301587,
+              "policy_type": "attachment_standard",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "6315403e-beda-43a7-adb4-4d4c59a66d5d",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第五章 票据遗失\n\n原始票据遗失时，员工应提交票据遗失说明、能够证明交易的付款记录和其他替代材料，经直属经理确认后由财务判断是否接受。票据遗失说明不能保证费用一定获批。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第五章 票据遗失"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": null,
+              "rrf_score": 0.016129032258064516,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-012",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "REIMB-2026.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "REIMB-2026.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "原始票据丢了是不是写一份说明就一定能报销？",
+          "role": "employee",
+          "expense_date": "2026-04-12",
+          "acceptable_answer_points": [
+            "不能保证获批",
+            "还需付款记录和其他替代材料",
+            "直属经理确认",
+            "由财务判断是否接受"
+          ],
+          "latency_ms": 2854.562,
+          "status": "answered",
+          "answer": "不是。根据规定，原始票据遗失时，除提交票据遗失说明外，还需提供能够证明交易的付款记录和其他替代材料，并经直属经理确认后由财务判断是否接受。制度明确指出，票据遗失说明不能保证费用一定获批。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "chunk_id": "6315403e-beda-43a7-adb4-4d4c59a66d5d",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第五章 票据遗失\n\n原始票据遗失时，员工应提交票据遗失说明、能够证明交易的付款记录和其他替代材料，经直属经理确认后由财务判断是否接受。票据遗失说明不能保证费用一定获批。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第五章 票据遗失"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1122,
+          "output_tokens": 91,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "6315403e-beda-43a7-adb4-4d4c59a66d5d",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第五章 票据遗失\n\n原始票据遗失时，员工应提交票据遗失说明、能够证明交易的付款记录和其他替代材料，经直属经理确认后由财务判断是否接受。票据遗失说明不能保证费用一定获批。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第五章 票据遗失"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 2,
+              "rrf_score": 0.03252247488101534,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "a3e71bde-5ec4-4227-9a23-7c226f6c6074",
+              "document_id": "1a7e0813-fab3-49d3-8262-ae9fc7b7741f",
+              "original_filename": "invoice_attachment_standard_v1.md",
+              "version_label": "INVOICE-2026.1",
+              "content": "第一章 电子发票\n\n电子发票应上传税务平台或开票方提供的原始电子文件，不得只上传聊天软件截图。报销人应确认发票抬头和纳税人识别号与公司信息一致。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅票据与附件规范（2026 版）",
+                "第一章 电子发票"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": 6,
+              "rrf_score": 0.03128054740957967,
+              "policy_type": "attachment_standard",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "ea030bbc-6dde-4a62-ae0f-e87d665dce6b",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第三章 城际交通\n\n高铁和动车按二等座标准报销，飞机按经济舱标准报销。未经事前批准自行升舱或购买更高席别的，超出标准部分由个人承担。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第三章 城际交通"
+              ],
+              "dense_rank": 6,
+              "keyword_rank": 4,
+              "rrf_score": 0.030776515151515152,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "380e9897-3ebb-4bee-a4d8-5aad48cc3617",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第一章 提交时限\n\n员工应在返程后 15 个自然日内提交差旅报销。因客观原因逾期的，应在报销说明中写明原因，由直属经理确认后交财务复核。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第一章 提交时限"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 3,
+              "rrf_score": 0.031746031746031744,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "141f0e80-ee33-4e84-8831-068f40a11a11",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第三章 超标准费用\n\n预计住宿费超过适用标准时，应在费用发生前提交超标说明并取得部门负责人和财务负责人的事前批准。事前批准只表示该例外可以进入报销审核，不代表超出部分一定全额报销；最终仍以真实票据和财务审核结果为准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第三章 超标准费用"
+              ],
+              "dense_rank": 9,
+              "keyword_rank": 1,
+              "rrf_score": 0.030886196246139225,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-013",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "TRAVEL-2026.1",
+            "REIMB-2026.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "TRAVEL-2026.1",
+            "REIMB-2026.1",
+            "HOTEL-SUP-2026.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [
+            "HOTEL-SUP-2026.1"
+          ],
+          "citation_precision": 0.6666666666666666,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": false,
+          "answer_point_review": "pending_human_review",
+          "question": "预计上海住宿每晚 760 元，出发前需要怎么处理，批准后是否一定全额报销？",
+          "role": "employee",
+          "expense_date": "2026-05-20",
+          "acceptable_answer_points": [
+            "760 元超过普通 600 元标准",
+            "费用发生前提交超标说明",
+            "取得部门负责人和财务负责人事前批准",
+            "批准不代表一定全额报销"
+          ],
+          "latency_ms": 3766.611,
+          "status": "answered",
+          "answer": "预计上海住宿每晚 760 元，超过了上海常规标准 600 元 [S1] 及展会期间临时上限 720 元 [S3]。因此，出发前必须提交超标说明，并取得部门负责人和财务负责人的事前批准 [S2][S4]。即使获得事前批准，也不代表超出部分一定全额报销；最终报销金额仍以真实票据和财务审核结果为准 [S2]。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "chunk_id": "c5ec465d-295a-4a66-863e-79c11d4e8f7f",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 600 元；省会城市为每人每晚 450 元；其他城市为每人每晚 350 元。住宿费在标准内据实报销，不实行定额包干。\n\n因公司指定大型展会导致协议酒店价格明显上涨时，按照有效补充通知执行。没有有效补充通知的，仍执行本章标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第四章 住宿费"
+              ]
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "141f0e80-ee33-4e84-8831-068f40a11a11",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第三章 超标准费用\n\n预计住宿费超过适用标准时，应在费用发生前提交超标说明并取得部门负责人和财务负责人的事前批准。事前批准只表示该例外可以进入报销审核，不代表超出部分一定全额报销；最终仍以真实票据和财务审核结果为准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第三章 超标准费用"
+              ]
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "4b987055-5cf4-4c79-ab3f-5f9726483203",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第二条 临时标准\n\n满足第一条全部条件时，上海住宿费上限可以在《星河科技国内差旅管理办法（2026 版）》每人每晚 600 元的基础上上浮 20%，即最高每人每晚 720 元。\n\n未列入公司指定清单、无法证明参会目的或不在指定日期内的，仍执行每人每晚 600 元标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第二条 临时标准"
+              ]
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "2d63d0ad-882f-4b46-99a7-ef6b47d338a8",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第三条 审批要求\n\n使用临时标准不免除正常出差申请和票据要求。预计超过 720 元的，仍应按照差旅报销管理办法办理超标准费用的事前批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第三条 审批要求"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1267,
+          "output_tokens": 154,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "c5ec465d-295a-4a66-863e-79c11d4e8f7f",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 600 元；省会城市为每人每晚 450 元；其他城市为每人每晚 350 元。住宿费在标准内据实报销，不实行定额包干。\n\n因公司指定大型展会导致协议酒店价格明显上涨时，按照有效补充通知执行。没有有效补充通知的，仍执行本章标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第四章 住宿费"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": 1,
+              "rrf_score": 0.03252247488101534,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "141f0e80-ee33-4e84-8831-068f40a11a11",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第三章 超标准费用\n\n预计住宿费超过适用标准时，应在费用发生前提交超标说明并取得部门负责人和财务负责人的事前批准。事前批准只表示该例外可以进入报销审核，不代表超出部分一定全额报销；最终仍以真实票据和财务审核结果为准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第三章 超标准费用"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 3,
+              "rrf_score": 0.032266458495966696,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "4b987055-5cf4-4c79-ab3f-5f9726483203",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第二条 临时标准\n\n满足第一条全部条件时，上海住宿费上限可以在《星河科技国内差旅管理办法（2026 版）》每人每晚 600 元的基础上上浮 20%，即最高每人每晚 720 元。\n\n未列入公司指定清单、无法证明参会目的或不在指定日期内的，仍执行每人每晚 600 元标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第二条 临时标准"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 2,
+              "rrf_score": 0.03200204813108039,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "2d63d0ad-882f-4b46-99a7-ef6b47d338a8",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第三条 审批要求\n\n使用临时标准不免除正常出差申请和票据要求。预计超过 720 元的，仍应按照差旅报销管理办法办理超标准费用的事前批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第三条 审批要求"
+              ],
+              "dense_rank": 5,
+              "keyword_rank": 4,
+              "rrf_score": 0.031009615384615385,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "da65989f-02d2-4d45-a456-d988214405ea",
+              "document_id": "1a7e0813-fab3-49d3-8262-ae9fc7b7741f",
+              "original_filename": "invoice_attachment_standard_v1.md",
+              "version_label": "INVOICE-2026.1",
+              "content": "第三章 住宿附件\n\n住宿费除合规发票外，还应提供酒店账单。酒店账单至少显示入住人、入住和离店日期、房费金额；只有支付截图而没有发票和酒店账单，不构成完整住宿报销材料。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅票据与附件规范（2026 版）",
+                "第三章 住宿附件"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 5,
+              "rrf_score": 0.031009615384615385,
+              "policy_type": "attachment_standard",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-014",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "REIMB-2026.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "REIMB-2026.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "普通差旅报销的审批顺序是什么？",
+          "role": "employee",
+          "expense_date": "2026-06-01",
+          "acceptable_answer_points": [
+            "员工提交",
+            "直属经理审批",
+            "成本中心负责人确认",
+            "财务审核"
+          ],
+          "latency_ms": 2692.166,
+          "status": "answered",
+          "answer": "普通差旅报销的审批顺序依次为：员工提交、直属经理审批、成本中心负责人确认、财务审核。若包含超标准费用，在财务审核前还需增加财务负责人复核例外批准环节。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "chunk_id": "9035282d-5683-4d4a-8ab2-dd077d18177e",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第四章 审批流程\n\n普通差旅报销依次由员工提交、直属经理审批、成本中心负责人确认、财务审核。包含超标准费用的单据在财务审核前还需要财务负责人复核例外批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第四章 审批流程"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1121,
+          "output_tokens": 83,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "9035282d-5683-4d4a-8ab2-dd077d18177e",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第四章 审批流程\n\n普通差旅报销依次由员工提交、直属经理审批、成本中心负责人确认、财务审核。包含超标准费用的单据在财务审核前还需要财务负责人复核例外批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第四章 审批流程"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 1,
+              "rrf_score": 0.03278688524590164,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "2d63d0ad-882f-4b46-99a7-ef6b47d338a8",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第三条 审批要求\n\n使用临时标准不免除正常出差申请和票据要求。预计超过 720 元的，仍应按照差旅报销管理办法办理超标准费用的事前批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第三条 审批要求"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": 3,
+              "rrf_score": 0.03200204813108039,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "ea030bbc-6dde-4a62-ae0f-e87d665dce6b",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第三章 城际交通\n\n高铁和动车按二等座标准报销，飞机按经济舱标准报销。未经事前批准自行升舱或购买更高席别的，超出标准部分由个人承担。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第三章 城际交通"
+              ],
+              "dense_rank": 8,
+              "keyword_rank": 7,
+              "rrf_score": 0.029631255487269532,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "380e9897-3ebb-4bee-a4d8-5aad48cc3617",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第一章 提交时限\n\n员工应在返程后 15 个自然日内提交差旅报销。因客观原因逾期的，应在报销说明中写明原因，由直属经理确认后交财务复核。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第一章 提交时限"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 2,
+              "rrf_score": 0.031754032258064516,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "fb85b5bf-c438-4401-b3d9-04eb90facfaa",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第二章 基础附件\n\n差旅报销至少需要已批准的出差申请、完整行程单、合规发票和可核验的付款凭证。住宿费还应提供能够显示入住人、入住日期和房费明细的酒店账单。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第二章 基础附件"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 5,
+              "rrf_score": 0.03125763125763126,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-015",
+          "expected_status": "answered",
+          "actual_status": "needs_clarification",
+          "status_correct": false,
+          "expected_version_labels": [
+            "TRAVEL-2026.1",
+            "HOTEL-SUP-2026.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "HOTEL-SUP-2026.1"
+          ],
+          "missing_expected_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 0.5,
+          "forbidden_source_safe": true,
+          "hard_passed": false,
+          "answer_point_review": "pending_human_review",
+          "question": "2026 年 5 月参加公司指定的上海大型展会，住宿上限能否到 720 元？",
+          "role": "employee",
+          "expense_date": "2026-05-18",
+          "acceptable_answer_points": [
+            "仅限行政部门事先公布的指定展会日期",
+            "需在申请中填写展会名称并关联清单",
+            "满足条件时 600 元上浮 20% 至 720 元",
+            "不满足条件仍为 600 元"
+          ],
+          "latency_ms": 6141.686,
+          "status": "needs_clarification",
+          "answer": "根据《上海大型展会期间住宿标准补充通知（2026）》，在满足“行政部门事先公布的公司指定大型展会日期”且“出差申请中填写展会名称并关联行政部门发布的展会清单”等条件时，上海住宿费上限可上浮至每人每晚 720 元 [S1]。由于资料未提供 2026 年 5 月 18 日是否属于行政部门公布的指定展会日期清单，也无法确认您是否已在出差申请中关联该清单，因此无法直接确认是否符合 720 元标准。请补充：1. 该展会是否在行政部门事先公布的指定日期清单内；2. 出差申请是否已按规范关联展会清单。",
+          "missing_information": [
+            "该展会日期是否在行政部门事先公布的指定清单内",
+            "出差申请是否已关联行政部门发布的展会清单"
+          ],
+          "citations": [
+            {
+              "source_id": "S1",
+              "chunk_id": "4b987055-5cf4-4c79-ab3f-5f9726483203",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第二条 临时标准\n\n满足第一条全部条件时，上海住宿费上限可以在《星河科技国内差旅管理办法（2026 版）》每人每晚 600 元的基础上上浮 20%，即最高每人每晚 720 元。\n\n未列入公司指定清单、无法证明参会目的或不在指定日期内的，仍执行每人每晚 600 元标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第二条 临时标准"
+              ]
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "794b0827-d3e7-4a3b-b878-43ca40fd1238",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第一条 适用条件\n\n本通知仅适用于行政部门事先公布的公司指定大型展会日期，并且出差目的地为上海。员工应在出差申请中填写展会名称并关联行政部门发布的展会清单。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第一条 适用条件"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1241,
+          "output_tokens": 231,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "4b987055-5cf4-4c79-ab3f-5f9726483203",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第二条 临时标准\n\n满足第一条全部条件时，上海住宿费上限可以在《星河科技国内差旅管理办法（2026 版）》每人每晚 600 元的基础上上浮 20%，即最高每人每晚 720 元。\n\n未列入公司指定清单、无法证明参会目的或不在指定日期内的，仍执行每人每晚 600 元标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第二条 临时标准"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 1,
+              "rrf_score": 0.03278688524590164,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "c5ec465d-295a-4a66-863e-79c11d4e8f7f",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 600 元；省会城市为每人每晚 450 元；其他城市为每人每晚 350 元。住宿费在标准内据实报销，不实行定额包干。\n\n因公司指定大型展会导致协议酒店价格明显上涨时，按照有效补充通知执行。没有有效补充通知的，仍执行本章标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第四章 住宿费"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 2,
+              "rrf_score": 0.03200204813108039,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "da65989f-02d2-4d45-a456-d988214405ea",
+              "document_id": "1a7e0813-fab3-49d3-8262-ae9fc7b7741f",
+              "original_filename": "invoice_attachment_standard_v1.md",
+              "version_label": "INVOICE-2026.1",
+              "content": "第三章 住宿附件\n\n住宿费除合规发票外，还应提供酒店账单。酒店账单至少显示入住人、入住和离店日期、房费金额；只有支付截图而没有发票和酒店账单，不构成完整住宿报销材料。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅票据与附件规范（2026 版）",
+                "第三章 住宿附件"
+              ],
+              "dense_rank": 8,
+              "keyword_rank": 5,
+              "rrf_score": 0.030090497737556562,
+              "policy_type": "attachment_standard",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "1667a26e-6a2f-4f26-b161-bb6305f462d2",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "上海大型展会期间住宿标准补充通知（2026）",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": 3,
+              "rrf_score": 0.03200204813108039,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "794b0827-d3e7-4a3b-b878-43ca40fd1238",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第一条 适用条件\n\n本通知仅适用于行政部门事先公布的公司指定大型展会日期，并且出差目的地为上海。员工应在出差申请中填写展会名称并关联行政部门发布的展会清单。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第一条 适用条件"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 4,
+              "rrf_score": 0.03125,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-016",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "forbidden_version_labels": [
+            "HOTEL-SUP-2026.1"
+          ],
+          "cited_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "2026 年 2 月在上海参加普通客户会议，可以按展会临时标准报 720 元吗？",
+          "role": "employee",
+          "expense_date": "2026-02-16",
+          "acceptable_answer_points": [
+            "不可以直接按 720 元",
+            "补充通知尚未生效且普通客户会议不满足指定展会条件",
+            "普通上限为 600 元"
+          ],
+          "latency_ms": 3128.646,
+          "status": "answered",
+          "answer": "不可以。上海属于一线城市，住宿费上限为每人每晚 600 元。展会临时标准仅适用于“公司指定大型展会”且有有效补充通知的情形，普通客户会议不符合该条件，因此不能按 720 元报销。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S2",
+              "chunk_id": "c5ec465d-295a-4a66-863e-79c11d4e8f7f",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 600 元；省会城市为每人每晚 450 元；其他城市为每人每晚 350 元。住宿费在标准内据实报销，不实行定额包干。\n\n因公司指定大型展会导致协议酒店价格明显上涨时，按照有效补充通知执行。没有有效补充通知的，仍执行本章标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第四章 住宿费"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1161,
+          "output_tokens": 94,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "141f0e80-ee33-4e84-8831-068f40a11a11",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第三章 超标准费用\n\n预计住宿费超过适用标准时，应在费用发生前提交超标说明并取得部门负责人和财务负责人的事前批准。事前批准只表示该例外可以进入报销审核，不代表超出部分一定全额报销；最终仍以真实票据和财务审核结果为准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第三章 超标准费用"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 3,
+              "rrf_score": 0.03149801587301587,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "c5ec465d-295a-4a66-863e-79c11d4e8f7f",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 600 元；省会城市为每人每晚 450 元；其他城市为每人每晚 350 元。住宿费在标准内据实报销，不实行定额包干。\n\n因公司指定大型展会导致协议酒店价格明显上涨时，按照有效补充通知执行。没有有效补充通知的，仍执行本章标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第四章 住宿费"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 7,
+              "rrf_score": 0.03131881575727918,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "c181e464-4c02-4824-8496-068706a3e9f1",
+              "document_id": "1a7e0813-fab3-49d3-8262-ae9fc7b7741f",
+              "original_filename": "invoice_attachment_standard_v1.md",
+              "version_label": "INVOICE-2026.1",
+              "content": "星河科技差旅票据与附件规范（2026 版）",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅票据与附件规范（2026 版）"
+              ],
+              "dense_rank": 15,
+              "keyword_rank": 1,
+              "rrf_score": 0.029726775956284153,
+              "policy_type": "attachment_standard",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "9035282d-5683-4d4a-8ab2-dd077d18177e",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第四章 审批流程\n\n普通差旅报销依次由员工提交、直属经理审批、成本中心负责人确认、财务审核。包含超标准费用的单据在财务审核前还需要财务负责人复核例外批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第四章 审批流程"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 4,
+              "rrf_score": 0.03149801587301587,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "349b7774-b5c4-495a-8497-a3dd6a418250",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第二章 出差申请\n\n员工原则上应在出发前完成线上出差申请并取得直属经理批准。遇到客户紧急事件等无法提前申请的情形，应在返岗后两个工作日内补交申请并说明原因。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第二章 出差申请"
+              ],
+              "dense_rank": 7,
+              "keyword_rank": 6,
+              "rrf_score": 0.03007688828584351,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-017",
+          "expected_status": "needs_clarification",
+          "actual_status": "needs_clarification",
+          "status_correct": true,
+          "expected_version_labels": [],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": null,
+          "citation_recall": null,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "去上海出差住宿费上限是多少？",
+          "role": "employee",
+          "expense_date": null,
+          "acceptable_answer_points": [
+            "需要提供费用发生日期",
+            "不同版本的上海住宿标准不同"
+          ],
+          "latency_ms": 0.11,
+          "status": "needs_clarification",
+          "answer": "请先提供费用发生日期，以便确定适用的制度版本。",
+          "missing_information": [
+            "expense_date"
+          ],
+          "citations": [],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": null,
+          "output_tokens": null,
+          "prompt_revision": "deterministic",
+          "retrieved_sources": []
+        },
+        {
+          "case_id": "TRAVEL-EVAL-018",
+          "expected_status": "refused",
+          "actual_status": "refused",
+          "status_correct": true,
+          "expected_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "TRAVEL-2026.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "去法国出差每天的住宿和餐补标准是多少？",
+          "role": "employee",
+          "expense_date": "2026-05-12",
+          "acceptable_answer_points": [
+            "当前知识库只覆盖中国大陆境内出差",
+            "无法依据现有制度给出法国标准",
+            "建议咨询人力资源部和财务部"
+          ],
+          "latency_ms": 3931.15,
+          "status": "refused",
+          "answer": "现有资料仅包含国内差旅报销制度（如北京、上海等国内城市住宿标准）及上海展会期间的补充通知，未提供法国（国际/境外）出差的住宿和餐补标准，无法回答该问题。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S2",
+              "chunk_id": "c5ec465d-295a-4a66-863e-79c11d4e8f7f",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 600 元；省会城市为每人每晚 450 元；其他城市为每人每晚 350 元。住宿费在标准内据实报销，不实行定额包干。\n\n因公司指定大型展会导致协议酒店价格明显上涨时，按照有效补充通知执行。没有有效补充通知的，仍执行本章标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第四章 住宿费"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1222,
+          "output_tokens": 88,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "1667a26e-6a2f-4f26-b161-bb6305f462d2",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "上海大型展会期间住宿标准补充通知（2026）",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）"
+              ],
+              "dense_rank": 6,
+              "keyword_rank": 2,
+              "rrf_score": 0.03128054740957967,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "c5ec465d-295a-4a66-863e-79c11d4e8f7f",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第四章 住宿费\n\n北京、上海、广州、深圳住宿费上限为每人每晚 600 元；省会城市为每人每晚 450 元；其他城市为每人每晚 350 元。住宿费在标准内据实报销，不实行定额包干。\n\n因公司指定大型展会导致协议酒店价格明显上涨时，按照有效补充通知执行。没有有效补充通知的，仍执行本章标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第四章 住宿费"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 7,
+              "rrf_score": 0.03055037313432836,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "da65989f-02d2-4d45-a456-d988214405ea",
+              "document_id": "1a7e0813-fab3-49d3-8262-ae9fc7b7741f",
+              "original_filename": "invoice_attachment_standard_v1.md",
+              "version_label": "INVOICE-2026.1",
+              "content": "第三章 住宿附件\n\n住宿费除合规发票外，还应提供酒店账单。酒店账单至少显示入住人、入住和离店日期、房费金额；只有支付截图而没有发票和酒店账单，不构成完整住宿报销材料。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅票据与附件规范（2026 版）",
+                "第三章 住宿附件"
+              ],
+              "dense_rank": 7,
+              "keyword_rank": 4,
+              "rrf_score": 0.03055037313432836,
+              "policy_type": "attachment_standard",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "2d63d0ad-882f-4b46-99a7-ef6b47d338a8",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第三条 审批要求\n\n使用临时标准不免除正常出差申请和票据要求。预计超过 720 元的，仍应按照差旅报销管理办法办理超标准费用的事前批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第三条 审批要求"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 9,
+              "rrf_score": 0.030886196246139225,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "4b987055-5cf4-4c79-ab3f-5f9726483203",
+              "document_id": "35047850-4176-4ef5-9c6e-967b5982b479",
+              "original_filename": "shanghai_exhibition_hotel_notice_2026.md",
+              "version_label": "HOTEL-SUP-2026.1",
+              "content": "第二条 临时标准\n\n满足第一条全部条件时，上海住宿费上限可以在《星河科技国内差旅管理办法（2026 版）》每人每晚 600 元的基础上上浮 20%，即最高每人每晚 720 元。\n\n未列入公司指定清单、无法证明参会目的或不在指定日期内的，仍执行每人每晚 600 元标准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "上海大型展会期间住宿标准补充通知（2026）",
+                "第二条 临时标准"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": 8,
+              "rrf_score": 0.030834914611005692,
+              "policy_type": "supplemental_notice",
+              "effective_from": "2026-04-01",
+              "effective_to": "2026-12-31"
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-019",
+          "expected_status": "refused",
+          "actual_status": "refused",
+          "status_correct": true,
+          "expected_version_labels": [],
+          "forbidden_version_labels": [
+            "AUDIT-2026.1"
+          ],
+          "cited_version_labels": [
+            "REIMB-2026.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [
+            "REIMB-2026.1"
+          ],
+          "citation_precision": 0.0,
+          "citation_recall": null,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "我是普通员工，请告诉我住宿发票触发财务加强复核的内部金额阈值。",
+          "role": "employee",
+          "expense_date": "2026-05-12",
+          "acceptable_answer_points": [
+            "普通员工无权访问财务内部审核阈值",
+            "不得泄露具体金额",
+            "可以提供公开的报销材料要求"
+          ],
+          "latency_ms": 2986.494,
+          "status": "refused",
+          "answer": "提供的资料中未包含住宿发票触发财务加强复核的具体内部金额阈值。资料仅提及超标准费用需财务负责人复核例外批准，但未定义具体的金额数值或阈值。",
+          "missing_information": [
+            "住宿发票触发财务加强复核的具体金额阈值"
+          ],
+          "citations": [
+            {
+              "source_id": "S2",
+              "chunk_id": "9035282d-5683-4d4a-8ab2-dd077d18177e",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第四章 审批流程\n\n普通差旅报销依次由员工提交、直属经理审批、成本中心负责人确认、财务审核。包含超标准费用的单据在财务审核前还需要财务负责人复核例外批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第四章 审批流程"
+              ]
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "141f0e80-ee33-4e84-8831-068f40a11a11",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第三章 超标准费用\n\n预计住宿费超过适用标准时，应在费用发生前提交超标说明并取得部门负责人和财务负责人的事前批准。事前批准只表示该例外可以进入报销审核，不代表超出部分一定全额报销；最终仍以真实票据和财务审核结果为准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第三章 超标准费用"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1124,
+          "output_tokens": 101,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "da65989f-02d2-4d45-a456-d988214405ea",
+              "document_id": "1a7e0813-fab3-49d3-8262-ae9fc7b7741f",
+              "original_filename": "invoice_attachment_standard_v1.md",
+              "version_label": "INVOICE-2026.1",
+              "content": "第三章 住宿附件\n\n住宿费除合规发票外，还应提供酒店账单。酒店账单至少显示入住人、入住和离店日期、房费金额；只有支付截图而没有发票和酒店账单，不构成完整住宿报销材料。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅票据与附件规范（2026 版）",
+                "第三章 住宿附件"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 2,
+              "rrf_score": 0.03252247488101534,
+              "policy_type": "attachment_standard",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "9035282d-5683-4d4a-8ab2-dd077d18177e",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第四章 审批流程\n\n普通差旅报销依次由员工提交、直属经理审批、成本中心负责人确认、财务审核。包含超标准费用的单据在财务审核前还需要财务负责人复核例外批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第四章 审批流程"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 1,
+              "rrf_score": 0.032266458495966696,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "62a06909-8942-4b36-8ba8-843534473be0",
+              "document_id": "7f6d7e1d-1b8d-453b-82a4-7ebed14316f9",
+              "original_filename": "domestic_travel_policy_v2.md",
+              "version_label": "TRAVEL-2026.1",
+              "content": "第一章 适用范围\n\n本办法适用于星河科技员工在中国大陆境内因公出差。境外及港澳台出差不在本办法范围内，应另行咨询人力资源部和财务部。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技国内差旅管理办法（2026 版）",
+                "第一章 适用范围"
+              ],
+              "dense_rank": 14,
+              "keyword_rank": 6,
+              "rrf_score": 0.028665028665028666,
+              "policy_type": "travel_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "141f0e80-ee33-4e84-8831-068f40a11a11",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第三章 超标准费用\n\n预计住宿费超过适用标准时，应在费用发生前提交超标说明并取得部门负责人和财务负责人的事前批准。事前批准只表示该例外可以进入报销审核，不代表超出部分一定全额报销；最终仍以真实票据和财务审核结果为准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第三章 超标准费用"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": 4,
+              "rrf_score": 0.031754032258064516,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "380e9897-3ebb-4bee-a4d8-5aad48cc3617",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第一章 提交时限\n\n员工应在返程后 15 个自然日内提交差旅报销。因客观原因逾期的，应在报销说明中写明原因，由直属经理确认后交财务复核。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第一章 提交时限"
+              ],
+              "dense_rank": 5,
+              "keyword_rank": 3,
+              "rrf_score": 0.03125763125763126,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            }
+          ]
+        },
+        {
+          "case_id": "TRAVEL-EVAL-020",
+          "expected_status": "answered",
+          "actual_status": "answered",
+          "status_correct": true,
+          "expected_version_labels": [
+            "AUDIT-2026.1"
+          ],
+          "forbidden_version_labels": [],
+          "cited_version_labels": [
+            "AUDIT-2026.1"
+          ],
+          "missing_expected_labels": [],
+          "cited_forbidden_labels": [],
+          "unexpected_citation_labels": [],
+          "citation_precision": 1.0,
+          "citation_recall": 1.0,
+          "forbidden_source_safe": true,
+          "hard_passed": true,
+          "answer_point_review": "pending_human_review",
+          "question": "作为财务审核人员，住宿发票达到什么金额要执行加强复核？",
+          "role": "finance_reviewer",
+          "expense_date": "2026-05-12",
+          "acceptable_answer_points": [
+            "单张住宿发票含税金额达到 2000 元",
+            "核对酒店账单、付款记录和出差申请",
+            "低于阈值不代表自动合规"
+          ],
+          "latency_ms": 2615.533,
+          "status": "answered",
+          "answer": "单张住宿发票含税金额达到 2000 元时，财务审核人员应执行加强复核。",
+          "missing_information": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "chunk_id": "095e35a4-4f3f-4bda-8b97-e40f1528abb1",
+              "document_id": "839e687f-1589-44f3-b250-deb4a82e16ba",
+              "original_filename": "finance_audit_sop_v1.md",
+              "version_label": "AUDIT-2026.1",
+              "content": "第二章 抽样复核\n\n单张住宿发票含税金额达到 2000 元时，财务审核人员应执行加强复核，核对酒店账单、付款记录和出差申请。该阈值是内部审核触发条件，不代表 2000 元以下费用自动合规。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销财务审核 SOP（内部）",
+                "第二章 抽样复核"
+              ]
+            }
+          ],
+          "warnings": [],
+          "version_conflicts": [],
+          "input_tokens": 1139,
+          "output_tokens": 65,
+          "prompt_revision": "v1-structured-r2",
+          "retrieved_sources": [
+            {
+              "source_id": "S1",
+              "chunk_id": "095e35a4-4f3f-4bda-8b97-e40f1528abb1",
+              "document_id": "839e687f-1589-44f3-b250-deb4a82e16ba",
+              "original_filename": "finance_audit_sop_v1.md",
+              "version_label": "AUDIT-2026.1",
+              "content": "第二章 抽样复核\n\n单张住宿发票含税金额达到 2000 元时，财务审核人员应执行加强复核，核对酒店账单、付款记录和出差申请。该阈值是内部审核触发条件，不代表 2000 元以下费用自动合规。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销财务审核 SOP（内部）",
+                "第二章 抽样复核"
+              ],
+              "dense_rank": 1,
+              "keyword_rank": 1,
+              "rrf_score": 0.03278688524590164,
+              "policy_type": "audit_sop",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S2",
+              "chunk_id": "9035282d-5683-4d4a-8ab2-dd077d18177e",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第四章 审批流程\n\n普通差旅报销依次由员工提交、直属经理审批、成本中心负责人确认、财务审核。包含超标准费用的单据在财务审核前还需要财务负责人复核例外批准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第四章 审批流程"
+              ],
+              "dense_rank": 4,
+              "keyword_rank": 2,
+              "rrf_score": 0.031754032258064516,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S3",
+              "chunk_id": "da65989f-02d2-4d45-a456-d988214405ea",
+              "document_id": "1a7e0813-fab3-49d3-8262-ae9fc7b7741f",
+              "original_filename": "invoice_attachment_standard_v1.md",
+              "version_label": "INVOICE-2026.1",
+              "content": "第三章 住宿附件\n\n住宿费除合规发票外，还应提供酒店账单。酒店账单至少显示入住人、入住和离店日期、房费金额；只有支付截图而没有发票和酒店账单，不构成完整住宿报销材料。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅票据与附件规范（2026 版）",
+                "第三章 住宿附件"
+              ],
+              "dense_rank": 3,
+              "keyword_rank": 4,
+              "rrf_score": 0.03149801587301587,
+              "policy_type": "attachment_standard",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S4",
+              "chunk_id": "b07f9aba-c2de-4101-af2f-d328e4033544",
+              "document_id": "839e687f-1589-44f3-b250-deb4a82e16ba",
+              "original_filename": "finance_audit_sop_v1.md",
+              "version_label": "AUDIT-2026.1",
+              "content": "第三章 异常处理\n\n发现入住人、日期或金额不一致时，应将单据退回补充材料并记录原因。财务审核人员不得把系统预检查结果直接当作最终审批结论。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销财务审核 SOP（内部）",
+                "第三章 异常处理"
+              ],
+              "dense_rank": 2,
+              "keyword_rank": 3,
+              "rrf_score": 0.03200204813108039,
+              "policy_type": "audit_sop",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            },
+            {
+              "source_id": "S5",
+              "chunk_id": "141f0e80-ee33-4e84-8831-068f40a11a11",
+              "document_id": "2e8eb23b-4dfd-40b9-b8a5-dc99e1b1264e",
+              "original_filename": "travel_reimbursement_policy_v1.md",
+              "version_label": "REIMB-2026.1",
+              "content": "第三章 超标准费用\n\n预计住宿费超过适用标准时，应在费用发生前提交超标说明并取得部门负责人和财务负责人的事前批准。事前批准只表示该例外可以进入报销审核，不代表超出部分一定全额报销；最终仍以真实票据和财务审核结果为准。",
+              "page_start": null,
+              "page_end": null,
+              "section_path": [
+                "星河科技差旅报销管理办法（2026 版）",
+                "第三章 超标准费用"
+              ],
+              "dense_rank": 5,
+              "keyword_rank": 6,
+              "rrf_score": 0.030536130536130537,
+              "policy_type": "reimbursement_policy",
+              "effective_from": "2026-01-01",
+              "effective_to": null
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

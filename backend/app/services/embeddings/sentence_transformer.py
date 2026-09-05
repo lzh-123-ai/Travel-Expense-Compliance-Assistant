@@ -38,7 +38,7 @@ class SentenceTransformerEmbeddingProvider:
     def _get_model(self) -> Any:
         if self._model is not None:
             return self._model
-        # 懒加载:被调用时再去硬盘读取、把模型加载出来。线程锁
+        # 锁内延迟加载，避免并发请求重复初始化大模型。
         with self._model_lock:
             if self._model is not None:
                 return self._model

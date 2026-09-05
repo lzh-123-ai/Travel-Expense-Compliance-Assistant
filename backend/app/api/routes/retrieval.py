@@ -1,7 +1,6 @@
 """dense、关键词和混合检索的 HTTP 诊断入口。
 
-所有 Route 都将权限范围和日期传给 Service。Stage 12 必须用服务端身份替换当前
-临时公共权限，绝不能相信客户端传来的角色。
+权限范围来自服务端身份，并与日期一并传给检索服务执行硬过滤。
 """
 
 from datetime import UTC, datetime
@@ -11,6 +10,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.observability import trace_stage
 from app.db.session import get_db_session
 from app.models.knowledge_base import KnowledgeBase
 from app.schemas.retrieval import (
@@ -23,13 +23,13 @@ from app.schemas.retrieval import (
     KeywordSearchResponse,
     VersionConflictResponse,
 )
+from app.security.identity import AuthenticatedIdentity, get_current_identity
 from app.services.embeddings import (
     EmbeddingProvider,
     EmbeddingProviderError,
     get_embedding_provider,
 )
 from app.services.retrieval import (
-    PUBLIC_DOCUMENT_SCOPES,
     DenseRetrievalService,
     HybridRetrievalService,
     KeywordRetrievalService,
@@ -41,6 +41,7 @@ from app.services.retrieval import (
 router = APIRouter(prefix="/knowledge-bases/{knowledge_base_id}/search")
 DatabaseSession = Annotated[AsyncSession, Depends(get_db_session)]
 EmbeddingProviderDependency = Annotated[EmbeddingProvider, Depends(get_embedding_provider)]
+IdentityDependency = Annotated[AuthenticatedIdentity, Depends(get_current_identity)]
 DenseRetriever = Annotated[DenseRetrievalService, Depends(get_dense_retrieval_service)]
 KeywordRetriever = Annotated[KeywordRetrievalService, Depends(get_keyword_retrieval_service)]
 HybridRetriever = Annotated[HybridRetrievalService, Depends(get_hybrid_retrieval_service)]
@@ -53,6 +54,7 @@ async def dense_search(
     session: DatabaseSession,
     provider: EmbeddingProviderDependency,
     retriever: DenseRetriever,
+    identity: IdentityDependency,
 ) -> DenseSearchResponse:
     """运行 dense 诊断；向量排序前已执行权限范围过滤。"""
     if await session.get(KnowledgeBase, knowledge_base_id) is None:
@@ -61,15 +63,17 @@ async def dense_search(
             detail="Knowledge base not found",
         )
     try:
-        hits = await retriever.search(
-            session,
-            provider,
-            knowledge_base_id=knowledge_base_id,
-            query=payload.query,
-            expense_date=payload.expense_date,
-            allowed_scopes=PUBLIC_DOCUMENT_SCOPES,
-            top_k=payload.top_k,
-        )
+        with trace_stage("retrieval", strategy="dense", top_k=payload.top_k) as trace:
+            hits = await retriever.search(
+                session,
+                provider,
+                knowledge_base_id=knowledge_base_id,
+                query=payload.query,
+                expense_date=payload.expense_date,
+                allowed_scopes=identity.scopes,
+                top_k=payload.top_k,
+            )
+            trace["hit_count"] = len(hits)
     except EmbeddingProviderError as exc:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -110,6 +114,7 @@ async def keyword_search(
     payload: DenseSearchRequest,
     session: DatabaseSession,
     retriever: KeywordRetriever,
+    identity: IdentityDependency,
 ) -> KeywordSearchResponse:
     """运行关键词诊断，使用相同的制度权限范围和日期要求。"""
     if await session.get(KnowledgeBase, knowledge_base_id) is None:
@@ -117,14 +122,16 @@ async def keyword_search(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Knowledge base not found",
         )
-    hits = await retriever.search(
-        session,
-        knowledge_base_id=knowledge_base_id,
-        query=payload.query,
-        expense_date=payload.expense_date,
-        allowed_scopes=PUBLIC_DOCUMENT_SCOPES,
-        top_k=payload.top_k,
-    )
+    with trace_stage("retrieval", strategy="keyword", top_k=payload.top_k) as trace:
+        hits = await retriever.search(
+            session,
+            knowledge_base_id=knowledge_base_id,
+            query=payload.query,
+            expense_date=payload.expense_date,
+            allowed_scopes=identity.scopes,
+            top_k=payload.top_k,
+        )
+        trace["hit_count"] = len(hits)
     return KeywordSearchResponse(
         query=payload.query,
         expense_date=payload.expense_date,
@@ -162,6 +169,7 @@ async def hybrid_search(
     session: DatabaseSession,
     provider: EmbeddingProviderDependency,
     retriever: HybridRetriever,
+    identity: IdentityDependency,
 ) -> HybridSearchResponse:
     """运行融合诊断，并暴露排序信息供评测和排错。"""
     if await session.get(KnowledgeBase, knowledge_base_id) is None:
@@ -170,15 +178,17 @@ async def hybrid_search(
             detail="Knowledge base not found",
         )
     try:
-        result = await retriever.search(
-            session,
-            provider,
-            knowledge_base_id=knowledge_base_id,
-            query=payload.query,
-            expense_date=payload.expense_date,
-            allowed_scopes=PUBLIC_DOCUMENT_SCOPES,
-            top_k=payload.top_k,
-        )
+        with trace_stage("retrieval", strategy="hybrid", top_k=payload.top_k) as trace:
+            result = await retriever.search(
+                session,
+                provider,
+                knowledge_base_id=knowledge_base_id,
+                query=payload.query,
+                expense_date=payload.expense_date,
+                allowed_scopes=identity.scopes,
+                top_k=payload.top_k,
+            )
+            trace["hit_count"] = len(result.hits)
     except EmbeddingProviderError as exc:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -215,6 +225,7 @@ async def hybrid_search(
                 keyword_rank=hit.keyword_rank,
                 rrf_score=hit.rrf_score,
                 document_rrf_score=hit.document_rrf_score,
+                rerank_score=hit.rerank_score,
                 policy_type=hit.policy_type,
                 effective_from=hit.effective_from,
                 effective_to=hit.effective_to,

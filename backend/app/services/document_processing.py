@@ -14,7 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.document import Document
 from app.models.document_chunk import DocumentChunk
-from app.services.chunking import DeterministicChunker
+from app.services.chunking import ChunkDraft, DeterministicChunker
 from app.services.document_validation import DocumentValidationError, validate_upload_metadata
 from app.services.parsing import (
     DocumentParseError,
@@ -112,24 +112,7 @@ class DocumentProcessingService:
         else:
             # 切片是派生数据：替换而非追加，使重试幂等且不产生重复语义证据。
             drafts = self.chunker.chunk(parsed)
-            chunks = tuple(
-                DocumentChunk(
-                    document_id=document.id,
-                    ordinal=draft.ordinal,
-                    content=draft.content,
-                    page_start=draft.page_start,
-                    page_end=draft.page_end,
-                    section_path=list(draft.section_path),
-                    char_count=draft.char_count,
-                    token_estimate=draft.token_estimate,
-                    content_hash=draft.content_hash,
-                    extraction_method=draft.extraction_method,
-                    chunking_strategy=draft.chunking_strategy,
-                    chunk_size=draft.chunk_size,
-                    chunk_overlap=draft.chunk_overlap,
-                )
-                for draft in drafts
-            )
+            chunks = self._build_chunks(document, drafts)
             await self._replace_chunks(session, document, chunks)
             document.status = "ready"
             document.error_message = None
@@ -137,6 +120,32 @@ class DocumentProcessingService:
         await session.commit()
         await session.refresh(document)
         return document
+
+    @staticmethod
+    def _build_chunks(
+        document: Document,
+        drafts: tuple[ChunkDraft, ...],
+    ) -> tuple[DocumentChunk, ...]:
+        """把确定性草稿映射为 ORM；OCR 和原生解析共用同一套字段。"""
+        return tuple(
+            DocumentChunk(
+                document_id=document.id,
+                ordinal=draft.ordinal,
+                content=draft.content,
+                page_start=draft.page_start,
+                page_end=draft.page_end,
+                section_path=list(draft.section_path),
+                char_count=draft.char_count,
+                token_estimate=draft.token_estimate,
+                content_hash=draft.content_hash,
+                extraction_method=draft.extraction_method,
+                source_metadata=draft.source_metadata,
+                chunking_strategy=draft.chunking_strategy,
+                chunk_size=draft.chunk_size,
+                chunk_overlap=draft.chunk_overlap,
+            )
+            for draft in drafts
+        )
 
     @staticmethod
     async def _replace_chunks(
@@ -157,6 +166,11 @@ class DocumentProcessingService:
         document.needs_ocr = parsed.needs_ocr
         document.parse_warnings = parsed.serialized_warnings()
         document.parsed_at = datetime.now(UTC)
+        document.ocr_status = "pending" if parsed.needs_ocr else "not_requested"
+        document.ocr_provider = None
+        document.ocr_model_version = None
+        document.ocr_processed_at = None
+        document.ocr_low_confidence_page_count = 0
 
     @staticmethod
     def _mark_failed(
@@ -174,6 +188,11 @@ class DocumentProcessingService:
         document.needs_ocr = False
         document.parse_warnings = [warning.as_dict() for warning in warnings]
         document.parsed_at = datetime.now(UTC)
+        document.ocr_status = "not_requested"
+        document.ocr_provider = None
+        document.ocr_model_version = None
+        document.ocr_processed_at = None
+        document.ocr_low_confidence_page_count = 0
 
 
 def get_document_processing_service() -> DocumentProcessingService:

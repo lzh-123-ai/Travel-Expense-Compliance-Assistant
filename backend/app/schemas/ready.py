@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 
 class ReadinessResponse(BaseModel):
-    """Readiness state for dependencies required to serve real traffic."""
+    """处理业务请求所需依赖的就绪状态。"""
 
     status: Literal["ready"]
     database: Literal["ok"]

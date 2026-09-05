@@ -1,0 +1,71 @@
+:root {
+  font-family: Inter, "Microsoft YaHei", sans-serif;
+  color: #17212b;
+  background: #f4f6f8;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+button, input, textarea { font: inherit; }
+
+.shell { max-width: 1280px; margin: 0 auto; padding: 32px 24px 56px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 28px; }
+.eyebrow { margin: 0 0 6px; color: #52606d; font-size: 12px; letter-spacing: 0.08em; }
+h1, h2, h3, p { margin-top: 0; }
+h1 { margin-bottom: 0; font-size: clamp(24px, 4vw, 38px); }
+h2 { margin-bottom: 0; font-size: 22px; }
+h3 { margin-bottom: 12px; font-size: 15px; }
+.status-dot { padding: 8px 12px; color: #0b6b4b; background: #d9f4e8; border-radius: 999px; font-size: 13px; }
+.workspace { display: grid; grid-template-columns: minmax(280px, 380px) 1fr; gap: 20px; align-items: start; }
+.query-panel, .result-panel { border: 1px solid #d8dee5; border-radius: 8px; background: #fff; box-shadow: 0 8px 24px rgba(23, 33, 43, 0.05); }
+.query-panel { display: grid; gap: 16px; padding: 20px; }
+label { display: grid; gap: 7px; color: #52606d; font-size: 13px; }
+input, textarea { width: 100%; border: 1px solid #c8d1da; border-radius: 6px; padding: 10px 11px; color: #17212b; background: #fff; }
+textarea { resize: vertical; min-height: 108px; }
+input:focus, textarea:focus { outline: 2px solid #86b7fe; border-color: #3d7edb; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+button { border: 0; border-radius: 6px; padding: 11px 16px; color: #fff; background: #1769aa; cursor: pointer; }
+button:disabled { opacity: 0.65; cursor: wait; }
+.secondary-button { color: #245b88; background: #eaf2f8; border: 1px solid #bfd5e7; }
+.result-panel { min-height: 440px; padding: 24px; }
+.empty { display: grid; min-height: 390px; place-items: center; color: #7b8794; text-align: center; }
+.result-heading { display: flex; justify-content: space-between; gap: 16px; align-items: start; border-bottom: 1px solid #e7ebef; padding-bottom: 16px; }
+code { overflow-wrap: anywhere; color: #52606d; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; }
+.answer { margin: 20px 0; white-space: pre-wrap; line-height: 1.7; }
+.evidence, .trace-box { border-top: 1px solid #e7ebef; padding-top: 16px; margin-top: 18px; }
+.evidence article { margin-top: 10px; padding: 12px; border-left: 3px solid #1769aa; background: #f6f9fb; }
+.evidence article p { margin: 8px 0 0; line-height: 1.6; }
+.citation-meta { color: #52606d; font-size: 12px; }
+.trace-box { color: #52606d; }
+.trace { line-height: 1.6; }
+.error { margin: 14px 0 0; color: #b42318; line-height: 1.5; }
+
+/* 文档区只编排现有生命周期接口，不复制后台管理逻辑。 */
+.document-workspace { margin-top: 28px; padding-top: 24px; border-top: 1px solid #d8dee5; }
+.section-heading { display: flex; justify-content: space-between; align-items: end; gap: 16px; }
+.document-upload { display: flex; align-items: end; gap: 12px; margin-top: 16px; }
+.document-upload label { flex: 1; }
+.document-upload input[type="file"] { padding: 8px; }
+.empty-documents { margin: 20px 0 0; color: #7b8794; }
+.document-list { margin-top: 16px; border-top: 1px solid #d8dee5; }
+.document-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid #d8dee5; }
+.document-actions { display: flex; flex-wrap: wrap; justify-content: end; gap: 8px; }
+.document-title-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.document-details, .document-warning { margin: 7px 0 0; color: #52606d; font-size: 13px; line-height: 1.5; }
+.document-warning { color: #9a6700; }
+.document-status { display: inline-flex; padding: 3px 8px; border-radius: 999px; font-size: 12px; background: #e9eef3; color: #455a6b; }
+.status-ready { color: #0b6b4b; background: #d9f4e8; }
+.status-failed { color: #b42318; background: #ffe8e5; }
+.status-processing { color: #245b88; background: #eaf2f8; }
+
+@media (max-width: 800px) {
+  .shell { padding: 20px 14px 40px; }
+  .workspace { grid-template-columns: 1fr; }
+  .form-row, .document-upload { grid-template-columns: 1fr; }
+  .document-upload { display: grid; align-items: stretch; }
+  .result-heading, .section-heading { flex-direction: column; align-items: stretch; }
+  .document-row { grid-template-columns: 1fr; }
+  .document-actions { justify-content: stretch; }
+  .document-actions button { flex: 1; }
+}

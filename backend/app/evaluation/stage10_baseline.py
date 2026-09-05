@@ -1,4 +1,4 @@
-"""离线 Stage 10 dense/关键词/混合对照运行器；不处理 HTTP 请求。"""
+"""dense、关键词和混合检索的离线对照运行器。"""
 
 from __future__ import annotations
 

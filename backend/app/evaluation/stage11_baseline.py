@@ -1,4 +1,4 @@
-"""保留可复现证据日志的离线 Stage 11 Prompt 对照运行器。"""
+"""保留可复现证据日志的离线 Prompt 对照运行器。"""
 
 from __future__ import annotations
 
@@ -64,6 +64,9 @@ ROLE_SCOPES = {
 def _evaluation_purpose(dataset_version: str) -> str:
     if dataset_version.startswith("stage11-tuning-"):
         return "prompt_tuning"
+    # 冻结后的留出题只能验证泛化，不能反过来挑选 Prompt、模型或检索开关。
+    if dataset_version.startswith("stage16-holdout-"):
+        return "holdout_validation"
     return "frozen_regression"
 
 

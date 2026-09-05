@@ -1,7 +1,6 @@
 """基于证据的制度问答 HTTP 入口。
 
-Route 将请求数据交给 ``AnswerService``。它不能把授权写在 Prompt 中；检索会在
-模型看到证据之前执行权限/日期过滤。Stage 12 将从服务端身份提供权限范围。
+权限范围由服务端身份提供，检索在模型看到证据前执行权限和日期过滤。
 """
 
 from typing import Annotated
@@ -20,6 +19,7 @@ from app.schemas.answer import (
     AnswerVersionConflictResponse,
     AnswerWarningResponse,
 )
+from app.security.identity import AuthenticatedIdentity, get_current_identity
 from app.services.answering import AnswerOutputError, AnswerProvider, AnswerService
 from app.services.bailian_answer_provider import AnswerProviderError, get_answer_provider
 from app.services.embeddings import (
@@ -27,12 +27,13 @@ from app.services.embeddings import (
     EmbeddingProviderError,
     get_embedding_provider,
 )
-from app.services.retrieval import PUBLIC_DOCUMENT_SCOPES, get_hybrid_retrieval_service
+from app.services.retrieval import get_hybrid_retrieval_service
 
 router = APIRouter(prefix="/knowledge-bases/{knowledge_base_id}/answer")
 DatabaseSession = Annotated[AsyncSession, Depends(get_db_session)]
 EmbeddingProviderDependency = Annotated[EmbeddingProvider, Depends(get_embedding_provider)]
 AnswerProviderDependency = Annotated[AnswerProvider, Depends(get_answer_provider)]
+IdentityDependency = Annotated[AuthenticatedIdentity, Depends(get_current_identity)]
 
 
 def get_answer_service() -> AnswerService:
@@ -51,6 +52,7 @@ async def answer_question(
     embedding_provider: EmbeddingProviderDependency,
     answer_provider: AnswerProviderDependency,
     service: AnswerServiceDependency,
+    identity: IdentityDependency,
 ) -> AnswerResponse:
     """回答制度问题，并将 Service/Provider 失败转换为 HTTP 响应。"""
     if await session.get(KnowledgeBase, knowledge_base_id) is None:
@@ -67,7 +69,7 @@ async def answer_question(
             knowledge_base_id=knowledge_base_id,
             question=payload.question,
             expense_date=payload.expense_date,
-            allowed_scopes=PUBLIC_DOCUMENT_SCOPES,
+            allowed_scopes=identity.scopes,
             top_k=payload.top_k,
             prompt_version=settings.answer_prompt_version,
         )

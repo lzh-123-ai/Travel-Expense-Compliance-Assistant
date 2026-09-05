@@ -70,7 +70,7 @@ class PdfParser:
                 image_count = len(page.images)
             except (
                 Exception
-            ):  # pypdf may reject an unusual image object while text is still usable.
+            ):  # pypdf 可能拒绝异常图片对象，但页面文字仍然可用。
                 image_count = 0
                 warnings.append(
                     ParseWarning(

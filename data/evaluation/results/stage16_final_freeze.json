@@ -1,0 +1,196 @@
+{
+  "report_version": "stage16-final-freeze-report-v1",
+  "freeze_version": "stage16-final-freeze-v0",
+  "run_date": "2026-08-22",
+  "formal_status": "completed_with_review_findings",
+  "purpose": "冻结候选配置后的正式联调报告；结果用于回归与风险归因，不代表未见题泛化能力。",
+  "external_scope": {
+    "region": "阿里云百炼华北2（北京）",
+    "documents": 6,
+    "answer_cases": 20,
+    "tool_and_compliance_cases": 12,
+    "document_source": "data/policies/manifest.json",
+    "answer_dataset": "data/evaluation/stage8_v0.json",
+    "tool_dataset": [
+      "data/evaluation/stage12_tool_routing_v0.json",
+      "data/evaluation/stage13_compliance_v0.json"
+    ],
+    "diagnostic_dataset_excluded_from_score": "data/evaluation/stage11_tuning_v0.json"
+  },
+  "frozen_configuration": {
+    "answer_provider": "bailian",
+    "answer_model": "qwen3.7-plus-2026-05-26",
+    "answer_base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    "prompt_version": "v1",
+    "prompt_revision": "v1-structured-r2",
+    "temperature": 0.0,
+    "enable_thinking": false,
+    "retrieval_strategy": "hybrid+RRF",
+    "retrieval_config_version": "stage10-hybrid-rrf-v1",
+    "embedding_provider": "sentence_transformers",
+    "embedding_model": "BAAI/bge-small-zh-v1.5",
+    "embedding_dimension": 512,
+    "top_k": 5,
+    "candidate_k": 20,
+    "rrf_k": 60,
+    "diversity_slots": 3,
+    "query_rewrite": false,
+    "rerank": false,
+    "api_key_storage": "仅从本地 DASHSCOPE_API_KEY 读取，报告不保存密钥"
+  },
+  "answer_run": {
+    "raw_result": "data/evaluation/results/stage16_final_answer_bailian_v1.json",
+    "run_id": "stage11-20260822T122313Z-40cb3acf",
+    "started_at": "2026-08-22T12:23:13.789944+00:00",
+    "finished_at": "2026-08-22T12:23:53.505351+00:00",
+    "documents_imported": 6,
+    "chunks_indexed": 30,
+    "embedding_api_calls": 0,
+    "evaluated_cases": 20,
+    "model_calls": 19,
+    "status_metrics": {
+      "answered_cases": 17,
+      "refusal_cases": 2,
+      "clarification_cases": 1,
+      "status_accuracy": 0.95,
+      "answered_status_accuracy": 0.9411764705882353,
+      "refusal_status_accuracy": 1.0,
+      "clarification_status_accuracy": 1.0
+    },
+    "evidence_metrics": {
+      "citation_precision": 0.9298245614035089,
+      "citation_recall": 0.9411764705882353,
+      "forbidden_source_safety": 1.0,
+      "hard_pass_rate": 0.85,
+      "raw_answer_point_review_status": "pending_human_review",
+      "answer_point_review_status": "completed_interactive_review",
+      "answer_point_review_artifact": "data/evaluation/results/stage16_answer_point_review.json"
+    },
+    "latency_ms": {
+      "p50": 2854.562,
+      "mean": 3130.355,
+      "p95": 5647.527,
+      "max": 6141.686,
+      "sum_of_case_requests": 62607.096
+    },
+    "tokens": {
+      "input": 22368,
+      "output": 1676,
+      "total": 24044
+    },
+    "provider_failures": {
+      "provider_errors": 0,
+      "model_output_errors": 0,
+      "request_errors": 0,
+      "configuration_errors": 0
+    }
+  },
+  "tool_compliance_run": {
+    "raw_result": "data/evaluation/results/stage16_final_tool_compliance_bailian_v1.json",
+    "run_id": "8b807d6e-79ff-48a2-a690-fd7b7b439975",
+    "datasets": [
+      "data/evaluation/stage12_tool_routing_v0.json",
+      "data/evaluation/stage13_compliance_v0.json"
+    ],
+    "evaluated_cases": 12,
+    "passed": 12,
+    "failed": 0,
+    "latency_ms": {
+      "p50": 3201.0,
+      "mean": 3412.75,
+      "p95": 4205.0,
+      "max": 4527.0,
+      "sum_of_case_requests": 40953.0
+    },
+    "tokens": {
+      "input": 6267,
+      "output": 1767,
+      "total": 8034
+    },
+    "metrics": {
+      "route_accuracy": 1.0,
+      "tool_name_accuracy_non_clarification": 1.0,
+      "clarification_match": 3,
+      "clarification_expected": 3,
+      "claim_number_clarification_match": 2,
+      "claim_number_clarification_expected": 2,
+      "unauthorized_argument_errors": 0
+    },
+    "provider_failures": {
+      "provider_errors": 0
+    }
+  },
+  "combined_usage": {
+    "model_calls": 31,
+    "input_tokens": 28635,
+    "output_tokens": 3443,
+    "total_tokens": 32078
+  },
+  "cost": {
+    "currency": "CNY",
+    "pricing_basis": "北京非思考模式公开实时推理原价；每个请求输入均小于 256K token；未按 Batch 或缓存折扣计算",
+    "input_price_cny_per_million_tokens": 2.0,
+    "output_price_cny_per_million_tokens": 8.0,
+    "answer_estimated_cny": 0.058144,
+    "tool_and_compliance_estimated_cny": 0.02667,
+    "estimated_total_cny": 0.084814,
+    "discounted_80_percent_reference_cny": 0.0678512,
+    "billing_boundary": "免费额度、限时折扣、上下文缓存和控制台计费口径可能改变实际扣费，最终以百炼账单为准。"
+  },
+  "failure_attribution": {
+    "answer_hard_pass_failures": [
+      {
+        "case_id": "TRAVEL-EVAL-010",
+        "category": "cross_document",
+        "root_cause": "回答只引用 REIMB-2026.1，漏掉题目标注的 INVOICE-2026.1，属于多来源证据未完整合并。",
+        "boundary": "不是 provider/request 失败；状态仍为 answered，需人工改进多来源引用或检索证据选择。"
+      },
+      {
+        "case_id": "TRAVEL-EVAL-013",
+        "category": "cross_document",
+        "root_cause": "回答额外引用 HOTEL-SUP-2026.1，题目标注只要求基础制度和报销制度，属于条件不成立时的无关例外引用。",
+        "boundary": "未出现禁用版本或越权版本；是引用范围控制问题，不是权限/日期硬过滤泄漏。"
+      },
+      {
+        "case_id": "TRAVEL-EVAL-015",
+        "category": "cross_document",
+        "root_cause": "模型只引用补充通知并返回 needs_clarification，漏掉应同时引用的 TRAVEL-2026.1 基础标准。",
+        "boundary": "检索和百炼请求均成功；是回答状态与多来源证据组合问题。"
+      }
+    ],
+    "tool_and_compliance_failures": [],
+    "diagnostic_findings": [
+      {
+        "case_id": "TRAVEL-TOOL-EVAL-003",
+        "finding": "制度问题上模型产生了 get_my_reimbursement_status 的多余工具意图，但分类器最终路由仍为 policy_rag，且本次脚本不执行数据库工具。",
+        "risk_control": "服务端仍必须以最终路由、参数契约、登录身份和 SQL 资源归属为准，不能把模型工具意图当作授权。"
+      }
+    ]
+  },
+  "local_retrieval_reference": {
+    "raw_result": "data/evaluation/results/stage15_retrieval_ablation.json",
+    "default_variant": "hybrid",
+    "evaluated_cases": 40,
+    "macro_recall_at_5": 1.0,
+    "mean_reciprocal_rank": 0.9298245614035089,
+    "full_expected_set_accuracy": 1.0,
+    "forbidden_filter_accuracy": 1.0,
+    "version_correctness": 1.0,
+    "case_pass_rate": 1.0,
+    "interpretation": "本地检索结果与百炼回答结果分开报告，不能把检索 Recall 当回答准确率。"
+  },
+  "review_and_next_action": {
+    "human_review_completed": [
+      "项目负责人已交互式复核 20 道制度题的回答要点；完成记录位于 data/evaluation/results/stage16_answer_point_review.json。",
+      "TRAVEL-EVAL-010、TRAVEL-EVAL-013 和 TRAVEL-EVAL-015 保留为证据选择、引用完整性和回答状态策略的已知失败案例。"
+    ],
+    "candidate_decision": "保持 hybrid+RRF、查询重写关闭、reranker 关闭；不因本次 3 道回答失败直接引入新组件。",
+    "not_claimed": [
+      "不声称生产级并发或 SLA。",
+      "不声称自动审批。",
+      "不声称 OCR、图片理解、MCP 或多模态能力。",
+      "不把 72 道冻结回归题称为泛化盲测。"
+    ]
+  },
+  "pricing_source": "https://help.aliyun.com/zh/model-studio/model-pricing"
+}

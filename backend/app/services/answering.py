@@ -6,6 +6,7 @@ Provider，并拒绝模型不可能获得的引用。Route 只负责将结果转
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from datetime import date
 from typing import Literal, Protocol
@@ -14,6 +15,7 @@ from uuid import UUID
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.observability import estimated_model_cost, trace_stage
 from app.services.answer_prompts import (
     AnswerEvidence,
     AnswerPrompt,
@@ -110,7 +112,20 @@ class AnswerResult:
 
 
 class AnswerOutputError(RuntimeError):
-    """The model returned output that cannot be trusted by the answer boundary."""
+    """模型输出未通过回答边界校验。"""
+
+
+_CURRENT_POLICY_QUESTION_TERMS = ("流程", "步骤", "如何报销", "怎么报销", "怎么办理")
+_HISTORICAL_POLICY_PATTERN = re.compile(r"(?:19|20)\d{2}\s*年|历史|以前|当时|旧版|版本")
+
+
+def _can_use_current_policy(question: str) -> bool:
+    """仅允许通用流程题使用服务端当前日期，绝不替费用适用性问题猜日期。"""
+    normalized = question.replace(" ", "")
+    return (
+        not _HISTORICAL_POLICY_PATTERN.search(normalized)
+        and any(term in normalized for term in _CURRENT_POLICY_QUESTION_TERMS)
+    )
 
 
 class AnswerService:
@@ -132,29 +147,38 @@ class AnswerService:
     ) -> AnswerResult:
         """只基于已检索证据回答，否则返回确定性结果。
 
-        Stage 11 对制度适用性问题要求费用日期。Stage 12 的意图路由应收窄此
-        规则，不能让不走制度检索的业务状态问题也被日期阻塞。
+        涉及费用适用性的问题必须由用户提供费用日期；通用流程问题则查询系统
+        当前有效制度，避免要求用户为“报销流程是什么”虚构一笔费用日期。
         """
-        # 检索前避免消耗模型资源，也避免不安全地猜测制度版本。
+        date_source = "expense_date"
         if expense_date is None:
-            return _deterministic_result(
-                answer_provider=answer_provider,
-                prompt_version=prompt_version,
-                status="needs_clarification",
-                answer="请先提供费用发生日期，以便确定适用的制度版本。",
-                missing_information=("expense_date",),
-            )
+            if not _can_use_current_policy(question):
+                # 检索前避免消耗模型资源，也避免不安全地猜测制度版本。
+                return _deterministic_result(
+                    answer_provider=answer_provider,
+                    prompt_version=prompt_version,
+                    status="needs_clarification",
+                    answer="请先提供费用发生日期，以便确定适用的制度版本。",
+                    missing_information=("expense_date",),
+                )
+            expense_date = date.today()
+            date_source = "current_policy"
 
         # 检索在 SQL 中执行权限/日期过滤；Prompt 文本不是访问控制，不能替代它。
-        retrieval = await self.retriever.search(
-            session,
-            embedding_provider,
-            knowledge_base_id=knowledge_base_id,
-            query=question,
-            expense_date=expense_date,
-            allowed_scopes=allowed_scopes,
-            top_k=top_k,
-        )
+        with trace_stage("retrieval", strategy="hybrid", top_k=top_k) as retrieval_trace:
+            retrieval = await self.retriever.search(
+                session,
+                embedding_provider,
+                knowledge_base_id=knowledge_base_id,
+                query=question,
+                expense_date=expense_date,
+                allowed_scopes=allowed_scopes,
+                top_k=top_k,
+            )
+            retrieval_trace["hit_count"] = len(retrieval.hits)
+            retrieval_trace["strategy"] = retrieval.strategy
+            retrieval_trace["query_rewritten"] = retrieval.query_rewrite is not None
+            retrieval_trace["reranked"] = retrieval.reranked
         if not retrieval.hits:
             return _deterministic_result(
                 answer_provider=answer_provider,
@@ -168,10 +192,22 @@ class AnswerService:
             version=prompt_version,
             question=question,
             expense_date=expense_date,
+            date_source=date_source,
             evidence=evidence,
             version_conflicts=retrieval.version_conflicts,
         )
-        generated = await answer_provider.generate_answer(prompt)
+        with trace_stage(
+            "model",
+            provider=getattr(answer_provider, "provider_name", "unknown"),
+            model=getattr(answer_provider, "model_name", "unknown"),
+        ) as model_trace:
+            generated = await answer_provider.generate_answer(prompt)
+            model_trace["input_tokens"] = generated.usage.input_tokens
+            model_trace["output_tokens"] = generated.usage.output_tokens
+            model_trace["estimated_cost_usd"] = estimated_model_cost(
+                generated.usage.input_tokens,
+                generated.usage.output_tokens,
+            )
         # 引用 ID 是单次请求的白名单；模型不能虚构来源或引用未进入 Prompt 的切片。
         evidence_by_id = {item.source_id: item for item in evidence}
         unknown_ids = set(generated.draft.citation_ids) - set(evidence_by_id)

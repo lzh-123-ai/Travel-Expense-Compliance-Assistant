@@ -1,12 +1,12 @@
 """所有文件格式解析器共用的、与数据库无关的契约。
 
-解析器在这里返回不可变事实；``DocumentProcessingService`` 再将其映射为
-数据库状态和切片。这让格式解析无需数据库或文件系统实现即可测试。
+解析器返回不可变事实；``DocumentProcessingService`` 再将其映射为
+数据库状态和切片。
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import StrEnum
 
 
@@ -61,6 +61,9 @@ class ParsedSection:
     text: str
     page_number: int | None = None
     heading_path: tuple[str, ...] = ()
+    # 原生文字和 OCR 文字必须在切片层区分，以便按提取来源审计。
+    extraction_method: str = "native_text"
+    source_metadata: dict[str, object] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if self.order < 0:
@@ -71,6 +74,8 @@ class ParsedSection:
             raise ValueError("Parsed section page number must be one-based")
         if any(not heading.strip() for heading in self.heading_path):
             raise ValueError("Heading path must not contain empty headings")
+        if not self.extraction_method.strip():
+            raise ValueError("Extraction method must not be empty")
 
 
 @dataclass(frozen=True)

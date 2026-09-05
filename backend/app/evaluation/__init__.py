@@ -1,4 +1,4 @@
-"""Versioned evaluation dataset and run contracts."""
+"""版本化评测数据集与运行契约。"""
 
 from app.evaluation.answer_metrics import (
     AnswerAggregateMetrics,

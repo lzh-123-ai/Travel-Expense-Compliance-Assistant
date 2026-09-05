@@ -47,6 +47,7 @@ def build_answer_prompt(
     version: PromptVersion,
     question: str,
     expense_date: date,
+    date_source: Literal["expense_date", "current_policy"] = "expense_date",
     evidence: tuple[AnswerEvidence, ...],
     version_conflicts: tuple[VersionConflict, ...],
 ) -> AnswerPrompt:
@@ -116,10 +117,18 @@ def build_answer_prompt(
         "refused": "现有证据不足，无法可靠回答",
         "needs_clarification": "必须由用户补充关键信息后才能可靠回答",
     }
+    date_context = (
+        f"费用发生日期：{expense_date.isoformat()}"
+        if date_source == "expense_date"
+        else (
+            f"当前制度查询基准日：{expense_date.isoformat()}（由服务端提供，不代表用户的费用日期）。"
+            "这是通用流程说明题；若证据足够，直接按当前有效制度回答，不要追问费用日期。"
+        )
+    )
     user = "\n".join(
         (
             f"问题：{question}",
-            f"费用发生日期：{expense_date.isoformat()}",
+            date_context,
             "状态定义：" + json.dumps(decision_contract, ensure_ascii=False),
             "输出契约：" + json.dumps(output_contract, ensure_ascii=False),
             "版本冲突：" + json.dumps(conflicts, ensure_ascii=False),

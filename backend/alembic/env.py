@@ -25,7 +25,7 @@ def include_database_object(
     reflected: bool,
     compare_to: object | None,
 ) -> bool:
-    """保留 Stage 2 创建、但不由业务 ORM 管理的数据库连通性练习表。"""
+    """排除不由业务 ORM 管理的遗留表。"""
     del object_, reflected, compare_to
     return not (type_ == "table" and name == "learning_check")
 

@@ -30,7 +30,7 @@ def build_ragas_samples(
     prompt_names: tuple[str, ...],
     case_ids: frozenset[str] | None = None,
 ) -> dict[str, list[dict[str, Any]]]:
-    """Convert frozen answer evidence into judge inputs without rerunning retrieval."""
+    """将冻结的回答证据转换为裁判输入，不重复执行检索。"""
     samples: dict[str, list[dict[str, Any]]] = {}
     available_prompts = report.get("prompts", {})
     for prompt_name in prompt_names:
@@ -120,7 +120,7 @@ async def run_ragas(
                 getattr(metric_result, "reason", None),
                 None,
             )
-        except Exception as exc:  # The report must retain individual judge failures.
+        except Exception as exc:  # 单个裁判失败必须保留在报告中，不能中断整批评测。
             return metric_name, None, None, f"{type(exc).__name__}: {exc}"
 
     async def evaluate_case(sample: dict[str, Any]) -> dict[str, Any]:

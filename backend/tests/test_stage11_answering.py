@@ -385,6 +385,47 @@ async def test_missing_expense_date_clarifies_without_retrieval_or_model_call() 
 
 
 @pytest.mark.asyncio
+async def test_current_process_question_uses_current_policy_without_expense_date() -> None:
+    retriever = AsyncMock(spec=HybridRetrievalService)
+    retriever.search.return_value = HybridSearchResult(hits=(make_hit(),), version_conflicts=())
+    provider = make_provider(citation_ids=["S1"])
+
+    result = await AnswerService(retriever).answer(
+        AsyncMock(spec=AsyncSession),
+        FakeEmbeddingProvider(),
+        provider,
+        knowledge_base_id=KB_ID,
+        question="报销流程是什么？",
+        expense_date=None,
+        allowed_scopes=frozenset({"all_employees"}),
+    )
+
+    assert result.status == "answered"
+    assert retriever.search.await_args.kwargs["expense_date"] == date.today()
+    assert "当前制度查询基准日" in provider.prompts[0].user
+
+
+@pytest.mark.asyncio
+async def test_historical_process_question_still_requires_expense_date() -> None:
+    retriever = AsyncMock(spec=HybridRetrievalService)
+    provider = make_provider(citation_ids=["S1"])
+
+    result = await AnswerService(retriever).answer(
+        AsyncMock(spec=AsyncSession),
+        FakeEmbeddingProvider(),
+        provider,
+        knowledge_base_id=KB_ID,
+        question="2025年的报销流程是什么？",
+        expense_date=None,
+        allowed_scopes=frozenset({"all_employees"}),
+    )
+
+    assert result.status == "needs_clarification"
+    retriever.search.assert_not_awaited()
+    assert provider.prompts == []
+
+
+@pytest.mark.asyncio
 async def test_no_retrieved_evidence_refuses_without_model_call() -> None:
     retriever = AsyncMock(spec=HybridRetrievalService)
     retriever.search.return_value = HybridSearchResult(hits=(), version_conflicts=())

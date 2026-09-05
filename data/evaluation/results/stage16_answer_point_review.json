@@ -1,0 +1,21 @@
+{
+  "review_id": "stage16-answer-point-review-completion-v1",
+  "reviewed_at": "2026-08-26",
+  "source_run": "stage11-20260822T122313Z-40cb3acf",
+  "source_report": "data/evaluation/results/stage16_final_answer_bailian_v1.json",
+  "dataset_version": "stage8-v0",
+  "dataset_cases": 20,
+  "review_status": "confirmed",
+  "review_method": "项目负责人交互式逐题复核",
+  "review_scope": [
+    "回答状态、核心结论、必要条件和引用范围",
+    "“最高金额”可表达“标准内据实报销”的上限含义，但不得遗漏该业务含义",
+    "多来源题仍单独检查每份必要制度是否被引用"
+  ],
+  "known_findings_retained": [
+    "TRAVEL-EVAL-010：多来源证据未完整合并。",
+    "TRAVEL-EVAL-013：条件不成立时出现无关展会例外引用。",
+    "TRAVEL-EVAL-015：已给定条件时仍过度追问，并遗漏基础制度。"
+  ],
+  "boundary": "本记录确认已完成对本次冻结运行的人工复核；原始模型输出、自动指标和逐题原始 pending 标记保持不改写。未基于本次复核新增未经记录的后验汇总分数。"
+}

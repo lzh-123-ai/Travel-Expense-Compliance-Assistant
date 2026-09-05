@@ -1,12 +1,12 @@
 """基于数据库的 dense、关键词和混合检索。
 
-所有检索模式都必须在候选进入融合或大模型前，执行相同的知识库、有效日期、
-文档状态和服务端权限范围过滤。主链路阅读 ``HybridRetrievalService.search``。
+所有检索模式都在候选进入融合或大模型前执行相同的知识库、有效日期、
+文档状态和服务端权限范围过滤。
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import date
 from uuid import UUID
 
@@ -18,6 +18,8 @@ from app.models.document import Document
 from app.models.document_chunk import DocumentChunk
 from app.services.embeddings import EmbeddingProvider, validate_embedding_vectors
 from app.services.keywording import KEYWORD_TOKENIZER_VERSION, tokenize
+from app.services.query_rewriting import ConstrainedQueryRewriter, QueryRewriteResult
+from app.services.reranking import CandidateReranker, DeterministicCandidateReranker
 
 PUBLIC_DOCUMENT_SCOPES = frozenset({"all_employees"})
 DEFAULT_RRF_K = 60
@@ -231,6 +233,7 @@ class HybridSearchHit:
     keyword_rank: int | None
     rrf_score: float
     document_rrf_score: float = 0.0
+    rerank_score: float | None = None
     policy_type: str | None = None
     effective_from: date | None = None
     effective_to: date | None = None
@@ -242,6 +245,9 @@ class HybridSearchHit:
 class HybridSearchResult:
     hits: tuple[HybridSearchHit, ...]
     version_conflicts: tuple[VersionConflict, ...]
+    strategy: str = "hybrid"
+    query_rewrite: QueryRewriteResult | None = None
+    reranked: bool = False
 
 
 class HybridRetrievalService:
@@ -252,11 +258,19 @@ class HybridRetrievalService:
         *,
         rrf_k: int = DEFAULT_RRF_K,
         diversity_slots: int = DEFAULT_HYBRID_DIVERSITY_SLOTS,
+        query_rewriter: ConstrainedQueryRewriter | None = None,
+        reranker: CandidateReranker | None = None,
+        enable_query_rewrite: bool = False,
+        enable_rerank: bool = False,
     ) -> None:
         self.dense = dense or DenseRetrievalService()
         self.keyword = keyword or KeywordRetrievalService()
         self.rrf_k = rrf_k
         self.diversity_slots = diversity_slots
+        self.query_rewriter = query_rewriter or ConstrainedQueryRewriter()
+        self.reranker = reranker or DeterministicCandidateReranker()
+        self.enable_query_rewrite = enable_query_rewrite
+        self.enable_rerank = enable_rerank
 
     async def search(
         self,
@@ -279,12 +293,23 @@ class HybridRetrievalService:
         if not allowed_scopes:
             return HybridSearchResult(hits=(), version_conflicts=())
         candidate_limit = candidate_k or max(top_k * 4, 20)
+        # 改写只产生检索副本；原问题仍由 AnswerService 传给回答 Prompt。
+        query_rewrite = (
+            self.query_rewriter.rewrite(
+                query,
+                expense_date=expense_date,
+                allowed_scopes=allowed_scopes,
+            )
+            if self.enable_query_rewrite
+            else None
+        )
+        retrieval_query = query_rewrite.search_query if query_rewrite else query
         # 每条检索路线都重复 SQL 过滤；融合无法修复不安全的候选输入。
         dense_hits = await self.dense.search(
             session,
             provider,
             knowledge_base_id=knowledge_base_id,
-            query=query,
+            query=retrieval_query,
             expense_date=expense_date,
             allowed_scopes=allowed_scopes,
             top_k=candidate_limit,
@@ -292,7 +317,7 @@ class HybridRetrievalService:
         keyword_hits = await self.keyword.search(
             session,
             knowledge_base_id=knowledge_base_id,
-            query=query,
+            query=retrieval_query,
             expense_date=expense_date,
             allowed_scopes=allowed_scopes,
             top_k=candidate_limit,
@@ -362,12 +387,34 @@ class HybridRetrievalService:
                 hit.content,
             )
         )
+        rerank_query = query_rewrite
+        if self.enable_rerank:
+            # 未启用改写时，重排仍使用原始问题，避免隐式改变查询语义。
+            if rerank_query is None:
+                rerank_query = self.query_rewriter.rewrite(
+                    query,
+                    expense_date=expense_date,
+                    allowed_scopes=allowed_scopes,
+                )
+                rerank_query = replace(rerank_query, search_query=query, changed=False)
+            merged = list(self.reranker.rerank(merged, query=rerank_query))
         hits = _select_document_aware_hits(
             merged,
             top_k=top_k,
             diversity_slots=self.diversity_slots,
         )
-        return HybridSearchResult(hits=hits, version_conflicts=_detect_version_conflicts(hits))
+        strategy = "hybrid"
+        if self.enable_query_rewrite:
+            strategy += "+rewrite"
+        if self.enable_rerank:
+            strategy += "+rerank"
+        return HybridSearchResult(
+            hits=hits,
+            version_conflicts=_detect_version_conflicts(hits),
+            strategy=strategy,
+            query_rewrite=query_rewrite,
+            reranked=self.enable_rerank,
+        )
 
 
 def _select_document_aware_hits(

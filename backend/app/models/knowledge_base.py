@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 class KnowledgeBase(Base):
-    """企业知识库的容器；后续文档、切片和权限都会关联到它。"""
+    """文档、切片和访问范围所属的企业知识库。"""
 
     __tablename__ = "knowledge_bases"
 

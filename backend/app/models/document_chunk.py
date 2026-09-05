@@ -31,7 +31,13 @@ if TYPE_CHECKING:
 
 
 class DocumentChunk(Base):
-    """可追溯到原文位置的确定性文本切片；Stage 8 暂不包含向量。"""
+    """可追溯到原文位置并支持增量索引的确定性文本切片。"""
+
+    def __init__(self, **kwargs: object) -> None:
+        """在 ORM 实例化阶段补齐数据库默认值。"""
+        super().__init__(**kwargs)
+        if self.source_metadata is None:
+            self.source_metadata = {}
 
     __tablename__ = "document_chunks"
     __table_args__ = (
@@ -98,6 +104,10 @@ class DocumentChunk(Base):
     token_estimate: Mapped[int] = mapped_column(Integer, nullable=False)
     content_hash: Mapped[str] = mapped_column(String(64), nullable=False)
     extraction_method: Mapped[str] = mapped_column(String(30), nullable=False)
+    # 记录 OCR provider、模型版本、页码、行置信度和框坐标等，不参与检索过滤。
+    source_metadata: Mapped[dict[str, object]] = mapped_column(
+        JSON, nullable=False, default=dict, server_default=text("'{}'::json")
+    )
     chunking_strategy: Mapped[str] = mapped_column(String(50), nullable=False)
     chunk_size: Mapped[int] = mapped_column(Integer, nullable=False)
     chunk_overlap: Mapped[int] = mapped_column(Integer, nullable=False)

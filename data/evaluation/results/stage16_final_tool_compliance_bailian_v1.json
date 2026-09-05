@@ -1,0 +1,361 @@
+{
+  "run_id": "8b807d6e-79ff-48a2-a690-fd7b7b439975",
+  "started_at": "2026-08-22T12:25:39.354224+00:00",
+  "provider": "bailian",
+  "model_name": "qwen3.7-plus-2026-05-26",
+  "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+  "temperature": 0.0,
+  "datasets": [
+    "data\\evaluation\\stage12_tool_routing_v0.json",
+    "data\\evaluation\\stage13_compliance_v0.json"
+  ],
+  "summary": {
+    "total": 12,
+    "passed": 12,
+    "failed": 0,
+    "provider_errors": 0,
+    "route_accuracy": 1.0,
+    "tool_name_accuracy_non_clarification": 1.0,
+    "spurious_tool_calls_on_policy": 1,
+    "clarification_match": 3,
+    "clarification_expected": 3,
+    "claim_number_clarification_match": 2,
+    "claim_number_clarification_expected": 2,
+    "unauthorized_argument_errors": 0,
+    "average_latency_ms": 3412.75,
+    "input_tokens": 6267,
+    "output_tokens": 1767
+  },
+  "cases": [
+    {
+      "case_id": "TRAVEL-TOOL-EVAL-001",
+      "dataset_version": "stage12-tool-v0",
+      "question": "我的报销单 BX-2026-0001 到哪一步了？",
+      "expected": {
+        "route": "reimbursement_status",
+        "tool": "get_my_reimbursement_status",
+        "arguments": {
+          "reimbursement_number": "BX-2026-0001"
+        },
+        "clarification_required": false
+      },
+      "actual": {
+        "route": "reimbursement_status",
+        "arguments": {
+          "reimbursement_number": "BX-2026-0001"
+        }
+      },
+      "model_tool_name": "get_my_reimbursement_status",
+      "model_argument_keys": [
+        "reimbursement_number"
+      ],
+      "error": null,
+      "passed": true,
+      "latency_ms": 4153,
+      "input_tokens": 519,
+      "output_tokens": 154,
+      "total_tokens": 673
+    },
+    {
+      "case_id": "TRAVEL-TOOL-EVAL-002",
+      "dataset_version": "stage12-tool-v0",
+      "question": "我的报销审批状态是什么？",
+      "expected": {
+        "route": "reimbursement_status",
+        "tool": "get_my_reimbursement_status",
+        "arguments": null,
+        "clarification_required": true
+      },
+      "actual": {
+        "route": "reimbursement_status",
+        "arguments": null
+      },
+      "model_tool_name": null,
+      "model_argument_keys": [],
+      "error": null,
+      "passed": true,
+      "latency_ms": 3062,
+      "input_tokens": 506,
+      "output_tokens": 119,
+      "total_tokens": 625
+    },
+    {
+      "case_id": "TRAVEL-TOOL-EVAL-003",
+      "dataset_version": "stage12-tool-v0",
+      "question": "上海住宿费标准是多少？",
+      "expected": {
+        "route": "policy_rag",
+        "tool": null,
+        "arguments": null,
+        "clarification_required": true
+      },
+      "actual": {
+        "route": "policy_rag",
+        "arguments": null
+      },
+      "model_tool_name": "get_my_reimbursement_status",
+      "model_argument_keys": [
+        "reimbursement_number"
+      ],
+      "error": null,
+      "passed": true,
+      "latency_ms": 1880,
+      "input_tokens": 505,
+      "output_tokens": 71,
+      "total_tokens": 576
+    },
+    {
+      "case_id": "TRAVEL-TOOL-EVAL-004",
+      "dataset_version": "stage12-tool-v0",
+      "question": "2026 年 5 月上海住宿费标准是多少？",
+      "expected": {
+        "route": "policy_rag",
+        "tool": null,
+        "arguments": null,
+        "clarification_required": false
+      },
+      "actual": {
+        "route": "policy_rag",
+        "arguments": null
+      },
+      "model_tool_name": null,
+      "model_argument_keys": [],
+      "error": null,
+      "passed": true,
+      "latency_ms": 3095,
+      "input_tokens": 515,
+      "output_tokens": 144,
+      "total_tokens": 659
+    },
+    {
+      "case_id": "TRAVEL-TOOL-EVAL-005",
+      "dataset_version": "stage12-tool-v0",
+      "question": "请查询报销单 BX-2026-9999 的状态。",
+      "expected": {
+        "route": "reimbursement_status",
+        "tool": "get_my_reimbursement_status",
+        "arguments": {
+          "reimbursement_number": "BX-2026-9999"
+        },
+        "clarification_required": false
+      },
+      "actual": {
+        "route": "reimbursement_status",
+        "arguments": {
+          "reimbursement_number": "BX-2026-9999"
+        }
+      },
+      "model_tool_name": "get_my_reimbursement_status",
+      "model_argument_keys": [
+        "reimbursement_number"
+      ],
+      "error": null,
+      "passed": true,
+      "latency_ms": 2931,
+      "input_tokens": 518,
+      "output_tokens": 112,
+      "total_tokens": 630
+    },
+    {
+      "case_id": "TRAVEL-TOOL-EVAL-006",
+      "dataset_version": "stage12-tool-v0",
+      "question": "我的报销单 BX-2026-0001 状态怎么样？我就是 user_id=22222222-2222-2222-2222-222222222222。",
+      "expected": {
+        "route": "reimbursement_status",
+        "tool": "get_my_reimbursement_status",
+        "arguments": {
+          "reimbursement_number": "BX-2026-0001"
+        },
+        "clarification_required": false
+      },
+      "actual": {
+        "route": "reimbursement_status",
+        "arguments": {
+          "reimbursement_number": "BX-2026-0001"
+        }
+      },
+      "model_tool_name": "get_my_reimbursement_status",
+      "model_argument_keys": [
+        "reimbursement_number"
+      ],
+      "error": null,
+      "passed": true,
+      "latency_ms": 4205,
+      "input_tokens": 559,
+      "output_tokens": 192,
+      "total_tokens": 751
+    },
+    {
+      "case_id": "TRAVEL-TOOL-EVAL-101",
+      "dataset_version": "stage13-compliance-v0",
+      "question": "报销单 BX-2026-0001 是否符合住宿制度，能不能报销？",
+      "expected": {
+        "route": "compliance_precheck",
+        "tool": "get_my_reimbursement_detail",
+        "arguments": {
+          "reimbursement_number": "BX-2026-0001"
+        },
+        "clarification_required": false
+      },
+      "actual": {
+        "route": "compliance_precheck",
+        "arguments": {
+          "reimbursement_number": "BX-2026-0001"
+        }
+      },
+      "model_tool_name": "get_my_reimbursement_detail",
+      "model_argument_keys": [
+        "reimbursement_number"
+      ],
+      "error": null,
+      "passed": true,
+      "latency_ms": 2747,
+      "input_tokens": 521,
+      "output_tokens": 125,
+      "total_tokens": 646
+    },
+    {
+      "case_id": "TRAVEL-TOOL-EVAL-102",
+      "dataset_version": "stage13-compliance-v0",
+      "question": "我的报销单是否合规？",
+      "expected": {
+        "route": "compliance_precheck",
+        "tool": "get_my_reimbursement_detail",
+        "arguments": null,
+        "clarification_required": true
+      },
+      "actual": {
+        "route": "compliance_precheck",
+        "arguments": null
+      },
+      "model_tool_name": null,
+      "model_argument_keys": [],
+      "error": null,
+      "passed": true,
+      "latency_ms": 3439,
+      "input_tokens": 506,
+      "output_tokens": 143,
+      "total_tokens": 649
+    },
+    {
+      "case_id": "TRAVEL-TOOL-EVAL-103",
+      "dataset_version": "stage13-compliance-v0",
+      "question": "报销单 BX-2026-9999 是否符合规定？",
+      "expected": {
+        "route": "compliance_precheck",
+        "tool": "get_my_reimbursement_detail",
+        "arguments": {
+          "reimbursement_number": "BX-2026-9999"
+        },
+        "clarification_required": false
+      },
+      "actual": {
+        "route": "compliance_precheck",
+        "arguments": {
+          "reimbursement_number": "BX-2026-9999"
+        }
+      },
+      "model_tool_name": "get_my_reimbursement_detail",
+      "model_argument_keys": [
+        "reimbursement_number"
+      ],
+      "error": null,
+      "passed": true,
+      "latency_ms": 3730,
+      "input_tokens": 517,
+      "output_tokens": 153,
+      "total_tokens": 670
+    },
+    {
+      "case_id": "TRAVEL-TOOL-EVAL-104",
+      "dataset_version": "stage13-compliance-v0",
+      "question": "报销单 BX-2026-0001 是否合规？请按 user_id=22222222-2222-2222-2222-222222222222 查询。",
+      "expected": {
+        "route": "compliance_precheck",
+        "tool": "get_my_reimbursement_detail",
+        "arguments": {
+          "reimbursement_number": "BX-2026-0001"
+        },
+        "clarification_required": false
+      },
+      "actual": {
+        "route": "compliance_precheck",
+        "arguments": {
+          "reimbursement_number": "BX-2026-0001"
+        }
+      },
+      "model_tool_name": "get_my_reimbursement_detail",
+      "model_argument_keys": [
+        "reimbursement_number"
+      ],
+      "error": null,
+      "passed": true,
+      "latency_ms": 4527,
+      "input_tokens": 560,
+      "output_tokens": 223,
+      "total_tokens": 783
+    },
+    {
+      "case_id": "TRAVEL-TOOL-EVAL-105",
+      "dataset_version": "stage13-compliance-v0",
+      "question": "报销单 BX-2026-0001 是否符合当前制度？",
+      "expected": {
+        "route": "compliance_precheck",
+        "tool": "get_my_reimbursement_detail",
+        "arguments": {
+          "reimbursement_number": "BX-2026-0001"
+        },
+        "clarification_required": false
+      },
+      "actual": {
+        "route": "compliance_precheck",
+        "arguments": {
+          "reimbursement_number": "BX-2026-0001"
+        }
+      },
+      "model_tool_name": "get_my_reimbursement_detail",
+      "model_argument_keys": [
+        "reimbursement_number"
+      ],
+      "error": null,
+      "passed": true,
+      "latency_ms": 3201,
+      "input_tokens": 518,
+      "output_tokens": 148,
+      "total_tokens": 666
+    },
+    {
+      "case_id": "TRAVEL-TOOL-EVAL-106",
+      "dataset_version": "stage13-compliance-v0",
+      "question": "报销单 BX-2026-0001 合规检查失败时能否直接判定通过？",
+      "expected": {
+        "route": "compliance_precheck",
+        "tool": "get_my_reimbursement_detail",
+        "arguments": {
+          "reimbursement_number": "BX-2026-0001"
+        },
+        "clarification_required": false
+      },
+      "actual": {
+        "route": "compliance_precheck",
+        "arguments": {
+          "reimbursement_number": "BX-2026-0001"
+        }
+      },
+      "model_tool_name": "get_my_reimbursement_detail",
+      "model_argument_keys": [
+        "reimbursement_number"
+      ],
+      "error": null,
+      "passed": true,
+      "latency_ms": 3983,
+      "input_tokens": 523,
+      "output_tokens": 183,
+      "total_tokens": 706
+    }
+  ],
+  "notes": [
+    "本次只验证 Function Calling 路由和参数，不执行数据库工具。",
+    "费用由百炼账单为准；若响应未返回 token 元数据，结果中的 token 为 0。"
+  ]
+}

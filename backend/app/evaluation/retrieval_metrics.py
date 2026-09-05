@@ -1,4 +1,4 @@
-"""Stage 9 和 10 运行使用的确定性检索质量/安全指标。"""
+"""确定性的检索质量与安全边界指标。"""
 
 from __future__ import annotations
 

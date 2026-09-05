@@ -13,6 +13,7 @@ dependencies = [
     "fastapi>=0.115,<1.0",
     "langchain-core>=1.5,<2.0",
     "langchain-openai>=1.4,<2.0",
+    "langgraph>=1.0,<2.0",
     "pypdf>=5.9,<7.0",
     "pgvector>=0.5,<1.0",
     "pydantic-settings>=2.7,<3.0",
@@ -31,9 +32,15 @@ embedding-download = [
     "modelscope>=1.39,<2.0",
 ]
 evaluation = [
-    # RAGAS 0.4.3 still imports a compatibility module removed in 0.4.2.
+    # RAGAS 0.4.3 仍依赖 0.4.2 已移除的兼容模块，因此固定该传递依赖版本。
     "langchain-community==0.4.1",
     "ragas>=0.4,<1.0",
+]
+ocr = [
+    # OCR 仅在显式处理扫描版 PDF 时加载，普通解析和检索不依赖这些组件。
+    "paddlepaddle>=3.0,<4.0",
+    "paddleocr>=3.0,<4.0",
+    "pypdfium2>=4.30,<5.0",
 ]
 dev = [
     "httpx>=0.27,<1.0",

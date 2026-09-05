@@ -28,6 +28,11 @@ def test_document_model_has_expected_table_and_columns() -> None:
         "needs_ocr",
         "parse_warnings",
         "parsed_at",
+        "ocr_status",
+        "ocr_provider",
+        "ocr_model_version",
+        "ocr_processed_at",
+        "ocr_low_confidence_page_count",
         "created_at",
         "updated_at",
     }

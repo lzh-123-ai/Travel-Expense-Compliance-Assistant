@@ -20,7 +20,7 @@ class ExpectedSource(BaseModel):
 class EvalCase(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    id: str = Field(pattern=r"^TRAVEL-(?:EVAL|TUNE)-\d{3}$")
+    id: str = Field(pattern=r"^TRAVEL-(?:(?:EVAL|TUNE|HOLDOUT)-\d{3}|TOOL-EVAL-\d{3})$")
     category: Literal[
         "direct_fact",
         "multi_condition",
@@ -44,9 +44,10 @@ class EvalCase(BaseModel):
 
     @model_validator(mode="after")
     def validate_ground_truth(self) -> EvalCase:
-        if not self.should_refuse and not self.expected_sources:
+        is_tool_case = self.expected_route in {"reimbursement_status", "compliance_precheck"}
+        if not self.should_refuse and not self.expected_sources and not is_tool_case:
             raise ValueError("Answerable cases require at least one expected source")
-        if not self.should_refuse and not self.acceptable_answer_points:
+        if not self.should_refuse and not self.acceptable_answer_points and not is_tool_case:
             raise ValueError("Answerable cases require acceptable answer points")
         if self.clarification_required and not self.should_refuse:
             raise ValueError("Clarification cases must refuse an unsupported direct answer")
@@ -58,7 +59,9 @@ class EvalCase(BaseModel):
 class EvalDataset(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    dataset_version: str = Field(pattern=r"^stage(?:8-v\d+|11-tuning-v\d+)$")
+    dataset_version: str = Field(
+        pattern=r"^stage(?:8-v\d+|11-tuning-v\d+|12-tool-v\d+|13-compliance-v\d+|16-holdout-v\d+)$"
+    )
     annotation_status: Literal["draft_needs_human_review", "reviewed"]
     description: str = Field(min_length=10)
     cases: list[EvalCase] = Field(min_length=1)
@@ -72,7 +75,7 @@ class EvalDataset(BaseModel):
 
 
 class EvaluationRunConfig(BaseModel):
-    """Stage 11 执行模型评测时复用；Stage 8 只冻结可复现字段。"""
+    """冻结模型评测所需的可复现配置、数据和成本字段。"""
 
     model_config = ConfigDict(extra="forbid")
 

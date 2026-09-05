@@ -1,8 +1,4 @@
-"""文档生命周期 HTTP 接口。
-
-建议按生命周期阅读：上传 -> 解析 -> 向量/关键词索引 -> 检索 -> 删除。
-本模块负责 HTTP 错误转换和跨存储补偿；具体实现位于 ``app.services``。
-"""
+"""文档上传、处理、索引和删除的 HTTP 接口及跨存储补偿。"""
 
 from typing import Annotated
 from uuid import UUID, uuid4
@@ -47,6 +43,14 @@ from app.services.keyword_indexing import (
     DocumentNotReadyForKeywordIndexingError,
     get_document_keyword_indexing_service,
 )
+from app.services.ocr import (
+    OCRNotRequiredError,
+    OCRProcessingError,
+    OCRProcessingService,
+    OCRProviderError,
+    OCRUnsupportedDocumentError,
+    get_ocr_processing_service,
+)
 from app.services.storage import (
     DocumentTooLargeError,
     StorageService,
@@ -58,6 +62,7 @@ router = APIRouter(prefix="/knowledge-bases/{knowledge_base_id}/documents")
 DatabaseSession = Annotated[AsyncSession, Depends(get_db_session)]
 DocumentStorage = Annotated[StorageService, Depends(get_storage_service)]
 DocumentProcessor = Annotated[DocumentProcessingService, Depends(get_document_processing_service)]
+DocumentOCRProcessor = Annotated[OCRProcessingService, Depends(get_ocr_processing_service)]
 EmbeddingProviderDependency = Annotated[EmbeddingProvider, Depends(get_embedding_provider)]
 DocumentEmbedder = Annotated[DocumentEmbeddingService, Depends(get_document_embedding_service)]
 DocumentKeywordIndexer = Annotated[
@@ -251,6 +256,48 @@ async def process_document(
     """获取单文档行锁后执行解析，防止并发重建切片。"""
     document = await _get_document_for_processing(session, knowledge_base_id, document_id)
     return await processor.process(document, session, storage)
+
+
+@router.post(
+    "/{document_id}/ocr",
+    response_model=DocumentResponse,
+    summary="Run controlled OCR for scanned PDF pages",
+)
+async def ocr_document(
+    knowledge_base_id: UUID,
+    document_id: UUID,
+    session: DatabaseSession,
+    storage: DocumentStorage,
+    processor: DocumentOCRProcessor,
+) -> Document:
+    """显式处理扫描版 PDF 图片页，原生解析链路不会自动触发 OCR。"""
+    document = await _get_document_for_processing(session, knowledge_base_id, document_id)
+    try:
+        return await processor.process(document, session, storage)
+    except OCRNotRequiredError as exc:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(exc),
+        ) from exc
+    except OCRUnsupportedDocumentError as exc:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            detail=str(exc),
+        ) from exc
+    except OCRProviderError as exc:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=str(exc),
+        ) from exc
+    except OCRProcessingError as exc:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="OCR processing failed",
+        ) from exc
 
 
 @router.post(

@@ -17,6 +17,13 @@ async def info_check() -> InfoResponse:
     settings = get_settings()
     return InfoResponse(
         project=settings.app_name,
-        stage=3,
-        features=["health-check", "postgres-pgvector", "database-readiness"],
+        stage=16,
+        features=[
+            "document-ingestion",
+            "hybrid-retrieval",
+            "grounded-answering",
+            "tool-routing",
+            "observability",
+        ],
+        tool_routing_provider=settings.tool_routing_provider,
     )

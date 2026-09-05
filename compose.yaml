@@ -20,6 +20,64 @@ services:
       start_period: 10s
     restart: unless-stopped
 
+  api:
+    build:
+      context: ./backend
+      args:
+        INSTALL_OCR: ${INSTALL_OCR:-false}
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      APP_DEBUG: ${APP_DEBUG:-false}
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-rag_user}:${POSTGRES_PASSWORD:-rag_password}@postgres:5432/${POSTGRES_DB:-enterprise_rag}
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
+      ANSWER_PROVIDER: ${ANSWER_PROVIDER:-bailian}
+      ANSWER_MODEL_NAME: ${ANSWER_MODEL_NAME:-qwen-plus}
+      ANSWER_BASE_URL: ${ANSWER_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+      ANSWER_TEMPERATURE: ${ANSWER_TEMPERATURE:-0.0}
+      ANSWER_ENABLE_THINKING: ${ANSWER_ENABLE_THINKING:-false}
+      ANSWER_TIMEOUT_SECONDS: ${ANSWER_TIMEOUT_SECONDS:-60}
+      ANSWER_MAX_RETRIES: ${ANSWER_MAX_RETRIES:-2}
+      ANSWER_INPUT_COST_PER_MILLION_USD: ${ANSWER_INPUT_COST_PER_MILLION_USD:-0}
+      ANSWER_OUTPUT_COST_PER_MILLION_USD: ${ANSWER_OUTPUT_COST_PER_MILLION_USD:-0}
+      ANSWER_PROMPT_VERSION: ${ANSWER_PROMPT_VERSION:-v1}
+      TOOL_ROUTING_PROVIDER: ${TOOL_ROUTING_PROVIDER:-rule}
+      TOOL_ROUTING_MODEL_NAME: ${TOOL_ROUTING_MODEL_NAME:-qwen-plus}
+      TOOL_ROUTING_TEMPERATURE: ${TOOL_ROUTING_TEMPERATURE:-0.0}
+      TOOL_ROUTING_TIMEOUT_SECONDS: ${TOOL_ROUTING_TIMEOUT_SECONDS:-30}
+      TOOL_ROUTING_MAX_RETRIES: ${TOOL_ROUTING_MAX_RETRIES:-2}
+      OCR_LANGUAGE: ${OCR_LANGUAGE:-ch}
+      OCR_MIN_CONFIDENCE: ${OCR_MIN_CONFIDENCE:-0.85}
+      OCR_PDF_RENDER_SCALE: ${OCR_PDF_RENDER_SCALE:-2.0}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "${API_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/ready', timeout=3)\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-}
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${FRONTEND_PORT:-5173}:80"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
 volumes:
   postgres_data:
 

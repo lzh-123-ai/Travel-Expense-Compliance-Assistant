@@ -103,6 +103,11 @@ def test_upload_document_persists_file_hash_and_safe_metadata(tmp_path: Path) ->
         "needs_ocr": False,
         "parse_warnings": [],
         "parsed_at": None,
+        "ocr_status": "not_requested",
+        "ocr_provider": None,
+        "ocr_model_version": None,
+        "ocr_processed_at": None,
+        "ocr_low_confidence_page_count": 0,
         "created_at": "2026-07-25T08:30:00Z",
         "updated_at": "2026-07-25T08:30:00Z",
     }

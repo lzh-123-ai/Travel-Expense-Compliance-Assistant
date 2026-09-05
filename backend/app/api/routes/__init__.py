@@ -1,1 +1,1 @@
-"""Route modules grouped by business capability."""
+"""按业务能力划分的路由模块。"""

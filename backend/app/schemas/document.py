@@ -33,6 +33,11 @@ class DocumentResponse(BaseModel):
     needs_ocr: bool
     parse_warnings: list[dict[str, object]]
     parsed_at: datetime | None
+    ocr_status: str = "not_requested"
+    ocr_provider: str | None = None
+    ocr_model_version: str | None = None
+    ocr_processed_at: datetime | None = None
+    ocr_low_confidence_page_count: int = 0
     created_at: datetime
     updated_at: datetime
 
@@ -72,6 +77,7 @@ class DocumentChunkResponse(BaseModel):
     token_estimate: int
     content_hash: str
     extraction_method: str
+    source_metadata: dict[str, object]
     chunking_strategy: str
     chunk_size: int
     chunk_overlap: int

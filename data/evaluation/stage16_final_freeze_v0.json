@@ -1,0 +1,75 @@
+{
+  "freeze_version": "stage16-final-freeze-v0",
+  "frozen_at": "2026-08-22",
+  "annotation_status": "reviewed",
+  "purpose": "候选版回归冻结集；用于验证已确定配置未回退，不是未见题上的泛化盲测。",
+  "candidate_config": {
+    "answer": {
+      "provider": "bailian",
+      "model_name": "qwen3.7-plus-2026-05-26",
+      "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+      "prompt_version": "v1",
+      "prompt_revision": "v1-structured-r2",
+      "temperature": 0.0,
+      "enable_thinking": false,
+      "timeout_seconds": 60.0,
+      "max_retries": 2,
+      "api_key": "只从本地 DASHSCOPE_API_KEY 读取；冻结文件不保存密钥。"
+    },
+    "retrieval": {
+      "embedding_provider": "sentence_transformers",
+      "embedding_model_name": "BAAI/bge-small-zh-v1.5",
+      "embedding_dimension": 512,
+      "top_k": 5,
+      "candidate_k": 20,
+      "strategy": "hybrid+RRF",
+      "rrf_k": 60,
+      "diversity_slots": 3,
+      "enable_query_rewrite": false,
+      "enable_rerank": false
+    },
+    "tool_routing": {
+      "provider": "bailian",
+      "model_name": "qwen3.7-plus-2026-05-26",
+      "temperature": 0.0
+    }
+  },
+  "scored_sources": [
+    {
+      "path": "data/evaluation/stage10_retrieval_v0.json",
+      "sha256": "80279224a117fa502f4e346176256596995ea884ae644ceb66b42104a4fbbc31",
+      "case_count": 40,
+      "evaluation_areas": ["检索", "版本过滤", "权限过滤", "有效期过滤", "延迟"]
+    },
+    {
+      "path": "data/evaluation/stage8_v0.json",
+      "sha256": "3cf14a7209e253532535051c1a1eff1d4084ca5cce54d3f01e1618ea111acc0f",
+      "case_count": 20,
+      "evaluation_areas": ["制度回答", "引用", "拒答", "澄清", "人工要点"]
+    },
+    {
+      "path": "data/evaluation/stage12_tool_routing_v0.json",
+      "sha256": "d84a26d849bdc855877f6d4496709adba62e3c53660fd3e468a2069ac336f415",
+      "case_count": 6,
+      "evaluation_areas": ["能力路由", "工具选择", "参数", "拒绝边界"]
+    },
+    {
+      "path": "data/evaluation/stage13_compliance_v0.json",
+      "sha256": "d58904344c5e2dc6070117be2ded8edd9dc801f954a8dcaf4347f5e784ab04c9",
+      "case_count": 6,
+      "evaluation_areas": ["合规预检查", "资源归属", "失败分支", "证据不足"]
+    }
+  ],
+  "diagnostic_sources": [
+    {
+      "path": "data/evaluation/stage11_tuning_v0.json",
+      "sha256": "7cb619e623daebbb337248a6bec6ecf27043e1e06c8849ab3bca6d02461a026f",
+      "case_count": 8,
+      "reason_excluded_from_score": "该题集已用于 Prompt V0/V1/V2 决策，只能诊断已知问题，不能进入最终总分或泛化结论。"
+    }
+  ],
+  "total_scored_cases": 72,
+  "total_diagnostic_cases": 8,
+  "deduplication": "stage9_retrieval_v0 的 30 道题完整包含在 stage10_retrieval_v0 中，不重复计入。",
+  "reporting_boundary": "检索、回答、工具和合规的指标分别报告；禁止拼成无业务含义的单一准确率。"
+}

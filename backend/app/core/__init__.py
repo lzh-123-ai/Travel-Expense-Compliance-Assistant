@@ -1,1 +1,1 @@
-"""Shared infrastructure used by all business modules."""
+"""业务模块共用的基础设施。"""

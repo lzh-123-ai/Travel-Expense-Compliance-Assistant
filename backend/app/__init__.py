@@ -1,1 +1,1 @@
-"""Enterprise RAG Assistant backend package."""
+"""企业 RAG 助手后端包。"""

@@ -1,4 +1,4 @@
-"""Document parsing contracts and implementations."""
+"""文档解析契约与实现。"""
 
 from app.services.parsing.contracts import (
     DocumentParseError,

@@ -38,8 +38,7 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("name"),
     )
-    # learning_check is Stage 2 learning data, not application-owned schema.
-    # Alembic found it during autogeneration, so this migration preserves it.
+    # learning_check 是数据库中的遗留表，不属于应用 ORM 管理范围。
 
 
 def downgrade() -> None:

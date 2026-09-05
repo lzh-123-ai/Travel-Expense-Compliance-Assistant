@@ -47,7 +47,7 @@ class QuarantinedObject:
 
 
 class StorageService(Protocol):
-    """Route 和测试依赖的存储契约，具体实现可替换。"""
+    """文档路由依赖的可替换存储契约。"""
     async def save(self, source: AsyncReadable, key: str, max_size: int) -> StoredObject: ...
 
     def open(self, key: str) -> BinaryIO: ...

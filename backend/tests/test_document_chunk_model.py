@@ -16,6 +16,7 @@ def test_document_chunk_has_traceable_content_columns() -> None:
         "token_estimate",
         "content_hash",
         "extraction_method",
+        "source_metadata",
         "chunking_strategy",
         "chunk_size",
         "chunk_overlap",

@@ -14,8 +14,7 @@ KEYWORD_TOKENIZER_VERSION = "domain_bigram_v1"
 _TOKEN_RE = re.compile(r"[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*|[\u4e00-\u9fff]+")
 _CJK_RE = re.compile(r"[\u4e00-\u9fff]")
 
-# Domain terms make the index useful for policy phrases while bigrams keep
-# unseen Chinese wording searchable without an external dictionary service.
+# 完整保留领域词；未知中文使用二元切分，无需依赖外部词典服务。
 _DOMAIN_TERMS = frozenset(
     {
         "差旅",
@@ -87,7 +86,7 @@ def _segment_cjk(run: str) -> list[str]:
 
 
 def tokenize(text: str) -> tuple[str, ...]:
-    """Return deterministic space-separated terms for PostgreSQL simple FTS."""
+    """为 PostgreSQL simple FTS 生成确定的空格分隔词项。"""
     normalized = unicodedata.normalize("NFKC", text).lower()
     terms: list[str] = []
     for match in _TOKEN_RE.finditer(normalized):

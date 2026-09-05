@@ -1,5 +1,6 @@
 import json
 from datetime import UTC, datetime
+from hashlib import file_digest
 from pathlib import Path
 
 from app.evaluation import (
@@ -8,10 +9,13 @@ from app.evaluation import (
     EvaluationRunConfig,
     load_eval_dataset,
 )
+from app.evaluation.stage11_baseline import _evaluation_purpose
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATASET_PATH = PROJECT_ROOT / "data" / "evaluation" / "stage8_v0.json"
 MANIFEST_PATH = PROJECT_ROOT / "data" / "policies" / "manifest.json"
+FINAL_FREEZE_PATH = PROJECT_ROOT / "data" / "evaluation" / "stage16_final_freeze_v0.json"
+HOLDOUT_PATH = PROJECT_ROOT / "data" / "evaluation" / "stage16_holdout_v1.json"
 
 
 def test_stage8_dataset_has_twenty_unique_human_reviewed_cases() -> None:
@@ -90,3 +94,57 @@ def test_evaluation_run_contract_freezes_reproducibility_and_cost_fields() -> No
     assert run.config.retrieval_config_version == "hybrid-v1"
     assert run.results[0].latency_ms == 12
     assert run.results[0].estimated_cost_usd == 0
+
+
+def test_stage16_freeze_manifest_locks_reviewed_scored_sources() -> None:
+    """冻结报告只能汇总已复核且内容指纹未变化的题集。"""
+
+    freeze = json.loads(FINAL_FREEZE_PATH.read_text(encoding="utf-8"))
+    assert freeze["freeze_version"] == "stage16-final-freeze-v0"
+    assert freeze["annotation_status"] == "reviewed"
+    assert freeze["candidate_config"]["answer"]["prompt_version"] == "v1"
+    assert freeze["candidate_config"]["retrieval"]["strategy"] == "hybrid+RRF"
+    assert freeze["candidate_config"]["retrieval"]["enable_query_rewrite"] is False
+    assert freeze["candidate_config"]["retrieval"]["enable_rerank"] is False
+
+    scored_ids: set[str] = set()
+    for source in freeze["scored_sources"]:
+        path = PROJECT_ROOT / source["path"]
+        with path.open("rb") as file:
+            assert file_digest(file, "sha256").hexdigest() == source["sha256"]
+        dataset = json.loads(path.read_text(encoding="utf-8"))
+        ids = {case["id"] for case in dataset["cases"]}
+        assert dataset["annotation_status"] == "reviewed"
+        assert len(ids) == source["case_count"]
+        assert not scored_ids & ids
+        scored_ids.update(ids)
+
+    assert len(scored_ids) == freeze["total_scored_cases"] == 72
+    diagnostic_paths = {item["path"] for item in freeze["diagnostic_sources"]}
+    assert diagnostic_paths == {"data/evaluation/stage11_tuning_v0.json"}
+
+
+def test_stage16_holdout_is_reviewed_disjoint_and_excluded_from_frozen_score() -> None:
+    """确认留出题已人工复核，但仍不得回流为调优材料或冻结集成绩。"""
+
+    holdout = load_eval_dataset(HOLDOUT_PATH)
+    freeze = json.loads(FINAL_FREEZE_PATH.read_text(encoding="utf-8"))
+    used_questions: set[str] = set()
+    for source in [*freeze["scored_sources"], *freeze["diagnostic_sources"]]:
+        path = PROJECT_ROOT / source["path"]
+        dataset = json.loads(path.read_text(encoding="utf-8"))
+        used_questions.update(
+            text
+            for case in dataset["cases"]
+            for text in (case.get("question"), case.get("query"))
+            if text
+        )
+
+    assert holdout.dataset_version == "stage16-holdout-v1"
+    assert holdout.annotation_status == "reviewed"
+    assert len(holdout.cases) == 10
+    assert {case.question for case in holdout.cases}.isdisjoint(used_questions)
+    assert _evaluation_purpose(holdout.dataset_version) == "holdout_validation"
+    assert str(HOLDOUT_PATH.relative_to(PROJECT_ROOT)) not in {
+        source["path"] for source in freeze["scored_sources"]
+    }

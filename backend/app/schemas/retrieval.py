@@ -102,6 +102,7 @@ class HybridSearchHitResponse(BaseModel):
     keyword_rank: int | None
     rrf_score: float
     document_rrf_score: float
+    rerank_score: float | None = None
     policy_type: str | None = None
     effective_from: date | None = None
     effective_to: date | None = None

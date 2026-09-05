@@ -36,6 +36,14 @@ if TYPE_CHECKING:
 class Document(Base):
     """上传到知识库的原始文件及其处理状态。"""
 
+    def __init__(self, **kwargs: object) -> None:
+        """在 ORM 实例化阶段补齐 OCR 数据库默认值。"""
+        super().__init__(**kwargs)
+        if self.ocr_status is None:
+            self.ocr_status = "not_requested"
+        if self.ocr_low_confidence_page_count is None:
+            self.ocr_low_confidence_page_count = 0
+
     __tablename__ = "documents"
     __table_args__ = (
         CheckConstraint(
@@ -46,6 +54,10 @@ class Document(Base):
             "text_extraction_status IN "
             "('not_attempted', 'complete', 'partial', 'no_text', 'failed')",
             name="ck_documents_text_extraction_status",
+        ),
+        CheckConstraint(
+            "ocr_status IN ('not_requested', 'pending', 'completed', 'partial', 'failed')",
+            name="ck_documents_ocr_status",
         ),
         CheckConstraint(
             "effective_to IS NULL OR effective_from IS NULL OR effective_to >= effective_from",
@@ -114,6 +126,18 @@ class Document(Base):
         server_default=text("'[]'::json"),
     )
     parsed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    # OCR 是显式的后置处理，不把它混入原生解析状态；这些字段用于展示和排障。
+    ocr_status: Mapped[str] = mapped_column(
+        String(20), nullable=False, default="not_requested", server_default="not_requested"
+    )
+    ocr_provider: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    ocr_model_version: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    ocr_processed_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    ocr_low_confidence_page_count: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0, server_default="0"
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
