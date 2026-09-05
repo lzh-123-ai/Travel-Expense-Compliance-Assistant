@@ -24,6 +24,8 @@ tools/build_targeted_resume.py
 # Private learning notes and local assistant skills
 docs/learning/
 skills/
+docs/setup/
+docs/*交接文档*.md
 
 # Keep curated policy fixtures and evaluation annotations in Git.
 !data/
